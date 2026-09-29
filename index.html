@@ -1,0 +1,1460 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f6f6a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="한국어">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>Корейский с Алёной</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: single study column; top bar with lesson + progress, mode switcher, one working card below. */
+:root{
+  --bg:#eef2f4; --surface:#ffffff; --fg:#17222b; --muted:#5b6b76; --line:#d6dfe4;
+  --accent:#1f6f6a; --accent-soft:#d8ebe8; --ink:#233a8f;
+  --good:#2e7d4f; --good-soft:#dcefe3; --bad:#b3372f; --bad-soft:#f6dedb;
+  --ko:"Gowun Batang","Noto Sans KR",serif;
+  --ko-sans:"Noto Sans KR","IBM Plex Sans",sans-serif;
+  --ui:"IBM Plex Sans","Noto Sans KR",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111a1f; --surface:#1a262d; --fg:#e6edf0; --muted:#98a9b3; --line:#2c3b44;
+  --accent:#5fc0b5; --accent-soft:#1f3a38; --ink:#9db1ff;
+  --good:#6fcf97; --good-soft:#1e3a2a; --bad:#f08a80; --bad-soft:#3d2220; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111a1f; --surface:#1a262d; --fg:#e6edf0; --muted:#98a9b3; --line:#2c3b44;
+  --accent:#5fc0b5; --accent-soft:#1f3a38; --ink:#9db1ff;
+  --good:#6fcf97; --good-soft:#1e3a2a; --bad:#f08a80; --bad-soft:#3d2220; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.brand{font-family:var(--ko);font-size:30px;font-weight:700;color:var(--ink);line-height:1}
+.brand small{display:block;font-family:var(--ui);font-size:13px;font-weight:500;color:var(--muted);margin-top:6px;letter-spacing:.02em}
+select,input[type=text],input[type=email],input[type=password]{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--accent)}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav button{flex:1 1 auto}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:9px 14px}
+button:hover{border-color:var(--accent)}
+button:disabled{cursor:default;opacity:.55}
+button:focus-visible,select:focus-visible,input:focus-visible,label.tog:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+nav button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:600}
+.prefs{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-size:13px;color:var(--muted)}
+label.tog{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border-radius:6px}
+label.tog input{accent-color:var(--accent);width:16px;height:16px;margin:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.card{position:relative;border:1px dashed var(--line);border-radius:12px;min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:20px;cursor:pointer;user-select:none}
+.card .front{font-family:var(--ko);font-size:44px;line-height:1.2;overflow-wrap:anywhere}
+.card .front.ru{font-family:var(--ui);font-size:28px}
+.card .back{font-size:20px;color:var(--ink)}
+.card .back.ko{font-family:var(--ko);font-size:32px}
+.card .tip{font-size:12px;color:var(--muted)}
+.card .say{position:absolute;top:10px;right:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row > button{flex:1 1 140px;padding:12px}
+.btn-bad{background:var(--bad-soft);border-color:transparent;color:var(--bad);font-weight:600}
+.btn-good{background:var(--good-soft);border-color:transparent;color:var(--good);font-weight:600}
+.btn-main{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:600}
+.say{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;border-radius:50%;background:var(--accent-soft);border-color:transparent;color:var(--accent);flex:none;vertical-align:middle}
+.say:hover{border-color:var(--accent)}
+.say.big{width:88px;height:88px}
+.say.big svg{width:40px;height:40px}
+.q{font-size:14px;color:var(--muted)}
+.qline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.qtext{font-family:var(--ko-sans);font-size:26px;line-height:1.35;overflow-wrap:anywhere;min-width:0}
+.qtext .ko{font-family:var(--ko)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:460px){.opts{grid-template-columns:1fr}.stat b{font-size:18px}.card .front{font-size:36px}}
+.opts button{text-align:left;padding:12px 14px;font-size:17px;font-family:var(--ko-sans)}
+.opts button.right{background:var(--good-soft);border-color:var(--good);color:var(--good);opacity:1}
+.opts button.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);opacity:1}
+.explain{border-radius:8px;padding:10px 12px;background:var(--accent-soft);font-size:14px;display:flex;gap:10px;align-items:center}
+.explain > div{min-width:0;flex:1}
+.explain.bad{background:var(--bad-soft)}
+.explain .ko{font-family:var(--ko-sans)}
+.chip{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:none;border-radius:0;padding:6px 10px;font-size:13px;background:var(--surface)}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.write-prompt{min-height:120px;display:flex;align-items:center;justify-content:center;gap:12px;text-align:center;flex-wrap:wrap}
+.write-prompt .ko{font-family:var(--ko);font-size:40px;line-height:1.2;overflow-wrap:anywhere}
+.write-prompt .ru{font-size:26px;overflow-wrap:anywhere}
+#writeInput{width:100%;font-size:22px;padding:12px 14px;font-family:var(--ko-sans)}
+#writeInput.ok{border-color:var(--good);background:var(--good-soft)}
+#writeInput.no{border-color:var(--bad);background:var(--bad-soft)}
+.hint{font-family:var(--ko-sans);font-size:15px;color:var(--ink);letter-spacing:.05em}
+.note{font-size:12px;color:var(--muted)}
+.note summary{cursor:pointer}
+.result{font-size:40px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+ul.miss{margin:0;padding-left:18px}
+ul.miss li{margin:3px 0}
+.ko{font-family:var(--ko-sans)}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+/* conspect */
+.cs{display:flex;flex-direction:column;gap:12px;min-width:0}
+.cs h2{margin:0;font-family:var(--ko);font-size:26px;color:var(--ink);text-wrap:balance}
+.cs h3{margin:18px 0 0;font-size:19px;scroll-margin-top:calc(env(safe-area-inset-top,0px) + 12px);text-wrap:balance;border-top:1px solid var(--line);padding-top:16px}
+.cs h4{margin:6px 0 0;font-size:15px;color:var(--accent)}
+.cs p,.cs ul,.cs ol{margin:0;max-width:68ch}
+.cs ul,.cs ol{padding-left:22px}
+.cs li{margin:3px 0}
+.cs .src{font-size:13px;color:var(--muted)}
+.cs .read{font-family:var(--ko-sans);font-size:17px;line-height:1.8;background:var(--bg);border-radius:8px;padding:10px 12px}
+.toc{display:flex;flex-wrap:wrap;gap:6px}
+.toc button{font-size:13px;padding:5px 10px;border-radius:99px}
+.tw{overflow-x:auto;max-width:100%}
+.cs table{border-collapse:collapse;font-size:14px;min-width:100%}
+.cs th,.cs td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+.cs th{background:var(--bg);font-weight:600;font-size:13px;color:var(--muted)}
+.cs td{font-family:var(--ko-sans)}
+.ex{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-left:3px solid var(--accent-soft)}
+.ex > div{padding:5px 10px;overflow-wrap:anywhere}
+.ex > div:nth-child(odd){font-family:var(--ko-sans);font-size:16px}
+.ex > div:nth-child(even){color:var(--muted)}
+@media (max-width:520px){.ex{grid-template-columns:1fr}.ex > div:nth-child(even){padding-top:0;padding-bottom:9px}}
+.tipbox{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:14px}
+.wl{display:grid;grid-template-columns:auto 1fr;gap:3px 14px;font-size:14px}
+.wl > div:nth-child(odd){font-family:var(--ko-sans);font-size:16px}
+.task{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.task h4{margin:0;color:var(--fg)}
+.task ol li{font-family:var(--ko-sans)}
+.task details summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:14px}
+.task .ans{margin-top:8px;padding:10px 12px;border-radius:8px;background:var(--good-soft);font-family:var(--ko-sans);font-size:14px}
+.cs.tts .kw{cursor:pointer;border-bottom:1px dotted var(--accent);border-radius:2px}
+.cs.tts .kw:hover{background:var(--accent-soft)}
+/* dictionary */
+#dictSearch{width:100%;font-size:16px}
+.dl{display:flex;flex-direction:column;gap:10px}
+.dl + .dl{margin-top:14px}
+.dl h3{margin:0;font-size:18px;color:var(--ink);scroll-margin-top:calc(env(safe-area-inset-top,0px) + 12px)}
+.dg h4{margin:0 0 4px;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.dg h4 span{color:var(--muted);font-weight:400;letter-spacing:0}
+.dg ul{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.dg li{display:flex;align-items:center;gap:10px;padding:6px 10px;min-width:0}
+.dg li + li{border-top:1px solid var(--line)}
+.dg .say{width:30px;height:30px}
+.dg .say svg{width:15px;height:15px}
+.dk{font-family:var(--ko-sans);font-size:17px;flex:0 1 42%;min-width:0;overflow-wrap:anywhere}
+.dr{flex:1;min-width:0;color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.lv{width:8px;height:8px;border-radius:50%;flex:none;border:1px solid var(--line)}
+.lv.ok{background:var(--good);border-color:var(--good)}
+.lv.mid{background:var(--accent-soft);border-color:var(--accent)}
+.lv.bad{background:var(--bad);border-color:var(--bad)}
+.auth{display:flex;flex-direction:column;gap:6px;max-width:420px}
+.auth label{font-size:13px;color:var(--muted)}
+.auth input{font:inherit;font-size:16px;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.auth .row{margin-top:8px}
+footer{font-size:12px;color:var(--muted);text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.sync{display:inline-flex;align-items:center;gap:6px}
+.sync i{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+.sync[data-s="saved"] i{background:var(--good)}
+.sync[data-s="saving"] i,.sync[data-s="connecting"] i{background:var(--accent)}
+.sync[data-s="error"] i{background:var(--bad)}
+.link{background:none;border:none;color:var(--muted);text-decoration:underline;padding:0;font-size:12px}
+@media (prefers-reduced-motion:no-preference){.card{transition:background .15s}.card:active{background:var(--accent-soft)}.sync[data-s="saving"] i{animation:pulse 1s infinite alternate}@keyframes pulse{to{opacity:.3}}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand">한국어 공부<small>Карточки и тесты к конспектам</small></div>
+    <label for="lesson" style="font-size:13px;color:var(--muted)">Урок<br>
+      <select id="lesson"></select>
+    </label>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b id="sLearned">0</b><span>слов выучено</span><div class="bar"><i id="sBar" style="width:0%"></i></div></div>
+    <div class="stat"><b id="sReview">0</b><span>на повторении</span></div>
+    <div class="stat"><b id="sBest">—</b><span>лучший тест</span></div>
+  </div>
+
+  <nav aria-label="Режимы">
+    <button data-mode="notes" aria-pressed="false">Конспект</button>
+    <button data-mode="dict" aria-pressed="false">Словарь</button>
+    <button data-mode="cards" aria-pressed="true">Карточки</button>
+    <button data-mode="quiz" aria-pressed="false">Тест на слова</button>
+    <button data-mode="write" aria-pressed="false">Напиши сам</button>
+    <button data-mode="grammar" aria-pressed="false">Грамматика</button>
+    <button data-mode="review" aria-pressed="false">Повтор ошибок</button>
+  </nav>
+
+  <div class="prefs" id="prefs">
+    <label class="tog"><input type="checkbox" id="prefAuto"> Озвучивать автоматически</label>
+    <label class="tog"><input type="checkbox" id="prefSlow"> Медленное произношение</label>
+    <span id="ttsNote" hidden></span>
+  </div>
+
+  <section class="panel" id="panel" aria-live="polite"></section>
+
+  <footer>
+    <span class="sync" id="sync" data-s="local"><i></i><span id="syncText">Прогресс хранится на этом устройстве</span></span>
+    <button class="link" id="acctBtn" hidden>Войти</button>
+    <span><button class="link" id="reset">Сбросить прогресс урока</button> <span id="resetConfirm" hidden> — точно? <button class="link" id="resetYes">Да, сбросить</button> · <button class="link" id="resetNo">Отмена</button></span></span>
+  </footer>
+</div>
+
+<script>
+const LESSONS = [
+ { id:"l1", title:"Урок 1 · 이다, 있다/없다",
+   words:[
+    ["의자","стул"],["책상","письменный стол"],["가방","сумка"],["책","книга"],["시계","часы"],["모자","шапка, шляпа"],["우산","зонт"],["컴퓨터","компьютер"],["휴대폰","мобильный телефон"],["침대","кровать"],["창문","окно"],["텔레비전","телевизор"],["차","машина; чай"],["물","вода"],["커피","кофе"],["사과","яблоко"],
+    ["사람","человек"],["학생","ученик, студент"],["대학생","студент университета"],["선생님","учитель, преподаватель"],["친구","друг, подруга"],["가수","певец, певица"],["회사원","офисный сотрудник"],["언니","старшая сестра (у девушки)"],["오빠","старший брат (у девушки)"],["동생","младший брат / сестра"],["고양이","кошка"],["강아지","щенок, собачка"],
+    ["한국","Корея"],["러시아","Россия"],["서울","Сеул"],["고향","родной город"],["학교","школа"],["은행","банк"],["화장실","туалет"],["집","дом"],["방","комната"],
+    ["뭐","что"],["누구","кто"],["어디","где, куда"],["이거","это (рядом со мной)"],["저거","вон то"],["여기","здесь"],["저기","вон там"],["제","мой (вежливо)"],["네","да"],["아니요","нет"],["하고","и (между сущ.)"],["있다","есть; находиться"],["없다","нет, отсутствовать"],
+    ["위","на, над"],["아래","под"],["앞","перед"],["뒤","за, позади"],["옆","рядом"],["왼쪽","слева"],["오른쪽","справа"],["가운데","в центре"],["사이","между"],["안","внутри"],["밖","снаружи"],
+    ["이거 뭐예요?","Что это?"],["화장실이 어디예요?","Где туалет?"],["물 있어요?","Есть вода?"],["저기에 있어요.","Вон там."],["러시아 사람이에요.","Я из России."]
+   ],
+   cats: [["Предметы",16],["Люди и животные",12],["Места",9],["Служебные слова",13],["Где? Слова места",11],["Фразы",5]],
+   grammar: buildL1Grammar
+ }
+  ,
+ { id:"l2", title:"Урок 2 · числа, даты, время",
+   words:[
+    ["일","1 (кит.)"],["이","2 (кит.)"],["삼","3 (кит.)"],["사","4 (кит.)"],["오","5 (кит.)"],["육","6 (кит.)"],["칠","7 (кит.)"],["팔","8 (кит.)"],["구","9 (кит.)"],["십","10 (кит.)"],["백","100"],["천","1 000"],["만","10 000"],["공 / 영","ноль"],
+    ["하나 (한)","1 (кор.)"],["둘 (두)","2 (кор.)"],["셋 (세)","3 (кор.)"],["넷 (네)","4 (кор.)"],["다섯","5 (кор.)"],["여섯","6 (кор.)"],["일곱","7 (кор.)"],["여덟","8 (кор.)"],["아홉","9 (кор.)"],["열","10 (кор.)"],["스물 (스무)","20 (кор.)"],["서른","30 (кор.)"],
+    ["개","штука (счёт предметов)"],["명","человек (счёт)"],["분","человек (вежл.); минута"],["마리","животное (счёт)"],["권","книга (счёт)"],["잔","чашка, стакан (счёт)"],["병","бутылка (счёт)"],["장","лист, билет (счёт)"],["대","машина, техника (счёт)"],["살","лет (возраст)"],["원","вона"],["번","номер; раз"],["층","этаж"],
+    ["월요일","понедельник"],["화요일","вторник"],["수요일","среда"],["목요일","четверг"],["금요일","пятница"],["토요일","суббота"],["일요일","воскресенье"],
+    ["유월","июнь"],["시월","октябрь"],["년","год"],["월","месяц"],["요일","день недели"],["시","час"],["반","половина"],["전","до, без (о времени)"],
+    ["오전","до полудня"],["오후","после полудня"],["아침","утро"],["점심","обед"],["저녁","вечер"],["밤","ночь, поздний вечер"],["어제","вчера"],["오늘","сегодня"],["내일","завтра"],["지금","сейчас"],["주말","выходные"],["생일","день рождения"],
+    ["몇","сколько (+ счётное слово)"],["며칠","какое число"],["얼마","сколько (стоит)"],["언제","когда"],["무슨","какой"],
+    ["주세요","дайте, пожалуйста"],["표","билет"],["손님","гость, клиент"],["가족","семья"],["전화번호","номер телефона"],["버스","автобус"],["일어나다","вставать"],["모두","всего, все"],
+    ["이거 얼마예요?","Сколько это стоит?"],["지금 몇 시예요?","Который час?"],["오늘이 며칠이에요?","Какое сегодня число?"],["커피 한 잔 주세요.","Одну чашку кофе, пожалуйста."]
+   ],
+   cats: [["Китайские числа",14],["Корейские числа",12],["Счётные слова",13],["Дни недели",7],["Время и даты",20],["Вопросы",5],["Другое",8],["Фразы",4]],
+   grammar: buildL2Grammar
+ }
+  ,
+ { id:"l3", title:"Урок 3 · настоящее время",
+   words:[
+    ["가다","идти, ехать → 가요"],["자다","спать → 자요"],["사다","покупать → 사요"],["만나다","встречаться → 만나요"],["일어나다","вставать → 일어나요"],["오다","приходить → 와요"],["보다","смотреть → 봐요"],["앉다","садиться → 앉아요"],["받다","получать → 받아요"],["살다","жить → 살아요"],["좋다","хороший → 좋아요"],
+    ["먹다","есть → 먹어요"],["읽다","читать → 읽어요"],["입다","надевать → 입어요"],["마시다","пить → 마셔요"],["기다리다","ждать → 기다려요"],["가르치다","преподавать → 가르쳐요"],["배우다","учить → 배워요"],["주다","давать → 줘요"],["보내다","отправлять → 보내요"],["쉬다","отдыхать → 쉬어요"],["쓰다","писать → 써요"],["맛있다","вкусный → 맛있어요"],["재미있다","интересный → 재미있어요"],
+    ["공부하다","учиться → 공부해요"],["일하다","работать → 일해요"],["운동하다","заниматься спортом → 운동해요"],["좋아하다","любить → 좋아해요"],["전화하다","звонить → 전화해요"],["요리하다","готовить → 요리해요"],["숙제하다","делать домашку → 숙제해요"],["말하다","говорить → 말해요"],
+    ["밥","рис, еда"],["빵","хлеб"],["신문","газета"],["영화","фильм"],["음악","музыка"],["옷","одежда"],["편지","письмо"],["한국어","корейский язык"],["경제학","экономика (наука)"],["대학교","университет"],["카페","кафе"],["보통","обычно"],["그리고","и, а также"],
+    ["지금 뭐 해요?","Что сейчас делаете?"],["맛있어요!","Вкусно!"],["괜찮아요.","Всё в порядке."],["한국어를 조금 해요.","Я немного говорю по-корейски."],["영어 해요?","Вы говорите по-английски?"],["어디에 살아요?","Где вы живёте?"]
+   ],
+   cats: [["Глаголы на ㅏ/ㅗ → -아요",11],["Глаголы → -어요",13],["Глаголы на 하다 → 해요",8],["Существительные и другое",13],["Фразы",6]],
+   grammar: buildL3Grammar
+ },
+ { id:"l4", title:"Урок 4 · прошедшее время",
+   words:[
+    ["갔어요","ходил(а), ездил(а) ← 가다"],["왔어요","пришёл / пришла ← 오다"],["봤어요","смотрел(а) ← 보다"],["만났어요","встречался(-ась) ← 만나다"],["샀어요","купил(а) ← 사다"],["먹었어요","ел(а) ← 먹다"],["마셨어요","пил(а) ← 마시다"],["배웠어요","учил(а) ← 배우다"],["읽었어요","читал(а) ← 읽다"],["기다렸어요","ждал(а) ← 기다리다"],["썼어요","писал(а) ← 쓰다"],["쉬었어요","отдыхал(а) ← 쉬다"],["했어요","делал(а) ← 하다"],["있었어요","был(а), имелся ← 있다"],["없었어요","не было ← 없다"],["였어요 / 이었어요","был(а) (кем-то) ← 이다"],["아니었어요","не был(а) ← 아니다"],
+    ["싸다","дешёвый → 쌌어요"],["비싸다","дорогой → 비쌌어요"],["바쁘다","занятой → 바빴어요"],["아프다","болеть → 아팠어요"],["피곤하다","усталый → 피곤했어요"],["길다","длинный → 길었어요"],["청소하다","убирать → 청소했어요"],["지내다","поживать → 지냈어요"],["듣다","слушать → 들었어요"],["모르다","не знать → 몰랐어요"],["부르다","петь; звать → 불렀어요"],["춥다","холодно → 추웠어요"],["덥다","жарко → 더웠어요"],
+    ["그저께","позавчера"],["지난주","прошлая неделя"],["지난달","прошлый месяц"],["작년","прошлый год"],["아까","недавно, только что"],["전에","раньше"],
+    ["식당","ресторан, столовая"],["백화점","универмаг"],["병원","больница"],["구두","туфли"],["머리","голова; волосы"],["노래","песня"],["수업","занятие, урок"],["시간","время"],["비빔밥","пибимпап"],["하지만","но, однако"],["정말","очень; правда"],["좀","немного"],
+    ["어제 뭐 했어요?","Что делали вчера?"],["주말에 뭐 했어요?","Что делали в выходные?"],["잘 먹었습니다.","Спасибо, было вкусно."],["잘 잤어요?","Хорошо спали?"],["몰랐어요.","Я не знал(а)."],["어땠어요?","Как было?"]
+   ],
+   cats: [["Прошедшее время: основные глаголы",17],["Прилагательные и глаголы",13],["Слова времени",6],["Существительные и другое",12],["Фразы",6]],
+   grammar: buildL4Grammar
+ },
+ { id:"l5", title:"Урок 5 · будущее и -고 있어요",
+   words:[
+    ["갈 거예요","пойду, поеду ← 가다"],["볼 거예요","посмотрю ← 보다"],["먹을 거예요","буду есть ← 먹다"],["할 거예요","буду делать ← 하다"],["살 거예요","буду жить ← 살다"],["들을 거예요","буду слушать ← 듣다"],["도울 거예요","помогу ← 돕다"],["가고 있어요","иду (сейчас) ← 가다"],["먹고 있어요","ем (сейчас) ← 먹다"],["배우고 있어요","учу (в последнее время) ← 배우다"],["자고 있었어요","спал(а) (в тот момент) ← 자다"],
+    ["놀다","гулять, развлекаться → 놀 거예요"],["타다","ехать на, кататься → 탈 거예요"],["찾다","искать → 찾을 거예요"],["돌아가다","возвращаться"],["여행하다","путешествовать"],["씻다","мыть(ся)"],["세수하다","умываться"],["샤워하다","принимать душ"],["치다","играть (на пианино, в теннис)"],["돕다","помогать"],["같이","вместе"],["미안해요","простите"],
+    ["모레","послезавтра"],["다음 주","следующая неделя"],["다음 달","следующий месяц"],["내년","следующий год"],["이따가","попозже (сегодня)"],["나중에","потом"],["요즘","в последнее время"],["그때","тогда, в тот момент"],["여름","лето"],["겨울","зима"],
+    ["방학","каникулы"],["시험","экзамен"],["여행","путешествие"],["자전거","велосипед"],["비행기","самолёт"],["기차","поезд"],["지하철","метро"],["시장","рынок"],["도서관","библиотека"],["노래방","караоке"],["호텔","отель"],["바다","море"],
+    ["주말에 뭐 할 거예요?","Что будете делать в выходные?"],["지금 가고 있어요.","Уже иду / еду."],["같이 가요!","Пойдём вместе!"],["나중에 봐요!","Увидимся!"],["뭐 찾고 있어요?","Что вы ищете?"]
+   ],
+   cats: [["Будущее и -고 있어요: формы",11],["Глаголы и другое",12],["Слова времени",10],["Существительные: поездки и учёба",12],["Фразы",5]],
+   grammar: buildL5Grammar
+ }
+];
+const UPCOMING = ["Урок 6 · отрицание (скоро)"];
+
+/* ---------- lesson notes (конспекты) ---------- */
+const ex = rows => `<div class="ex">${rows.map(([k,r])=>`<div>${k}</div><div>${r}</div>`).join("")}</div>`;
+const tbl = (head, rows) => `<div class="tw"><table>${head?`<thead><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr></thead>`:""}<tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+const tip = h => `<div class="tipbox">${h}</div>`;
+const task = (t, body, ans) => `<div class="task"><h4>${t}</h4>${body}<details><summary>Показать ответ</summary><div class="ans">${ans}</div></details></div>`;
+const ol = items => `<ol>${items.map(i=>`<li>${i}</li>`).join("")}</ol>`;
+const WORDS_SECTION = `<h3 id="c-words">Слова урока</h3><p>Все слова урока есть в карточках, тестах и в режиме «Напиши сам».</p><div id="csWords"></div>`;
+
+const CONSPECT = {
+l1: `
+<p class="src">TOPIK I · уровень 1. По учебнику «Грамматика корейского языка in Use. Для начинающих»: введение (стр. 14–24), темы 01–02 раздела «Начнём с азов» (стр. 26–30). Аудио: треки 01–04 в приложении LECTA.</p>
+<h3 id="c-goals">После урока вы сможете</h3>
+<ul>
+<li>сказать, что это за предмет и кто этот человек: 가방이에요. 제 친구예요.</li>
+<li>спросить «что это?», «кто это?», «где?»: 뭐예요? 누구예요? 어디예요?</li>
+<li>сказать, что у вас что-то есть или нет: 고양이가 있어요. 차가 없어요.</li>
+<li>объяснить, где что находится: 책이 가방 안에 있어요.</li>
+<li>выбрать между вежливым разговорным (-요) и официальным (-ㅂ니다) стилем</li>
+</ul>
+${tbl(["Время","Что делать"],[
+ ["30–60 минут","Разделы 2 и 3 → карточки → задания 1, 2, 5. Проверить по ответам."],
+ ["2–3 часа","Весь конспект → учебник стр. 14–30 (прочитать, послушать треки 01–04, повторить диалоги вслух) → «Проверьте себя» на стр. 27 и 30 → все задания 1–9 → тест. Задание 9 пришлите в чат, я проверю."],
+ ["На следующий день","5–10 минут «Повтора ошибок»."]])}
+
+<h3 id="c-1">1. Три вещи, которые нужно знать с самого начала</h3>
+<h4>Глагол всегда в конце</h4>
+<p>Порядок слов: подлежащее → дополнение → сказуемое. Что бы ни было в середине, глагол стоит последним.</p>
+${ex([["에릭이 사과를 먹어요.","Эрик ест яблоко (букв. «Эрик яблоко ест»)."]])}
+<h4>Частицы работают как падежные окончания</h4>
+<p>Роль слова показывает частица после него, примерно как окончания в русском (книга / книгу). Поэтому порядок слов в середине может меняться, а смысл нет. В этом уроке нужна одна частица: 이/가 (подлежащее).</p>
+<p>Подлежащее часто опускают, если и так понятно, о ком речь: (저는) 학생이에요. — «(Я) студентка».</p>
+<h4>Два вежливых стиля</h4>
+${tbl(["","Официально-вежливый -(스)ㅂ니다","Разговорно-вежливый -아요/어요"],[
+ ["Где звучит","новости, доклады, объявления, деловые встречи, TOPIK-аудио","повседневная речь с незнакомыми, в магазине, кафе, с преподавателем"],
+ ["Утверждение","갑니다.","가요. ↘"],
+ ["Вопрос","갑니까?","가요? ↗ (только интонация)"],
+ ["Просьба","가십시오.","가세요."]])}
+${tip("Для путешествий и общения говорите в стиле -요: он вежливый и подходит почти везде. Форму -ㅂ니다 нужно узнавать (объявления в метро, аэропорт) и уметь писать для TOPIK.")}
+<p class="src">Почтительность к старшим (-(으)시-, 께서, -님) — стр. 20–24 учебника. Сейчас её достаточно прочитать для общего понимания.</p>
+
+<h3 id="c-2">2. 이다 — «быть, являться»</h3>
+<p>이다 присоединяется прямо к существительному, без пробела. В русском связку «есть» мы опускаем («Это стул»), в корейском она обязательна.</p>
+${tbl(["Существительное оканчивается на…","Разговорно (утверждение и вопрос)","Официально"],[
+ ["гласную (нет 받침): 의자, 시계, 친구","<b>예요</b>: 의자예요. 친구예요?","의자입니다. 학생입니까?"],
+ ["согласную (есть 받침): 가방, 책, 학생","<b>이에요</b>: 가방이에요. 학생이에요?","для 입니다 разницы нет"]])}
+${tip("Как проверить: посмотрите на последний слог. Есть согласная внизу (방, 책, 생, 님) → 이에요. Нет (자, 계, 구, 피) → 예요.")}
+<h4>Вопросительные слова</h4>
+${tbl(["Слово","Разговорно","Официально","Перевод"],[
+ ["뭐 / 무엇","뭐예요?","무엇입니까?","Что это?"],
+ ["누구","누구예요?","누구입니까?","Кто это?"],
+ ["어디","어디예요?","어디입니까?","Где это? / Какое это место?"]])}
+<p>뭐 — разговорное сокращение от 무엇. В речи почти всегда говорят 뭐예요?</p>
+<h4>Примеры из учебника (стр. 26)</h4>
+${ex([["A: 무엇입니까? (= 뭐예요?)","Что это?"],["B: 의자입니다. (= 의자예요.)","Это стул."],["A: 한국 사람이에요?","Она кореянка?"],["B: 네, 한국 사람이에요.","Да, кореянка."],["A: 고향이 어디예요?","Откуда вы родом?"],["B: 서울이에요.","Из Сеула."]])}
+<h4>«Это», «то», «вон то»</h4>
+${tbl(["Близко ко мне","Близко к собеседнику","Далеко от обоих"],[
+ ["이거 (이것) — это","그거 (그것) — это (у тебя)","저거 (저것) — вон то"],
+ ["여기 — здесь","거기 — там (у тебя)","저기 — вон там"]])}
+${ex([["이거 뭐예요?","Что это? (самая полезная фраза в магазине и на рынке)"],["저는 러시아 사람이에요.","Я из России (букв. «я — российский человек»)."],["제 친구예요.","Это мой друг / моя подруга (제 = «мой», вежливо)."]])}
+${tip("Отрицание «это не …» — 아니에요: 가방이 아니에요 — «это не сумка». Подробно — стр. 60 учебника. Пока просто узнавайте его.")}
+
+<h3 id="c-3">3. 있다 / 없다 — «есть / нет», «находится»</h3>
+<p>У 있다 два значения. Антоним в обоих случаях — 없다.</p>
+${tbl(["Значение","Схема","Пример"],[
+ ["Иметь, «у меня есть»","N이/가 있어요 / 없어요","고양이가 있어요. — У меня есть кошка.<br>차가 없어요. — У меня нет машины."],
+ ["Находиться где-то","N이/가 место에 있어요","책이 가방 안에 있어요. — Книга в сумке.<br>은행이 학교 옆에 있어요. — Банк рядом со школой."]])}
+${tbl(["","Разговорно","Официально"],[["Есть","있어요 / 있어요?","있습니다 / 있습니까?"],["Нет","없어요 / 없어요?","없습니다 / 없습니까?"]])}
+<h4>Частица подлежащего 이 / 가</h4>
+${tbl(["После согласной → 이","После гласной → 가"],[["책이, 가방이, 동생이, 우산이","의자가, 고양이가, 친구가, 컴퓨터가"]])}
+<p>Правило то же, что у 이에요/예요: есть 받침 → вариант с 이.</p>
+<h4>Где? Слова места</h4>
+<p>Схема: ориентир + слово места + 에. По-русски «на столе», по-корейски «стол верх-на»: 책상 위에.</p>
+${tbl(["Слово","Значение","Пример"],[
+ ["위","на, над","책상 위에 컴퓨터가 있어요."],["아래 = 밑","под","책상 밑에 구두가 있어요."],["앞","перед","책상 앞에 의자가 있어요."],["뒤","за, позади","책상 뒤에 책장이 있어요."],["옆","рядом, сбоку","학교 옆에 은행이 있어요."],["왼쪽 / 오른쪽","слева / справа","책상 왼쪽에 화분이 있어요."],["가운데","в центре","책상 가운데에 인형이 있어요."],["사이","между","화분하고 옷걸이 사이에 책상이 있어요."],["안","внутри, в","집 안에 강아지가 있어요."],["밖","снаружи","집 밖에 고양이가 있어요."]])}
+${tip("A하고 B — «A и B» (между существительными). A하고 B 사이 — «между A и B».<br>Два способа спросить «где?»: 화장실이 어디예요? и 화장실이 어디에 있어요? Оба правильные и оба нужны в поездке.")}
+<h4>Диалоги из учебника (стр. 30)</h4>
+${ex([["A: 책이 어디에 있어요?","Где книга?"],["B: 가방 안에 있어요.","В сумке."],["A: 한국 친구가 있어요?","У вас есть друзья-корейцы?"],["B: 네, 한국 친구가 있어요.","Да, есть."]])}
+<h4>Произношение: слог «перетекает» (연음)</h4>
+<p>Если слово кончается на согласную, а дальше идёт 이/어/에, согласная читается в начале следующего слога:</p>
+${tbl(["Пишем","Говорим"],[["책이","[채기]"],["있어요","[이써요]"],["없어요","[업써요]"],["선생님이에요","[선생니미에요]"],["옆에","[여페]"],["안에","[아네]"]])}
+
+<h3 id="c-4">4. Фразы для поездки</h3>
+${ex([["이거 뭐예요?","Что это?"],["화장실이 어디예요?","Где туалет?"],["물 있어요?","Есть вода?"],["와이파이 있어요?","Есть вай-фай?"],["자리 있어요?","Есть свободные места?"],["여기 어디예요?","Где я? (что это за место)"],["네, 있어요.","Да, есть."],["아니요, 없어요.","Нет."],["저기에 있어요.","Вон там."],["러시아 사람이에요.","Я из России."]])}
+
+${WORDS_SECTION}
+
+<h3 id="c-tasks">Задания</h3>
+<p>Сначала выполните задание, потом откройте ответ. Отмечайте, где ошиблись.</p>
+${task("Задание 1. 예요 или 이에요?", ol(["의자___.","가방___.","시계___?","책___.","학생___?","친구___.","선생님___.","커피___?","우산___.","컴퓨터___.","서울___.","러시아 사람___."]),
+ "1 의자예요 · 2 가방이에요 · 3 시계예요? · 4 책이에요 · 5 학생이에요? · 6 친구예요 · 7 선생님이에요 · 8 커피예요? · 9 우산이에요 · 10 컴퓨터예요 · 11 서울이에요 · 12 러시아 사람이에요")}
+${task("Задание 2. 이 или 가?", ol(["책___ 있어요.","의자___ 없어요.","고양이___ 있어요?","우산___ 없어요.","컴퓨터___ 방에 있어요.","동생___ 있어요.","화장실___ 어디예요?","친구___ 집에 있어요."]),
+ "1 책이 · 2 의자가 · 3 고양이가 · 4 우산이 · 5 컴퓨터가 · 6 동생이 · 7 화장실이 · 8 친구가")}
+${task("Задание 3. Перепишите в официальном стиле (-ㅂ니다 / -습니다)", `<p>Пример: 가방이에요. → 가방입니다.</p>`+ol(["학생이에요.","뭐예요?","가방이 있어요.","시간이 없어요?","선생님이에요?","화장실이 어디에 있어요?"]),
+ ol(["학생입니다.","무엇입니까? (в официальном стиле обычно полная форма 무엇)","가방이 있습니다.","시간이 없습니까?","선생님입니까?","화장실이 어디에 있습니까?"]))}
+${task("Задание 4. Где что находится? Вставьте слово места", ol(["책상 ___에 컴퓨터가 있어요. (на)","책상 ___에 고양이가 있어요. (под)","의자가 책상 ___에 있어요. (перед)","가방 ___에 책이 있어요. (внутри)","은행이 학교 ___에 있어요. (рядом)","강아지가 집 ___에 있어요. (снаружи)","시계가 컴퓨터 ___에 있어요. (справа)","책상하고 침대 ___에 가방이 있어요. (между)"]),
+ "1 위 · 2 아래 / 밑 · 3 앞 · 4 안 · 5 옆 · 6 밖 · 7 오른쪽 · 8 사이")}
+${task("Задание 5. Переведите на корейский (разговорно-вежливый стиль)", ol(["Это часы.","Что это?","Я студентка.","Где туалет?","У меня есть кошка.","У меня нет зонта.","Книга в сумке.","Банк рядом со школой.","— Кто это? — Это моя подруга.","Я из России."]),
+ ol(["시계예요.","이거 뭐예요? (или просто 뭐예요?)","(저는) 학생이에요. (или 대학생이에요)","화장실이 어디예요? / 화장실이 어디에 있어요?","(저는) 고양이가 있어요.","우산이 없어요.","책이 가방 안에 있어요.","은행이 학교 옆에 있어요.","누구예요? — 제 친구예요.","(저는) 러시아 사람이에요."]))}
+${task("Задание 6. Найдите ответ на вопрос", tbl(["Вопрос","Ответ"],[["1. 화장실이 어디예요?","а) 네, 있어요. 비밀번호는 1234예요."],["2. 이거 뭐예요?","б) 제 친구예요."],["3. 와이파이 있어요?","в) 저기에 있어요."],["4. 한국 사람이에요?","г) 김밥이에요."],["5. 누구예요?","д) 아니요, 러시아 사람이에요."]])+`<p class="src">비밀번호 — пароль, 김밥 — кимпаб (рисовые роллы).</p>`,
+ "1 — в · 2 — г · 3 — а · 4 — д · 5 — б")}
+${task("Задание 7. Найдите и исправьте ошибку", ol(["저는 학생예요.","의자이 있어요.","고양이가 침대 위 있어요.","친구이에요.","책상 위에 컴퓨터가 입니다.","가방 안에 책이 없어요? — 네, 없어요. 책이 있어요."]),
+ ol(["학생이에요 — 학생 кончается на согласную.","의자가 — 의자 кончается на гласную.","침대 위에 — после слова места нужна частица 에.","친구예요 — после гласной.","컴퓨터가 있습니다 — «находится» передаёт 있다, а не 이다.","По смыслу книга есть, поэтому 아니요, 있어요. Корейское 네/아니요 отвечает на вопрос буквально: на «Книги нет?» ответ 네, 없어요 значит «да, нет»."]))}
+${task("Задание 8. Прочитайте и ответьте", `<p class="read">안녕하세요. 저는 민지예요. 대학생이에요. 제 방에 책상이 있어요. 책상 위에 컴퓨터하고 책이 있어요. 책상 앞에 의자가 있어요. 침대가 창문 옆에 있어요. 고양이가 침대 위에 있어요. 제 방에 텔레비전이 없어요.</p>
+<p class="src">안녕하세요 — здравствуйте. 뭐가 = 뭐 + 가 («что» как подлежащее). 씨 — вежливое обращение после имени.</p>
+<p><b>А. Правда (П) или неправда (Н)?</b></p>${ol(["Минджи — учительница.","На столе есть компьютер.","Стул стоит за столом.","Кошка на кровати.","В комнате есть телевизор."])}
+<p><b>Б. Ответьте по-корейски полным предложением.</b></p>${ol(["침대가 어디에 있어요?","책상 위에 뭐가 있어요?","민지 씨 방에 텔레비전이 있어요?"])}`,
+ `А. 1 Н (она студентка) · 2 П · 3 Н (перед столом) · 4 П · 5 Н<br>Б. 1 침대가 창문 옆에 있어요. · 2 컴퓨터하고 책이 있어요. · 3 아니요, 없어요.<br><span class="src">Перевод: Здравствуйте. Меня зовут Минджи. Я студентка. В моей комнате есть стол. На столе компьютер и книга. Перед столом стул. Кровать у окна. Кошка на кровати. Телевизора в моей комнате нет.</span>`)}
+${task("Задание 9. О себе (пришлите в чат, я проверю)", `<p>Ответьте на вопросы, затем опишите свою комнату в 4–6 предложениях: что где стоит, чего нет.</p>`+ol(["어느 나라 사람이에요? (Из какой вы страны?)","학생이에요?","고양이나 강아지가 있어요? (Есть кошка или собака?)","언니나 오빠가 있어요?","방에 뭐가 있어요?"]),
+ "Образец (ваш ответ будет другим):<br>1 러시아 사람이에요. · 2 네, 대학생이에요. · 3 네, 고양이가 있어요. / 아니요, 없어요. · 4 네, 언니가 있어요. / 아니요, 없어요.<br>5 제 방에 책상하고 침대가 있어요. 책상 위에 컴퓨터가 있어요. 책상 옆에 창문이 있어요. 침대 위에 고양이가 있어요. 방에 텔레비전이 없어요.")}
+${task("Учебник: «Проверьте себя», стр. 27 и 30", "<p>Ответы к стр. 27 — здесь, к стр. 30 — в ключах в конце учебника.</p>",
+ "(1) A: 시계예요? B: 네, 시계예요. · (2) A: 무엇이에요? / 뭐예요? B: 모자예요. · (3) A: 가수예요? B: 네, 가수예요. · (4) B: 선생님이에요. (또는 선생님입니다.)")}
+<p class="src">Следующий урок: числительные, даты, дни недели и время — учебник стр. 31–41.</p>
+`,
+l2: `
+<p class="src">TOPIK I · уровень 1. По учебнику «Грамматика корейского языка in Use. Для начинающих»: темы 03–05 раздела «Начнём с азов» (стр. 31–41). Аудио: треки 05–12 в приложении LECTA.</p>
+<h3 id="c-goals">После урока вы сможете</h3>
+<ul>
+<li>называть цены, номера телефонов, этажи и номера автобусов: 이만 오천 원이에요.</li>
+<li>считать людей, предметы, чашки и бутылки: 커피 두 잔 주세요.</li>
+<li>говорить дату и день недели: 오늘은 9월 29일 화요일이에요.</li>
+<li>спрашивать и называть время: 지금 몇 시예요? — 세 시 반이에요.</li>
+</ul>
+${tbl(["Время","Что делать"],[
+ ["30–60 минут","Урок большой, удобно разбить на 2–3 занятия: (1) раздел 2 → задания 1–3; (2) раздел 3 → задания 4–5; (3) разделы 4–5 → задания 6–7. Каждый раз 10 минут карточек."],
+ ["2–3 часа","Весь конспект → учебник стр. 31–41, треки 05–12 (повторяйте числа вслух за диктором) → «Проверьте себя» на стр. 33, 36, 38, 40 → задания 1–10 → оба теста. Задание 10 пришлите в чат."],
+ ["Каждый день","Называйте по-корейски всё, что видите: время на телефоне, цены в магазине, номер автобуса, дату."]])}
+
+<h3 id="c-1">1. Две системы счёта: какую когда</h3>
+<p>В корейском два набора числительных: китайские (일, 이, 삼) и исконно корейские (하나, 둘, 셋). Главная трудность урока — не сами числа, а выбор системы.</p>
+${tbl(["Китайские 일, 이, 삼…","Корейские 하나, 둘, 셋…"],[
+ ["цены: 오천 원","счёт предметов и людей со счётным словом: 사과 세 개, 학생 두 명"],
+ ["телефон: 공일공…","возраст: 스무 살"],
+ ["номер автобуса, квартиры, этаж: 칠백오 번, 삼 층","часы: 세 시"],
+ ["рост, вес: 백칠십 센티미터",""],
+ ["год, месяц, число: 이천이십육 년 구월 이십구 일",""],
+ ["минуты: 십 분",""]])}
+${tip("Запомните одну фразу: в «3:15» часы корейские, минуты китайские — 세 시 십오 분.")}
+
+<h3 id="c-2">2. Китайские числительные</h3>
+${tbl(["0","1","2","3","4","5","6","7","8","9","10"],[["영 / 공","일","이","삼","사","오","육","칠","팔","구","십"]])}
+${tbl(["100","1 000","10 000","100 000","1 000 000"],[["백","천","만","십만","백만"]])}
+<h4>Как строятся числа</h4>
+<p>Как конструктор: сколько десятков + десять + единицы.</p>
+${tbl(null,[["11 = 십일","20 = 이십","25 = 이십오","99 = 구십구"],["110 = 백십","365 = 삼백육십오","1 500 = 천오백","2026 = 이천이십육"]])}
+${tip("Единицу перед 십, 백, 천, 만 не говорят: 10 — 십 (не 일십), 100 — 백, 1 000 — 천, 10 000 — 만 (не 일만).")}
+<h4>Большие числа: считаем по 10 000</h4>
+<p>В русском разряды идут по тысячам, в корейском — по десяткам тысяч (만). Поэтому 25 000 — это «2 만 и 5 000»: 이만 오천. Мысленно ставьте запятую через четыре цифры справа:</p>
+${tbl(["Число","Делим по 4 цифры","Читаем"],[["25 000","2 | 5000","이만 오천"],["62 000","6 | 2000","육만 이천"],["150 000","15 | 0000","십오만"],["354 970","35 | 4970","삼십오만 사천구백칠십"],["2 370 000","237 | 0000","이백삼십칠만"]])}
+<p>Корейская валюта — вона (원). Цены почти всегда в тысячах и десятках тысяч, поэтому 만 пригодится с первого дня в Корее.</p>
+<h4>Телефоны и номера</h4>
+<p>Ноль в телефоне — 공. Дефис читается как 에 (пишется 의). Цифры называют по одной:</p>
+${ex([["010-4783-0274 → 공일공 사칠팔삼에 공이칠사",""],["몇 번 버스를 타요? — 705번 버스를 타요. (칠백오 번)","На каком автобусе вы едете? — На 705-м."],["사무실이 몇 층이에요? — 9층이에요. (구 층)","На каком этаже офис? — На 9-м."]])}
+<h4>Произношение</h4>
+<p>16, 26, 36… читаются с [ㄴ]: 십육 [심뉵], 이십육 [이심뉵]. 십만 звучит как [심만], 백만 — [뱅만].</p>
+
+<h3 id="c-3">3. Исконно корейские числительные и счётные слова</h3>
+${tbl(["1","2","3","4","5","6","7","8","9","10"],[["하나","둘","셋","넷","다섯","여섯","일곱","여덟","아홉","열"]])}
+${tbl(["11","12","20","30","40","50","60","70","80","90"],[["열하나","열둘","스물","서른","마흔","쉰","예순","일흔","여든","아흔"]])}
+<p>Исконно корейские числа есть только до 99. Для 100 и больше используют китайские. На практике корейские нужны в основном до 20–30 (предметы, возраст, часы).</p>
+<h4>Перед счётным словом пять чисел «укорачиваются»</h4>
+${tbl(["Полная форма","하나","둘","셋","넷","스물"],[["Перед счётным словом","한","두","세","네","스무"],["Пример","한 개","두 명","세 잔","네 병","스무 살"]])}
+<p>В составных числах тоже: 11 шт. — 열한 개, 22 года — 스물두 살. Но ровно 20 — 스무, а 21 — 스물한.</p>
+<h4>Счётные слова</h4>
+<p>Порядок: что + сколько + счётное слово. По-русски «три яблока», по-корейски «яблоко три штуки»: 사과 세 개.</p>
+${tbl(["Слово","Что считает","Пример"],[["개","предметы, «штуки» — универсальное","사과 세 개, 가방 두 개"],["명","люди","학생 다섯 명"],["분","люди (вежливо: гости, старшие)","손님 두 분"],["마리","животные","고양이 한 마리"],["권","книги, тетради","책 네 권"],["잔","чашки, стаканы","커피 한 잔"],["병","бутылки","물 두 병"],["장","плоские листы: бумага, билеты, фото","표 세 장"],["대","машины, техника","컴퓨터 두 대"],["살","возраст (лет)","스물세 살"]])}
+<p>Вопрос «сколько?» — 몇 + счётное слово: 몇 개? 몇 명? 몇 살?</p>
+${tip("Фраза для поездки: что + сколько + счётное слово + 주세요 («дайте, пожалуйста»).")}
+${ex([["아메리카노 두 잔 주세요.","Два американо, пожалуйста."],["물 한 병 주세요.","Бутылку воды, пожалуйста."],["표 두 장 주세요.","Два билета, пожалуйста."],["이거 얼마예요?","Сколько это стоит?"]])}
+<h4>Диалоги из учебника (стр. 35)</h4>
+${ex([["A: 가족이 몇 명이에요?","Сколько человек в вашей семье?"],["B: 우리 가족은 네 명이에요.","Нас четверо."],["A: 여기 사과 세 개, 콜라 한 병 주세요.","Три яблока и бутылку колы, пожалуйста."],["B: 네, 모두 오천육백 원입니다.","Всего 5 600 вон."]])}
+${tip("Этикет: 몇 살이에요? спрашивают только ровесников и младших. Старшего спрашивают 연세가 어떻게 되세요? (учебник, стр. 24).")}
+
+<h3 id="c-4">4. Даты и дни недели</h3>
+<p>Год, месяц и число — китайские числа + 년 (год), 월 (месяц), 일 (число). Порядок: год → месяц → число → день недели.</p>
+${ex([["2026년 9월 29일 화요일 = 이천이십육 년 구월 이십구 일 화요일","29 сентября 2026 г., вторник"]])}
+<h4>Месяцы</h4>
+${tbl(["1","2","3","4","5","6","7","8","9","10","11","12"],[["일월","이월","삼월","사월","오월","<b>유월</b>","칠월","팔월","구월","<b>시월</b>","십일월","십이월"]])}
+${tip("Июнь — 유월 (не 육월), октябрь — 시월 (не 십월). Это единственные исключения.")}
+<h4>Дни недели</h4>
+${tbl(["Пн","Вт","Ср","Чт","Пт","Сб","Вс"],[["월요일","화요일","수요일","목요일","금요일","토요일","일요일"],["луна","огонь","вода","дерево","металл","земля","солнце"]])}
+<p>Нижняя строка — буквальное значение первого слога. Помогает запомнить.</p>
+<h4>Вопросы</h4>
+${ex([["몇 년이에요?","Какой год?"],["몇 월이에요?","Какой месяц?"],["며칠이에요?","Какое число?"],["무슨 요일이에요?","Какой день недели?"],["언제예요?","Когда?"],["생일이 언제예요?","Когда день рождения?"]])}
+${tip("«Какое число?» — 며칠, а не 몇 일: 오늘이 며칠이에요?")}
+${tbl(null,[["어제 — вчера","오늘 — сегодня","내일 — завтра"],["주말 — выходные","생일 — день рождения","지금 — сейчас"]])}
+
+<h3 id="c-5">5. Время</h3>
+<p>Часы — корейские числа + 시, минуты — китайские + 분.</p>
+${tbl(["1 ч","2 ч","3 ч","4 ч","5 ч","6 ч"],[["한 시","두 시","세 시","네 시","다섯 시","여섯 시"]])}
+${tbl(["7 ч","8 ч","9 ч","10 ч","11 ч","12 ч"],[["일곱 시","여덟 시","아홉 시","열 시","열한 시","열두 시"]])}
+${tbl(["Время","По-корейски"],[["1:05","한 시 오 분"],["1:30","한 시 삼십 분 = 한 시 반"],["3:15","세 시 십오 분"],["1:50","한 시 오십 분 = 두 시 십 분 전"]])}
+<p>반 — «половина»; 전 — «до», т. е. «без»: 두 시 십 분 전 = «без десяти два».</p>
+<h4>Части суток</h4>
+${tbl(null,[["오전 — до полудня","오후 — после полудня"],["새벽 — раннее утро (≈ 1–5)","아침 — утро"],["점심 — обед, середина дня","저녁 — вечер"],["밤 — поздний вечер, ночь",""]])}
+${ex([["오전 아홉 시 십 분이에요.","Сейчас 9:10 утра."],["저녁 여덟 시","8 часов вечера (20:00)"]])}
+<h4>«В какое время» — частица 에</h4>
+${ex([["몇 시에 일어나요? — 아침 일곱 시에 일어나요.","Во сколько вы встаёте? — В 7 утра."],["월요일에, 5월 5일에, 2001년에","в понедельник, 5 мая, в 2001 году"]])}
+${tip("에 не ставят после 오늘, 어제, 내일, 지금: 내일 만나요 (не 내일에).")}
+
+${WORDS_SECTION}
+
+<h3 id="c-tasks">Задания</h3>
+<p>Пишите числа словами (хангылем). Сначала выполните задание, потом откройте ответ.</p>
+${task("Задание 1. Прочитайте китайскими числительными", ol(["15","27","48","99","100","365","1 500","2026","10 000","120 000"]),
+ "1 십오 · 2 이십칠 · 3 사십팔 · 4 구십구 · 5 백 · 6 삼백육십오 · 7 천오백 · 8 이천이십육 · 9 만 · 10 십이만")}
+${task("Задание 2. Сколько стоит? Напишите цену словами", `<p>Пример: 3,000원 → 삼천 원</p>`+ol(["4,500원","12,000원","8,900원","45,000원","150,000원","2,370,000원"]),
+ "1 사천오백 원 · 2 만 이천 원 · 3 팔천구백 원 · 4 사만 오천 원 · 5 십오만 원 · 6 이백삼십칠만 원")}
+${task("Задание 3. Номера", ol(["Телефон 010-2468-1357","Автобус № 152 → ___ 번","7-й этаж → ___ 층","Рост 168 см → ___ 센티미터"]),
+ "1 공일공 이사육팔의[에] 일삼오칠 · 2 백오십이 번 · 3 칠 층 · 4 백육십팔 센티미터")}
+${task("Задание 4. Скажите по-корейски: что + сколько + счётное слово", ol(["3 книги","2 студента","5 яблок","1 чашка кофе","4 кошки","2 бутылки воды","20 лет","11 сумок","23 года","3 билета"]),
+ "1 책 세 권 · 2 학생 두 명 · 3 사과 다섯 개 · 4 커피 한 잔 · 5 고양이 네 마리 · 6 물 두 병 · 7 스무 살 · 8 가방 열한 개 · 9 스물세 살 · 10 표 세 장")}
+${task("Задание 5. Выберите счётное слово", `<p>명 · 분 · 마리 · 권 · 잔 · 병 · 장 · 대 · 개</p>`+ol(["학생 세 ___","커피 두 ___","강아지 한 ___","책 다섯 ___","콜라 네 ___","손님 두 ___","표 한 ___","컴퓨터 세 ___","의자 여섯 ___"]),
+ "1 명 · 2 잔 · 3 마리 · 4 권 · 5 병 · 6 분 · 7 장 · 8 대 · 9 개")}
+${task("Задание 6. Даты", `<p>Напишите дату словами. Пример: 3월 8일 → 삼월 팔 일</p>`+ol(["1 января","6 июня","10 октября","25 декабря","2026년 9월 29일 화요일","Какой день недели по-корейски: пятница, воскресенье, среда"]),
+ "1 일월 일 일 · 2 유월 육 일 · 3 시월 십 일 · 4 십이월 이십오 일 · 5 이천이십육 년 구월 이십구 일 화요일 · 6 금요일, 일요일, 수요일")}
+${task("Задание 7. Который час?", ol(["1:00","3:15","7:30 (два варианта)","9:10 утра","12:45","11:05","6:50 вечера (два варианта)","10 вечера"]),
+ "1 한 시 · 2 세 시 십오 분 · 3 일곱 시 삼십 분 = 일곱 시 반 · 4 오전 아홉 시 십 분 · 5 열두 시 사십오 분 · 6 열한 시 오 분 · 7 오후(저녁) 여섯 시 오십 분 = 오후(저녁) 일곱 시 십 분 전 · 8 밤 열 시 (오후 열 시)")}
+${task("Задание 8. Найдите и исправьте ошибку", ol(["사과 하나 개 주세요.","오늘이 몇 일이에요?","육월 육 일이에요.","지금 이 시 십 분이에요.","동생은 스물 살이에요.","이거 일만 원이에요.","학생 셋 명이 있어요.","두 시 두 분이에요. (имеется в виду 2:02)"]),
+ ol(["사과 한 개 — перед счётным словом 하나 → 한.","오늘이 며칠이에요?","유월 육 일 — июнь пишется 유월.","두 시 십 분 — часы считают корейскими числами.","스무 살 — перед счётным словом 스물 → 스무.","만 원 — единицу перед 만 не говорят.","학생 세 명","두 시 이 분 — минуты считают китайскими числами."]))}
+${task("Задание 9. В кафе. Прочитайте и ответьте", `<p class="read">직원: 어서 오세요.<br>손님: 아메리카노 두 잔하고 케이크 한 개 주세요.<br>직원: 네. 모두 만 삼천오백 원이에요.<br>손님: 여기 있어요. 그런데 지금 몇 시예요?<br>직원: 오후 세 시 반이에요.<br>손님: 내일 무슨 요일이에요?<br>직원: 수요일이에요.</p>
+<p class="src">직원 — сотрудник, 어서 오세요 — добро пожаловать, 케이크 — торт, пирожное, 여기 있어요 — вот, пожалуйста, 그런데 — кстати, а.</p>`+ol(["Сколько американо заказал гость?","Сколько всё стоит (цифрами)?","Который час (в 24-часовом формате)?","Какой сегодня день недели? Ответьте по-корейски.","Закажите сами по-корейски: одно латте (라테) и две бутылки воды."]),
+ `1 два (두 잔) · 2 13 500 вон · 3 15:30 · 4 화요일이에요 (завтра среда, значит сегодня вторник) · 5 라테 한 잔하고 물 두 병 주세요.<br><span class="src">Перевод: — Добро пожаловать. — Два американо и одно пирожное, пожалуйста. — Хорошо. Всего 13 500 вон. — Вот, пожалуйста. А который сейчас час? — Половина четвёртого. — А завтра какой день недели? — Среда.</span>`)}
+${task("Задание 10. О себе (пришлите в чат, я проверю)", ol(["생일이 언제예요? (месяц и число)","가족이 몇 명이에요?","오늘이 며칠이에요? 무슨 요일이에요?","지금 몇 시예요?","방에 책이 몇 권 있어요? 의자가 몇 개 있어요?","몇 시에 일어나요?"]),
+ "Образец (ваш ответ будет другим):<br>1 제 생일은 오월 십이 일이에요. · 2 우리 가족은 네 명이에요. · 3 오늘은 구월 이십구 일이에요. 화요일이에요. · 4 저녁 일곱 시 사십 분이에요. · 5 책이 스무 권 있어요. 의자가 두 개 있어요. · 6 아침 일곱 시에 일어나요.<br><span class=\"src\">은/는 в образце — частица темы («что касается…»). Её проходим в уроке 3; пока можно писать с 이/가.</span>")}
+${task("Учебник: «Проверьте себя», стр. 33, 36, 38, 40", "<p>Ответы к стр. 33, 38 и 40 — здесь, к стр. 36 — в ключах в конце учебника.</p>",
+ "<b>Стр. 33:</b> (1) 공일공 칠삼팔의[에] 삼오공구 · (2) 삼십사 · (3) 백칠십오 · (4) 육만 이천<br><b>Стр. 38:</b> (1) 이천구 년 유월 육 일, 토요일 · (2) 천구백팔십칠 년 십일월 십오 일, 일요일 · (3) 이천십삼 년 시월 십 일, 목요일<br><b>Стр. 40:</b> (1) 오전 일곱 시 반 (삼십 분) · (2) 오전 아홉 시 · (3) 오후 한 시 · (4) 오후 세 시 이십 분 · (5) 오후 여섯 시 반 · (6) 저녁 여덟 시 · (7) 밤 열 시 · (8) 밤 열한 시")}
+<p class="src">Следующий урок: настоящее время глаголов — -ㅂ니다/습니다 и -아요/어요 (учебник, стр. 42–48).</p>
+`,
+l3: `
+<p class="src">TOPIK I · уровень 1. По учебнику «Грамматика корейского языка in Use. Для начинающих»: урок 1 «Времена», темы 01–02 (стр. 42–48). Аудио: треки 13–16 в приложении LECTA.</p>
+<h3 id="c-goals">После урока вы сможете</h3>
+<ul>
+<li>ставить любой глагол в настоящее время в двух стилях: 먹습니다 / 먹어요</li>
+<li>рассказывать о своём дне: 아침 일곱 시에 일어나요. 커피를 마셔요.</li>
+<li>спрашивать, что человек делает: 지금 뭐 해요?</li>
+<li>правильно ставить частицу дополнения: 빵을 먹어요, 커피를 마셔요</li>
+</ul>
+${tbl(["Время","Что делать"],[
+ ["30–60 минут","Два коротких занятия: (1) разделы 1–3 → задания 1 и 3; (2) раздел 4 (главное в уроке) → задания 2, 4, 6. Между ними — карточки глаголов."],
+ ["2–3 часа","Весь конспект → учебник стр. 42–48, треки 13–16 → «Проверьте себя» на стр. 44 и 48 → задания 1–9 → тренажёр «Грамматика». Задание 9 пришлите в чат."],
+ ["Каждый день","Проговаривайте по-корейски, что вы сейчас делаете: 지금 커피를 마셔요. 지금 공부해요."]])}
+
+<h3 id="c-1">1. Словарная форма глагола</h3>
+<p>В словаре все глаголы и прилагательные оканчиваются на -다: 가다 (идти), 먹다 (есть), 좋다 (хороший). Отбрасываем 다 — получаем основу, к ней и присоединяем окончания.</p>
+${tbl(["Словарная форма","Основа","На что оканчивается"],[["가다","가","на гласную ㅏ"],["먹다","먹","на согласную ㄱ"],["공부하다","공부하","на 하 (особая группа)"]])}
+${tip("Прилагательные в корейском спрягаются как глаголы: 좋다 — «быть хорошим», 좋아요 — «хорошо / хороший». Связка им не нужна.")}
+
+<h3 id="c-2">2. Официальный стиль: -ㅂ니다 / -습니다</h3>
+${tbl(["","Основа на гласную","Основа на согласную"],[["Утверждение","-ㅂ니다","-습니다"],["Вопрос","-ㅂ니까?","-습니까?"],["Примеры","가다 → 갑니다 / 갑니까?<br>마시다 → 마십니다<br>공부하다 → 공부합니다","먹다 → 먹습니다 / 먹습니까?<br>읽다 → 읽습니다<br>있다 → 있습니다"]])}
+<p>ㅂ «приклеивается» снизу к последнему слогу основы: 가 + ㅂ니다 = 갑니다.</p>
+${tip("Основа на ㄹ: ㄹ выпадает, и дальше как у гласной: 살다 → 삽니다 (жить), 만들다 → 만듭니다 (делать), 알다 → 압니다 (знать).")}
+<p class="src">Где встречается: новости, объявления, доклады, работа, TOPIK. Учебник, стр. 42: 안녕하십니까? 9시 뉴스입니다. — «Добрый вечер. Это девятичасовые новости».</p>
+
+<h3 id="c-3">3. Частицы 을 / 를 и 에서</h3>
+<p>Чтобы сказать «ем хлеб», «пью кофе», нужна частица дополнения (как винительный падеж: кого? что?).</p>
+${tbl(["После согласной → 을","После гласной → 를"],[["빵을 먹어요. 책을 읽어요. 옷을 사요.","커피를 마셔요. 친구를 만나요. 영화를 봐요."]])}
+<p class="src">В разговоре 을/를 часто опускают: 커피 마셔요. Но на письме и на TOPIK — ставьте.</p>
+${tbl(["Частица","Когда","Пример"],[["место + 에","куда идём; где находимся (있다/없다)","학교에 가요. 집에 있어요."],["место + 에서","где делаем что-то","학교에서 공부해요. 카페에서 커피를 마셔요."]])}
+
+<h3 id="c-4">4. Разговорный стиль: -아요 / -어요 / 해요</h3>
+<p>Главная форма для общения. Выбор окончания зависит от последней гласной основы:</p>
+${tbl(["Последняя гласная основы","Окончание","Примеры"],[["ㅏ или ㅗ","-아요","앉다 → 앉아요 · 받다 → 받아요 · 살다 → 살아요 · 좋다 → 좋아요"],["любая другая","-어요","먹다 → 먹어요 · 읽다 → 읽어요 · 입다 → 입어요 · 있다 → 있어요"],["основа на 하","해요","공부하다 → 공부해요 · 일하다 → 일해요 · 좋아하다 → 좋아해요"]])}
+<h4>Если основа кончается на гласную — гласные сливаются</h4>
+<p>С согласной всё просто: 먹 + 어요 = 먹어요. Но если основа открытая (가, 보, 마시), две гласные подряд сливаются в одну:</p>
+${tbl(["Основа на","Что происходит","Примеры"],[["ㅏ","лишний 아 пропадает","가다 → 가요 · 자다 → 자요 · 사다 → 사요 · 만나다 → 만나요"],["ㅗ","ㅗ + ㅏ = ㅘ","오다 → 와요 · 보다 → 봐요"],["ㅓ, ㅕ, ㅐ, ㅔ","лишний 어 пропадает","서다 → 서요 · 켜다 → 켜요 · 보내다 → 보내요"],["ㅜ","ㅜ + ㅓ = ㅝ","배우다 → 배워요 · 주다 → 줘요"],["ㅣ","ㅣ + ㅓ = ㅕ","마시다 → 마셔요 · 기다리다 → 기다려요 · 가르치다 → 가르쳐요"],["ㅡ","ㅡ выпадает","쓰다 → 써요 · 바쁘다 → 바빠요 · 예쁘다 → 예뻐요"]])}
+<p class="src">Выпадение ㅡ подробно разбирается позже («Неправильные формы»). Исключение из слияния: 쉬다 → 쉬어요 (отдыхать).</p>
+${tip("Утверждение и вопрос в стиле -요 пишутся одинаково, разница только в интонации: 가요. ↘ «иду»; 가요? ↗ «идёшь?». Эта же форма служит предложением: 같이 가요! — «Пойдём вместе!»")}
+<h4>Сводная таблица</h4>
+${tbl(["Глагол","Значение","-요","-ㅂ/습니다"],[["가다","идти, ехать","가요","갑니다"],["오다","приходить","와요","옵니다"],["보다","смотреть","봐요","봅니다"],["만나다","встречаться","만나요","만납니다"],["앉다","садиться","앉아요","앉습니다"],["살다","жить","살아요","삽니다"],["먹다","есть","먹어요","먹습니다"],["읽다","читать","읽어요","읽습니다"],["마시다","пить","마셔요","마십니다"],["배우다","учить","배워요","배웁니다"],["기다리다","ждать","기다려요","기다립니다"],["공부하다","учиться","공부해요","공부합니다"],["이다","быть (урок 1)","예요 / 이에요","입니다"]])}
+<h4>Что ещё передаёт настоящее время (стр. 47)</h4>
+${ex([["저는 대학교에 다녀요.","Я учусь в университете (вообще, регулярно)."],["저는 지금 공부해요.","Я сейчас занимаюсь."],["내일 학교에 가요.","Завтра я иду в университет (ближайшее будущее)."]])}
+<h4>Диалоги из учебника (стр. 43, 47)</h4>
+${ex([["A: 학교에 갑니까?","Вы идёте в школу?"],["B: 네, 학교에 갑니다.","Да."],["A: 지금 뭐 해요?","Что вы сейчас делаете?"],["B: 숙제해요.","Делаю домашнее задание."],["A: 몇 시에 점심을 먹어요?","Во сколько вы обедаете?"],["B: 보통 1시에 점심을 먹어요.","Обычно в час."]])}
+
+<h3 id="c-5">5. Фразы для поездки и общения</h3>
+${ex([["맛있어요!","Вкусно!"],["괜찮아요.","Всё в порядке / ничего страшного."],["한국어를 조금 해요.","Я немного говорю по-корейски."],["영어 해요?","Вы говорите по-английски?"],["어디에 가요?","Куда вы идёте / едете?"],["어디에 살아요?","Где вы живёте?"],["한국어를 배워요.","Я учу корейский."]])}
+
+${WORDS_SECTION}
+
+<h3 id="c-tasks">Задания</h3>
+<p>Сначала выполните задание, потом откройте ответ.</p>
+${task("Задание 1. Официальный стиль: -ㅂ니다 / -습니다", ol(["가다","먹다","읽다","보다","공부하다","있다","살다","마시다","앉다 (вопрос)","만나다 (вопрос)"]),
+ "1 갑니다 · 2 먹습니다 · 3 읽습니다 · 4 봅니다 · 5 공부합니다 · 6 있습니다 · 7 삽니다 · 8 마십니다 · 9 앉습니까? · 10 만납니까?")}
+${task("Задание 2. Разговорный стиль: -아요 / -어요 / 해요", ol(["가다","오다","보다","앉다","받다","먹다","읽다","마시다","배우다","주다","기다리다","보내다","서다","일하다","좋아하다","쓰다","쉬다","살다","가르치다","만나다"]),
+ "1 가요 · 2 와요 · 3 봐요 · 4 앉아요 · 5 받아요 · 6 먹어요 · 7 읽어요 · 8 마셔요 · 9 배워요 · 10 줘요 · 11 기다려요 · 12 보내요 · 13 서요 · 14 일해요 · 15 좋아해요 · 16 써요 · 17 쉬어요 · 18 살아요 · 19 가르쳐요 · 20 만나요")}
+${task("Задание 3. 을 или 를?", ol(["빵___ 먹어요.","커피___ 마셔요.","한국어___ 배워요.","신문___ 읽어요.","영화___ 봐요.","친구___ 기다려요.","옷___ 사요.","편지___ 써요."]),
+ "1 빵을 · 2 커피를 · 3 한국어를 · 4 신문을 · 5 영화를 · 6 친구를 · 7 옷을 · 8 편지를")}
+${task("Задание 4. Поставьте глагол в форму -요", ol(["저는 아침에 커피를 ___. (마시다)","친구가 내일 한국에서 ___. (오다)","동생이 집에서 텔레비전을 ___. (보다)","저는 대학교에서 경제학을 ___. (공부하다)","선생님이 한국어를 ___. (가르치다)","지금 버스를 ___. (기다리다)","주말에 집에서 ___. (쉬다)","이 김치가 정말 ___! (맛있다) — 정말: очень, правда"]),
+ "1 마셔요 · 2 와요 · 3 봐요 · 4 공부해요 · 5 가르쳐요 · 6 기다려요 · 7 쉬어요 · 8 맛있어요")}
+${task("Задание 5. Переведите на корейский (стиль -요)", ol(["Я пью воду.","Что вы делаете?","Я учу корейский язык.","Я иду в университет.","Друг ждёт автобус.","Я встаю в 7 утра.","— Где вы живёте? — В Москве (모스크바).","Это вкусно?","Я читаю книгу в кафе.","В выходные я отдыхаю."]),
+ ol(["(저는) 물을 마셔요.","뭐 해요? (подробнее: 무엇을 해요?)","(저는) 한국어를 배워요. / 한국어를 공부해요.","(저는) 대학교에 가요.","친구가 버스를 기다려요.","(저는) 아침 일곱 시에 일어나요.","어디에 살아요? — 모스크바에 살아요.","맛있어요?","(저는) 카페에서 책을 읽어요.","(저는) 주말에 쉬어요."]))}
+${task("Задание 6. Переведите из одного стиля в другой", ol(["학교에 갑니다.","빵을 먹어요.","친구를 만나요?","서울에 살아요.","커피를 마십니다.","한국어를 배웁니까?"]),
+ "1 학교에 가요. · 2 빵을 먹습니다. · 3 친구를 만납니까? · 4 서울에 삽니다. · 5 커피를 마셔요. · 6 한국어를 배워요?")}
+${task("Задание 7. Найдите и исправьте ошибку", ol(["저는 학교에 가아요.","동생이 밥을 먹아요.","친구가 집에 오아요.","저는 도서관에서 공부하어요. (도서관 — библиотека)","저는 빵를 좋아해요.","한국어를 배우요.","저는 모스크바에 살습니다.","카페에 커피를 마셔요."]),
+ ol(["가요 — 가 + 아요: одинаковые гласные сливаются.","먹어요 — последняя гласная ㅓ, значит -어요.","와요 — ㅗ + ㅏ = ㅘ.","공부해요 — 하다 → 해요.","빵을 — после согласной.","배워요 — ㅜ + ㅓ = ㅝ.","삽니다 — у основы на ㄹ она выпадает перед ㅂ니다.","카페에서 — место действия, а не направления."]))}
+${task("Задание 8. Прочитайте и ответьте", `<p class="read">저는 민지예요. 대학생이에요. 저는 보통 아침 일곱 시에 일어나요. 아침에 빵을 먹어요. 그리고 커피를 마셔요. 아홉 시에 학교에 가요. 학교에서 경제학을 공부해요. 오후 한 시에 친구를 만나요. 친구하고 점심을 먹어요. 저녁에 집에서 한국어를 공부해요. 주말에는 영화를 봐요. 그리고 집에서 쉬어요.</p>
+<p class="src">주말에는 — «а в выходные» (는 подчёркивает противопоставление).</p>
+<p><b>А. Правда (П) или неправда (Н)?</b></p>${ol(["Минджи встаёт в 7 утра.","На завтрак она ест рис.","Она изучает экономику.","Она обедает одна.","Корейским она занимается вечером дома."])}
+<p><b>Б. Ответьте по-корейски.</b></p>${ol(["민지 씨는 몇 시에 학교에 가요?","민지 씨는 아침에 뭐 마셔요?","주말에 뭐 해요?"])}`,
+ `А. 1 П · 2 Н (хлеб) · 3 П · 4 Н (с подругой) · 5 П<br>Б. 1 아홉 시에 학교에 가요. · 2 커피를 마셔요. · 3 영화를 봐요. 그리고 집에서 쉬어요.<br><span class="src">Перевод: Меня зовут Минджи. Я студентка. Обычно я встаю в 7 утра. Утром ем хлеб и пью кофе. В 9 иду в университет. В университете изучаю экономику. В час дня встречаюсь с подругой, мы вместе обедаем. Вечером дома занимаюсь корейским. А в выходные смотрю фильмы и отдыхаю дома.</span>`)}
+${task("Задание 9. Мой день (пришлите в чат, я проверю)", `<p>Напишите 6–8 предложений о своём обычном дне по образцу текста Минджи. Используйте время из урока 2: 몇 시에 일어나요? 뭐 먹어요? 어디에 가요? 뭐 공부해요? 저녁에 뭐 해요?</p>`,
+ "Образец:<br>저는 보통 아침 여덟 시에 일어나요. 아침에 커피를 마셔요. 열 시에 대학교에 가요. 대학교에서 경영학을 공부해요. 오후 두 시에 친구하고 점심을 먹어요. 저녁에 집에서 한국어를 공부해요. 밤 열두 시에 자요.<br><span class=\"src\">경영학 — менеджмент.</span>")}
+${task("Учебник: «Проверьте себя», стр. 44 и 48", "<p>Ответы к обеим страницам — здесь.</p>",
+ "<b>Стр. 44:</b> (1) A: 햄버거를 먹습니까? B: 네, 먹습니다. · (2) 친구를 기다립니다. · (3) A: 신문을 읽습니까? B: 네, 읽습니다. · (4) 친구를 만납니다. · (5) 일기를 씁니다. · (6) A: 책을 삽니까? B: 네, 삽니다.<br><b>Стр. 48, упр. 1:</b> (1) 학생이에요? — 네, 학생이에요. · (2) 의사예요? — 네, 의사예요. · (3) 책상이에요? — 네, 책상이에요. · (4) 사과예요? — 네, 사과예요.<br><b>Стр. 48, упр. 2:</b> (1) 텔레비전을 봐요? — 네, 텔레비전을 봐요. · (2) 전화해요. · (3) 책을 읽어요? — 네, 책을 읽어요. · (4) 냉면을 먹어요? — 네, 냉면을 먹어요. · (5) 공부해요. · (6) 물을 마셔요? — 네, 물을 마셔요.")}
+<p class="src">Следующий урок: прошедшее время -았/었어요 (учебник, стр. 49–51) — «я ходила», «я ела».</p>
+`,
+l4: `
+<p class="src">TOPIK I · уровень 1. По учебнику «Грамматика корейского языка in Use. Для начинающих»: урок 1 «Времена», тема 03 (стр. 49–51). Аудио: треки 17–18 в приложении LECTA.</p>
+<h3 id="c-goals">После урока вы сможете</h3>
+<ul>
+<li>рассказать, что делали вчера и в выходные: 주말에 영화를 봤어요.</li>
+<li>оценить прошедшее: 맛있었어요! 재미있었어요. 좀 비쌌어요.</li>
+<li>сказать, кем и где вы были: 작년에 학생이었어요. 서울에 있었어요.</li>
+<li>спросить о прошлом: 어제 뭐 했어요?</li>
+</ul>
+${tbl(["Время","Что делать"],[
+ ["30–60 минут","Разделы 1–2 → задания 1, 2, 5 → тренажёр «Грамматика». Во второй раз: разделы 3–5 → задания 3, 4, 6, 7."],
+ ["2–3 часа","Весь конспект → учебник стр. 49–51, треки 17–18 → «Проверьте себя» на стр. 51 → задания 1–9 → все режимы программы. Задание 9 пришлите в чат."],
+ ["Каждый вечер","Скажите 3 предложения о прошедшем дне: 오늘 수업이 있었어요. 커피를 마셨어요. 피곤했어요."]])}
+
+<h3 id="c-1">1. Главный трюк: из формы -요 сразу в прошедшее</h3>
+<p>Прошедшее время строится на той же основе 아/어, что и настоящее из урока 3.</p>
+${tip("Возьмите форму на -요 и замените 요 на ㅆ어요 (ㅆ «приклеивается» к последнему слогу).")}
+${tbl(["Словарь","Настоящее -요","Прошедшее","Перевод"],[["가다","가요","갔어요","ходил(а), ездил(а)"],["보다","봐요","봤어요","смотрел(а)"],["먹다","먹어요","먹었어요","ел(а)"],["마시다","마셔요","마셨어요","пил(а)"],["배우다","배워요","배웠어요","учил(а)"],["쓰다","써요","썼어요","писал(а)"],["공부하다","공부해요","공부했어요","учился / училась"]])}
+<p class="src">Род и лицо не выражаются: 갔어요 — «я ходила», «он ходил», «мы ходили» — понятно по контексту.</p>
+
+<h3 id="c-2">2. Правило целиком</h3>
+${tbl(["Последняя гласная основы","Суффикс","Примеры"],[["ㅏ или ㅗ","-았어요","앉다 → 앉았어요 · 받다 → 받았어요 · 좋다 → 좋았어요 · 살다 → 살았어요"],["любая другая","-었어요","먹다 → 먹었어요 · 읽다 → 읽었어요 · 입다 → 입었어요 · 있다 → 있었어요"],["основа на 하","했어요","공부하다 → 공부했어요 · 일하다 → 일했어요 · 피곤하다 → 피곤했어요"]])}
+<p>Слияние гласных — то же, что в уроке 3:</p>
+${tbl(["Основа на","Примеры"],[["ㅏ","가다 → 갔어요 · 만나다 → 만났어요 · 사다 → 샀어요 · 싸다 → 쌌어요 · 비싸다 → 비쌌어요"],["ㅗ","오다 → 왔어요 · 보다 → 봤어요"],["ㅓ, ㅕ, ㅐ","서다 → 섰어요 · 보내다 → 보냈어요 · 지내다 → 지냈어요"],["ㅜ","배우다 → 배웠어요 · 주다 → 줬어요 (= 주었어요)"],["ㅣ","마시다 → 마셨어요 · 기다리다 → 기다렸어요 · 가르치다 → 가르쳤어요"],["ㅡ","쓰다 → 썼어요 · 바쁘다 → 바빴어요 · 아프다 → 아팠어요"]])}
+${tip("Учебник, стр. 50: 보다 и 주다 можно писать и слитно, и раздельно: 봤어요 = 보았어요, 줬어요 = 주었어요. А 오다 — только 왔어요 (오았어요 — ошибка).")}
+<h4>Официальный стиль</h4>
+<p>Тот же суффикс 았/었 + 습니다 (после ㅆ всегда 습니다):</p>
+${tbl(["-요","Официально","Вопрос"],[["갔어요","갔습니다","갔습니까?"],["먹었어요","먹었습니다","먹었습니까?"],["공부했어요","공부했습니다","공부했습니까?"]])}
+${tip("Фраза, которую говорят после каждой еды: 잘 먹었습니다. — «Спасибо, было вкусно» (букв. «хорошо поела»).")}
+
+<h3 id="c-3">3. Прошедшее от 이다, 아니다, 있다</h3>
+${tbl(["","После гласной","После согласной"],[["이다","의사였어요","학생이었어요"],["아니다","의사가 아니었어요","학생이 아니었어요"]])}
+${ex([["어제 수업이 있었어요.","Вчера были занятия."],["시간이 없었어요.","Не было времени."],["정말 맛있었어요!","Было очень вкусно!"],["영화가 재미있었어요.","Фильм был интересный."]])}
+<p class="src">Прилагательные тоже ставятся в прошедшее: 좋았어요 (было хорошо), 비쌌어요 (было дорого), 피곤했어요 (устала).</p>
+
+<h3 id="c-4">4. Неправильные глаголы — пока просто запомните</h3>
+<p>Несколько частых глаголов меняют основу. Правила будут позже, а сейчас выучите их как слова:</p>
+${tbl(["Словарь","-요","Прошедшее","Перевод"],[["듣다","들어요","들었어요","слушать"],["모르다","몰라요","몰랐어요","не знать"],["부르다","불러요","불렀어요","петь; звать"],["춥다","추워요","추웠어요","холодно"],["덥다","더워요","더웠어요","жарко"]])}
+
+<h3 id="c-5">5. Слова времени и фразы</h3>
+${tbl(null,[["어제 — вчера","그저께 — позавчера"],["지난주 — на прошлой неделе","지난달 — в прошлом месяце"],["작년 — в прошлом году","아까 — недавно, только что"],["지난 주말 — в прошлые выходные","전에 — раньше"]])}
+<p class="src">С днями и датами ставим 에: 토요일에, 3월에, 지난주에. Без 에: 어제, 그저께, 아까.</p>
+<h4>Диалоги из учебника (стр. 50)</h4>
+${ex([["A: 어제 뭐 했어요?","Что вы делали вчера?"],["B: 공부했어요.","Учился."],["A: 토요일에 영화를 봤어요?","Вы смотрели фильм в субботу?"],["B: 네, 봤어요. 재미있었어요.","Да. Он был интересный."],["A: 주말에 뭐 했어요?","Что вы делали в выходные?"],["B: 음악을 들었어요.","Слушал музыку."]])}
+<h4>Фразы для поездки и общения</h4>
+${ex([["잘 먹었습니다.","Спасибо, было вкусно."],["잘 잤어요?","Хорошо спали?"],["몰랐어요.","Я не знал(а)."],["늦었어요. 죄송해요.","Я опоздал(а). Простите."],["다 먹었어요.","Я всё съел(а)."],["어땠어요?","Как было? (понравилось?)"]])}
+
+${WORDS_SECTION}
+
+<h3 id="c-tasks">Задания</h3>
+<p>Сначала выполните задание, потом откройте ответ.</p>
+${task("Задание 1. Из настоящего — в прошедшее", ol(["가요","와요","봐요","먹어요","마셔요","배워요","해요","있어요","써요","쉬어요"]),
+ "1 갔어요 · 2 왔어요 · 3 봤어요 · 4 먹었어요 · 5 마셨어요 · 6 배웠어요 · 7 했어요 · 8 있었어요 · 9 썼어요 · 10 쉬었어요")}
+${task("Задание 2. Из словарной формы — в прошедшее -요", ol(["만나다","앉다","받다","살다","읽다","입다","기다리다","가르치다","보내다","일하다","좋다","싸다","바쁘다","아프다","재미있다","피곤하다"]),
+ "1 만났어요 · 2 앉았어요 · 3 받았어요 · 4 살았어요 · 5 읽었어요 · 6 입었어요 · 7 기다렸어요 · 8 가르쳤어요 · 9 보냈어요 · 10 일했어요 · 11 좋았어요 · 12 쌌어요 · 13 바빴어요 · 14 아팠어요 · 15 재미있었어요 · 16 피곤했어요")}
+${task("Задание 3. Официальный стиль прошедшего времени", ol(["학교에 갔어요.","밥을 먹었어요?","한국어를 공부했어요.","영화를 봤어요.","시간이 없었어요.","회의가 있었어요? (회의 — совещание)"]),
+ "1 학교에 갔습니다. · 2 밥을 먹었습니까? · 3 한국어를 공부했습니다. · 4 영화를 봤습니다. · 5 시간이 없었습니다. · 6 회의가 있었습니까?")}
+${task("Задание 4. 였어요, 이었어요 или 아니었어요?", ol(["작년에 저는 학생___.","어제는 일요일___.","그 사람은 가수___.","제 친구는 선생님___.","그거 제 가방이 ___. (это была не моя сумка)","생일이 언제___? (когда был день рождения?)"]),
+ "1 학생이었어요 · 2 일요일이었어요 · 3 가수였어요 · 4 선생님이었어요 · 5 아니었어요 · 6 언제였어요?")}
+${task("Задание 5. Поставьте глагол в прошедшее время -요", ol(["어제 친구를 ___. (만나다)","지난주에 영화를 ___. (보다)","영화가 정말 ___. (재미있다)","작년에 한국에 ___. (가다)","아침에 커피를 ___. (마시다)","어제 머리가 ___. (아프다)","주말에 집에서 ___. (쉬다)","시장에서 옷을 샀어요. 옷이 ___. (싸다) — 시장: рынок","아까 음악을 ___. (듣다)","어제 정말 ___. (춥다)"]),
+ "1 만났어요 · 2 봤어요 · 3 재미있었어요 · 4 갔어요 · 5 마셨어요 · 6 아팠어요 · 7 쉬었어요 · 8 쌌어요 · 9 들었어요 · 10 추웠어요")}
+${task("Задание 6. Переведите на корейский (стиль -요)", ol(["Вчера я занималась корейским.","Что вы делали в выходные?","Я встала в 8 часов.","В прошлом году я жила в Сеуле.","Вчера был понедельник.","Я была очень занята.","Я не знала.","Туфли были дорогие.","Вчера не было занятий.","(после обеда в гостях) Спасибо, было вкусно."]),
+ ol(["어제 한국어를 공부했어요.","주말에 뭐 했어요?","여덟 시에 일어났어요.","작년에 서울에 살았어요.","어제는 월요일이었어요.","정말 바빴어요.","몰랐어요.","구두가 비쌌어요.","어제 수업이 없었어요.","잘 먹었습니다."]))}
+${task("Задание 7. Найдите и исправьте ошибку", ol(["어제 학교에 가었어요.","점심에 김밥을 먹았어요.","주말에 한국어를 공부하었어요.","친구가 우리 집에 오았어요.","작년에 저는 대학생였어요.","어제 영화를 봐요.","지난주에 바쁘었어요.","어제에 친구를 만났어요."]),
+ ol(["갔어요 — основа на ㅏ: 가 + 았 → 갔.","먹었어요 — гласная ㅓ, значит 었.","공부했어요 — 하다 → 했어요.","왔어요 — для 오다 только слитная форма.","대학생이었어요 — после согласной.","봤어요 — «вчера» требует прошедшего времени.","바빴어요 — ㅡ выпадает, перед ним ㅏ (바) → 았.","어제 친구를 만났어요 — после 어제 частица 에 не ставится."]))}
+${task("Задание 8. Прочитайте дневник Минджи и ответьте", `<p class="read">지난 주말에 저는 친구하고 명동에 갔어요. 명동에서 옷을 샀어요. 옷이 좀 비쌌어요. 하지만 정말 예뻤어요. 그리고 식당에서 비빔밥을 먹었어요. 비빔밥이 정말 맛있었어요. 저녁에는 영화를 봤어요. 영화가 좀 길었어요. 하지만 재미있었어요. 일요일에는 집에서 청소했어요. 그리고 음악을 들었어요. 조금 피곤했어요.</p>
+<p class="src">명동 — Мёндон, торговый район Сеула; 예쁘다 — красивый; 조금 — немного.</p>
+<p><b>А. Правда (П) или неправда (Н)?</b></p>${ol(["В выходные Минджи ходила в Мёндон одна.","Одежда была дешёвая.","Пибимпап был вкусный.","Фильм был скучный.","В воскресенье она убиралась дома."])}
+<p><b>Б. Ответьте по-корейски.</b></p>${ol(["민지 씨는 명동에서 뭐 샀어요?","식당에서 뭐 먹었어요?","영화가 어땠어요?"])}`,
+ `А. 1 Н (с подругой) · 2 Н (немного дорогая) · 3 П · 4 Н (длинный, но интересный) · 5 П<br>Б. 1 옷을 샀어요. · 2 비빔밥을 먹었어요. · 3 좀 길었어요. 하지만 재미있었어요.<br><span class="src">Перевод: В прошлые выходные я ходила с подругой в Мёндон. Купила одежду. Она была немного дорогая, но очень красивая. Потом мы ели пибимпап в ресторане, было очень вкусно. Вечером смотрели фильм. Он был длинноватый, но интересный. В воскресенье я убиралась дома и слушала музыку. Немного устала.</span>`)}
+${task("Задание 9. Мои выходные (пришлите в чат, я проверю)", `<p>Напишите 6–8 предложений о прошлых выходных: куда ходили, что делали, что ели, как было. Используйте оценки: 좋았어요, 재미있었어요, 맛있었어요, 피곤했어요, 바빴어요.</p>`,
+ "Образец:<br>지난 주말에 친구하고 카페에 갔어요. 카페에서 커피를 마셨어요. 커피가 좀 비쌌어요. 하지만 맛있었어요. 일요일에는 집에서 한국어를 공부했어요. 그리고 영화를 봤어요. 정말 재미있었어요.")}
+${task("Учебник: «Проверьте себя», стр. 51", "<p>Что Кэрол делала на неделе (по календарю).</p>",
+ "(1) 친구를 만났어요 · (2) 피자를 먹었어요 · (3) 피자가 맛있었어요 · (4) 백화점에 갔어요 · (5) 구두를 샀어요 · (6) 구두가 쌌어요 · (7) 머리가 아팠어요 · (8) 노래를 불렀어요 · (9) 청소했어요 · (10) 영화를 봤어요 · (11) 영화가 재미있었어요")}
+<p class="src">Следующий урок: будущее время -(으)ㄹ 거예요 и «сейчас делаю» -고 있어요 (учебник, стр. 52–55).</p>
+`,
+l5: `
+<p class="src">TOPIK I · уровень 1. По учебнику «Грамматика корейского языка in Use. Для начинающих»: урок 1 «Времена», темы 04–05 (стр. 52–55). Аудио: треки 19–22 в приложении LECTA.</p>
+<h3 id="c-goals">После урока вы сможете</h3>
+<ul>
+<li>рассказать о планах: 내년에 한국에 갈 거예요.</li>
+<li>спросить о планах: 주말에 뭐 할 거예요?</li>
+<li>сказать, что делаете сейчас или в последнее время: 지금 가고 있어요. 요즘 한국어를 배우고 있어요.</li>
+<li>говорить о прошлом, настоящем и будущем</li>
+</ul>
+${tbl(["Время","Что делать"],[
+ ["30–60 минут","Два занятия: (1) раздел 1 (будущее) → задания 1, 3 → тренажёр; (2) разделы 2–3 (-고 있어요, все времена) → задания 2, 4, 5."],
+ ["2–3 часа","Весь конспект → учебник стр. 52–55, треки 19–22 → «Проверьте себя» на стр. 53 и 55 → задания 1–8 → все режимы программы. Задание 8 пришлите в чат."],
+ ["Каждый день","Утром скажите, что будете делать сегодня (오늘 수업에 갈 거예요), вечером — что делали (수업에 갔어요)."]])}
+
+<h3 id="c-1">1. Будущее время: -(으)ㄹ 거예요</h3>
+<p>Планы и намерения: «буду делать», «собираюсь». Гласные здесь не сливаются — смотрим только на последнюю букву основы:</p>
+${tbl(["Основа оканчивается на","Окончание","Примеры"],[["гласную или ㄹ","-ㄹ 거예요","가다 → 갈 거예요 · 보다 → 볼 거예요 · 공부하다 → 공부할 거예요 · 마시다 → 마실 거예요"],["согласную (кроме ㄹ)","-을 거예요","먹다 → 먹을 거예요 · 읽다 → 읽을 거예요 · 입다 → 입을 거예요 · 찾다 → 찾을 거예요"]])}
+<p>ㄹ «приклеивается» снизу к последнему слогу: 가 + ㄹ = 갈, 하 + ㄹ = 할.</p>
+${tip("Основа на ㄹ — ничего не добавляем: 살다 → 살 거예요 (не 살을), 만들다 → 만들 거예요, 놀다 → 놀 거예요.")}
+<h4>Запомните как слова (неправильные, стр. 52)</h4>
+${tbl(["Словарь","Будущее","Перевод"],[["듣다","들을 거예요","буду слушать"],["돕다","도울 거예요","буду помогать"],["붓다","부을 거예요","буду наливать"]])}
+<p>Произносится с [ㄲ]: 갈 거예요 → [갈 꺼예요]. Официально: -(으)ㄹ 겁니다 — 갈 겁니다. Вопрос: 뭐 할 거예요?</p>
+<h4>Примеры и диалоги из учебника (стр. 52–53)</h4>
+${ex([["2년 후에 차를 살 거예요.","Через два года я куплю машину."],["방학에 중국에 갈 거예요.","На каникулах я съезжу в Китай."],["A: 언제 고향에 돌아갈 거예요?","Когда вы вернётесь в родной город?"],["B: 내년에 돌아갈 거예요.","В следующем году."],["A: 주말에 뭐 할 거예요?","Что будете делать на выходных?"],["B: 자전거를 탈 거예요.","Буду кататься на велосипеде."]])}
+<h4>Слова будущего времени</h4>
+${tbl(null,[["내일 — завтра","모레 — послезавтра"],["다음 주 — на следующей неделе","다음 달 — в следующем месяце"],["내년 — в следующем году","이따가 — попозже (сегодня)"],["나중에 — потом","방학 — каникулы"]])}
+<p class="src">Сравните с уроком 4: 지난주 ↔ 다음 주, 지난달 ↔ 다음 달, 작년 ↔ 내년.</p>
+
+<h3 id="c-2">2. «Сейчас делаю»: -고 있어요</h3>
+<p>Действие в процессе. Самая простая форма: основа + 고 있어요, без вариантов.</p>
+${tbl(["Словарь","-고 있어요","Словарь","-고 있어요"],[["가다","가고 있어요","먹다","먹고 있어요"],["보다","보고 있어요","찾다","찾고 있어요"],["공부하다","공부하고 있어요","살다","살고 있어요"],["배우다","배우고 있어요","듣다","듣고 있어요"]])}
+<p class="src">Даже неправильные глаголы здесь правильные: 듣고 있어요, 만들고 있어요.</p>
+<h4>Два значения</h4>
+${ex([["지금 음악을 듣고 있어요.","Прямо сейчас слушаю музыку."],["지금 가고 있어요!","Уже иду! (очень нужная фраза, если опаздываете)"],["요즘 한국어를 배우고 있어요.","В последнее время учу корейский."],["서울에서 살고 있어요.","Живу в Сеуле."]])}
+<h4>В прошлом: -고 있었어요</h4>
+${ex([["어제 친구가 전화했어요. 그때 저는 자고 있었어요.","Вчера позвонил друг. В тот момент я спала."],["A: 왜 아까 전화를 안 받았어요? B: 샤워하고 있었어요.","— Почему не брали трубку? — Была в душе."]])}
+${tip("Учебник, стр. 55: если просто рассказываете, что делали, берите обычное прошедшее. На 어제 뭐 했어요? ответ — 집에서 쉬었어요, а не 쉬고 있었어요.")}
+<h4>Диалоги из учебника (стр. 55)</h4>
+${ex([["A: 왕징 씨, 지금 시장에 같이 가요.","Ван Чжин, пойдёмте на рынок вместе."],["B: 미안해요, 지금 숙제를 하고 있어요.","Простите, я сейчас делаю домашнее задание."],["A: 지금 어디에서 살고 있어요?","Где вы сейчас живёте?"],["B: 서울에서 살고 있어요.","В Сеуле."]])}
+
+<h3 id="c-3">3. Все времена вместе</h3>
+${tbl(["","Прошедшее","Настоящее","Сейчас в процессе","Будущее"],[["가다","갔어요","가요","가고 있어요","갈 거예요"],["먹다","먹었어요","먹어요","먹고 있어요","먹을 거예요"],["공부하다","공부했어요","공부해요","공부하고 있어요","공부할 거예요"],["살다","살았어요","살아요","살고 있어요","살 거예요"]])}
+${tip("Простое настоящее -아요/어요 тоже может значить «сейчас» и «скоро»: 지금 공부해요, 내일 가요. -고 있어요 подчёркивает процесс, -(으)ㄹ 거예요 — план.")}
+<h4>Фразы для поездки и общения</h4>
+${ex([["지금 가고 있어요.","Уже иду / еду."],["주말에 뭐 할 거예요?","Что будете делать в выходные?"],["같이 가요!","Пойдём вместе!"],["나중에 봐요!","Увидимся!"],["미안해요.","Простите."],["뭐 찾고 있어요?","Что вы ищете? (в магазине)"]])}
+
+${WORDS_SECTION}
+
+<h3 id="c-tasks">Задания</h3>
+<p>Сначала выполните задание, потом откройте ответ.</p>
+${task("Задание 1. Будущее время -(으)ㄹ 거예요", ol(["가다","보다","먹다","읽다","공부하다","만나다","입다","살다","만들다","놀다","마시다","찾다","듣다","쉬다","타다","씻다"]),
+ "1 갈 거예요 · 2 볼 거예요 · 3 먹을 거예요 · 4 읽을 거예요 · 5 공부할 거예요 · 6 만날 거예요 · 7 입을 거예요 · 8 살 거예요 · 9 만들 거예요 · 10 놀 거예요 · 11 마실 거예요 · 12 찾을 거예요 · 13 들을 거예요 · 14 쉴 거예요 · 15 탈 거예요 · 16 씻을 거예요")}
+${task("Задание 2. -고 있어요", ol(["보다","먹다","기다리다","일하다","살다","배우다","듣다","자다"]),
+ "1 보고 있어요 · 2 먹고 있어요 · 3 기다리고 있어요 · 4 일하고 있어요 · 5 살고 있어요 · 6 배우고 있어요 · 7 듣고 있어요 · 8 자고 있어요")}
+${task("Задание 3. Выберите время по слову-подсказке", ol(["어제 영화를 ___. (보다)","내일 친구를 ___. (만나다)","지금 음악을 ___. (듣다)","다음 달에 부산에 ___. (여행하다)","작년에 한국어를 ___. (배우다)","요즘 경제학을 ___. (공부하다)","이따가 점심을 ___. (먹다)","친구가 전화했어요. 그때 저는 ___. (샤워하다)"]),
+ "1 봤어요 · 2 만날 거예요 · 3 듣고 있어요 · 4 여행할 거예요 · 5 배웠어요 · 6 공부하고 있어요 · 7 먹을 거예요 · 8 샤워하고 있었어요")}
+${task("Задание 4. Переведите на корейский", ol(["Что будете делать в выходные?","В следующем году я поеду в Корею.","В последнее время я учу корейский.","Сейчас я пью кофе.","Уже иду!","Завтра я буду отдыхать дома.","Где вы сейчас живёте?","Я поеду на поезде.","Я прочитаю эту книгу (эта — 이).","— Что вы ищете? — Ищу отель."]),
+ ol(["주말에 뭐 할 거예요?","내년에 한국에 갈 거예요.","요즘 한국어를 배우고 있어요.","지금 커피를 마시고 있어요.","지금 가고 있어요!","내일 집에서 쉴 거예요.","지금 어디에(서) 살고 있어요?","기차를 탈 거예요.","이 책을 읽을 거예요.","뭐 찾고 있어요? — 호텔을 찾고 있어요."]))}
+${task("Задание 5. Найдите и исправьте ошибку", ol(["내일 학교에 갈을 거예요.","저녁에 비빔밥을 먹 거예요.","내년에 서울에 살을 거예요.","내일 영화를 봤어요.","지금 한국어를 공부해고 있어요.","주말에 음악을 듣을 거예요.","A: 어제 뭐 했어요? B: 집에서 쉬고 있었어요.","케이크를 만들을 거예요."]),
+ ol(["갈 거예요 — после гласной только ㄹ.","먹을 거예요 — после согласной нужен 을.","살 거예요 — основа уже на ㄹ.","볼 거예요 — «завтра» требует будущего.","공부하고 있어요 — 고 присоединяется к основе без изменений.","들을 거예요 — 듣다 неправильный.","집에서 쉬었어요 — просто рассказ о том, что делали.","만들 거예요 — основа на ㄹ."]))}
+${task("Задание 6. Прочитайте и ответьте", `<p class="read">저는 요즘 한국어를 배우고 있어요. 내년 여름에 친구하고 한국에 갈 거예요. 비행기를 탈 거예요. 서울에서 경복궁에 갈 거예요. 그리고 명동에서 옷을 살 거예요. 부산에도 갈 거예요. 부산에서 바다를 볼 거예요. 그리고 회를 먹을 거예요. 지금은 인터넷에서 호텔을 찾고 있어요.</p>
+<p class="src">경복궁 — дворец Кёнбоккун; 부산에도 — и в Пусан тоже (도 — «тоже»); 회 — сырая рыба (хве); 인터넷 — интернет; 지금은 — а сейчас.</p>
+<p><b>А. Правда (П) или неправда (Н)?</b></p>${ol(["Автор уже был в Корее.","Поедет в Корею летом следующего года.","Поедет один (одна).","В Пусане будет смотреть на море.","Отель уже забронирован."])}
+<p><b>Б. Ответьте по-корейски.</b></p>${ol(["명동에서 뭐 할 거예요?","부산에서 뭐 먹을 거예요?","지금 뭐 하고 있어요?"])}`,
+ `А. 1 Н (текст о будущей поездке) · 2 П · 3 Н (с другом / подругой) · 4 П · 5 Н (ещё ищет)<br>Б. 1 옷을 살 거예요. · 2 회를 먹을 거예요. · 3 인터넷에서 호텔을 찾고 있어요.<br><span class="src">Перевод: Сейчас я учу корейский. Следующим летом я с подругой поеду в Корею. Полетим на самолёте. В Сеуле пойдём во дворец Кёнбоккун, а в Мёндоне купим одежду. Поедем и в Пусан: будем смотреть на море и есть хве. А сейчас я ищу отель в интернете.</span>`)}
+${task("Задание 7. Составьте мини-диалоги", ol(["주말에 뭐 할 거예요? (кататься на велосипеде)","지금 뭐 하고 있어요? (делаю домашнее задание)","방학에 어디에 갈 거예요? (в Сеул)","요즘 뭐 배우고 있어요? (корейский)","언제 한국에 갈 거예요? (в следующем месяце)"]),
+ "1 자전거를 탈 거예요. · 2 숙제하고 있어요. · 3 서울에 갈 거예요. · 4 한국어를 배우고 있어요. · 5 다음 달에 갈 거예요.")}
+${task("Задание 8. Мои планы (пришлите в чат, я проверю)", `<p>6–8 предложений: что вы делаете в последнее время (요즘 … -고 있어요), что будете делать на этих выходных и на каникулах (-(으)ㄹ 거예요). Добавьте 1–2 предложения о прошлых выходных (-았/었어요).</p>`,
+ "Образец:<br>요즘 대학교에서 경제학을 공부하고 있어요. 그리고 한국어를 배우고 있어요. 지난 주말에 친구하고 영화를 봤어요. 이번 주말에는 도서관에서 공부할 거예요. 방학에 서울에 갈 거예요. 서울에서 한국 음식을 많이 먹을 거예요.<br><span class=\"src\">이번 주말 — эти выходные; 음식 — еда; 많이 — много.</span>")}
+${task("Учебник: «Проверьте себя», стр. 53 и 55", "<p>Ответы к обеим страницам.</p>",
+ "<b>Стр. 53:</b> (1) 갈 거예요 · (2) 놀 거예요 · (3) 탈 거예요 · (4) 공부할 거예요 · (5) 먹을 거예요 · (6) 부를 거예요 · (7) 쉴 거예요<br><b>Стр. 55:</b> (1) 세수하고 있어요 · (2) 한국어를 배우고 있어요 · (3) 아니요, 밥을 먹고 있어요 · (4) 반지를 찾고 있었어요")}
+<p class="src">Следующий урок: отрицание — 안, -지 않아요, 못 (учебник, урок 2, стр. 60–67).</p>
+`
+};
+
+/* ---------- helpers ---------- */
+function hasBatchim(word){
+  const ch = word.trim().slice(-1); const c = ch.charCodeAt(0);
+  if (c < 0xAC00 || c > 0xD7A3) return false;
+  return (c - 0xAC00) % 28 !== 0;
+}
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const pick = (a,n) => shuffle(a).slice(0,n);
+const esc = s => String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+function buildL1Grammar(){
+  const nouns = ["의자","가방","시계","책","학생","친구","선생님","커피","우산","컴퓨터","서울","모자","사과","회사원","가수","은행","고양이","동생","창문","침대"];
+  const qs = [];
+  pick(nouns,4).forEach(n=>{
+    const ok = hasBatchim(n) ? "이에요" : "예요";
+    qs.push({type:"예요 / 이에요", prompt:`<span class="ko">${n}___.</span>`, options:["예요","이에요"], answer:ok, say:`${n}${ok}.`,
+      explain:`<span class="ko">${n}</span> ${hasBatchim(n)?"оканчивается на согласную":"оканчивается на гласную"} → <span class="ko">${n}${ok}</span>.`});
+  });
+  pick(nouns,3).forEach(n=>{
+    const ok = hasBatchim(n) ? "이" : "가";
+    const tail = pick(["있어요.","없어요.","있어요?"],1)[0];
+    qs.push({type:"이 / 가", prompt:`<span class="ko">${n}___ ${tail}</span>`, options:["이","가"], answer:ok, say:`${n}${ok} ${tail}`,
+      explain:`После ${hasBatchim(n)?"согласной":"гласной"} → <span class="ko">${n}${ok}</span>.`});
+  });
+  const places = [["위","на"],["아래","под"],["앞","перед"],["뒤","за"],["옆","рядом с"],["안","внутри"],["밖","снаружи"],["사이","между"]];
+  const scenes = [
+    ["책상","컴퓨터가","столом"],["가방","책이","сумкой / сумки"],["집","강아지가","домом / дома"],["학교","은행이","школой / школы"],["침대","고양이가","кроватью / кровати"]
+  ];
+  pick(places.filter(p=>p[0]!=="사이"),2).forEach(([ko,ru])=>{
+    const [obj,subj] = pick(scenes,1)[0];
+    const opts = shuffle([ko, ...pick(places.filter(p=>p[0]!==ko).map(p=>p[0]),3)]);
+    qs.push({type:"Где находится?", prompt:`<span class="ko">${subj} ${obj} ___에 있어요.</span><br><span style="font-size:15px;color:var(--muted)">подсказка: «${ru}»</span>`, options:opts, answer:ko, say:`${subj} ${obj} ${ko}에 있어요.`,
+      explain:`<span class="ko">${ko}</span> — «${ru}». <span class="ko">${subj} ${obj} ${ko}에 있어요.</span>`});
+  });
+  const formal = [["학생이에요.","학생입니다."],["뭐예요?","무엇입니까?"],["가방이 있어요.","가방이 있습니다."],["시간이 없어요?","시간이 없습니까?"],["친구예요?","친구입니까?"]];
+  const f = pick(formal,1)[0];
+  const wrongF = { "학생입니다.":["학생입니까?","학생있습니다."], "무엇입니까?":["무엇입니다.","뭐있습니까?"], "가방이 있습니다.":["가방이 입니다.","가방이 있습니까?"], "시간이 없습니까?":["시간이 없습니다.","시간이 아닙니까?"], "친구입니까?":["친구입니다.","친구이습니까?"] }[f[1]];
+  qs.push({type:"Официальный стиль", prompt:`<span class="ko">${f[0]}</span> → ?`, options:shuffle([f[1],...wrongF]), answer:f[1], say:f[1],
+    explain:`<span class="ko">이에요/예요 → 입니다 (вопрос 입니까?)</span>, <span class="ko">있어요 → 있습니다</span>, <span class="ko">없어요 → 없습니다</span>.`});
+  return shuffle(qs);
+}
+
+
+/* ---------- numbers ---------- */
+const SINO = ["","일","이","삼","사","오","육","칠","팔","구"];
+function sino4(n){ // 1..9999
+  let out=""; const units=[[1000,"천"],[100,"백"],[10,"십"]];
+  for (const [v,w] of units){ const d=Math.floor(n/v)%10; if(d){ out += (d===1?"":SINO[d]) + w; } }
+  const d=n%10; if(d) out+=SINO[d]; return out;
+}
+function sino(n){
+  if (n===0) return "영";
+  const man=Math.floor(n/10000), rest=n%10000; let parts=[];
+  if (man) parts.push((man===1?"":sino4(man))+"만");
+  if (rest) parts.push(sino4(rest));
+  return parts.join(" ");
+}
+const NAT_U=["","하나","둘","셋","넷","다섯","여섯","일곱","여덟","아홉"];
+const NAT_UC=["","한","두","세","네","다섯","여섯","일곱","여덟","아홉"];
+const NAT_T=["","열","스물","서른","마흔","쉰","예순","일흔","여든","아흔"];
+function native(n, counter){ // 1..99
+  const t=Math.floor(n/10), u=n%10;
+  if (counter && n===20) return "스무";
+  return NAT_T[t] + (counter?NAT_UC[u]:NAT_U[u]);
+}
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function uniqOpts(answer, cands){ const set=[answer]; for(const c of shuffle(cands)){ if(c && !set.includes(c)) set.push(c); if(set.length===4) break; } return shuffle(set); }
+
+function buildL2Grammar(){
+  const qs=[];
+  // prices
+  for (let k=0;k<2;k++){
+    const n = pick([rnd(1,9)*1000+rnd(0,9)*100, rnd(1,9)*10000+rnd(0,9)*1000, rnd(10,99)*10000, rnd(11,19)*1000],1)[0];
+    const ans = sino(n)+" 원";
+    const wrong = [sino(n*10)+" 원", sino(Math.round(n/10))+" 원", "일"+ans, sino(n+ (n>=10000?1000:100))+" 원"];
+    qs.push({type:"Как прочитать цену?", prompt:`${n.toLocaleString("ru-RU")} ₩`, options:uniqOpts(ans, wrong), answer:ans, say:ans,
+      explain:`${n.toLocaleString("ru-RU")} вон = <span class="ko">${ans}</span>. Большие числа делим по 4 цифры: ${n>=10000?`${Math.floor(n/10000)} | ${String(n%10000).padStart(4,"0")}`:n}.`});
+  }
+  // counters
+  const items=[["사과","개","яблоки"],["학생","명","студенты"],["고양이","마리","кошки"],["책","권","книги"],["커피","잔","кофе (чашки)"],["물","병","вода (бутылки)"],["표","장","билеты"],["컴퓨터","대","компьютеры"]];
+  pick(items,3).forEach(([noun,ctr,ru])=>{
+    const n = pick([1,2,3,4,5,11,20],1)[0];
+    const ans = `${noun} ${native(n,true)} ${ctr}`;
+    const others = shuffle(items.map(i=>i[1]).filter(c=>c!==ctr));
+    const wrong=[`${noun} ${native(n,false)} ${ctr}`, `${noun} ${sino(n)} ${ctr}`, `${noun} ${native(n,true)} ${others[0]}`, `${noun} ${native(n,true)} ${others[1]}`];
+    qs.push({type:"Скажите по-корейски", prompt:`${ru}: ${n}`, options:uniqOpts(ans,wrong), answer:ans, say:ans,
+      explain:`<span class="ko">${ans}</span>: предметы считают корейскими числами в краткой форме перед счётным словом; для «${ru}» счётное слово <span class="ko">${ctr}</span>.`});
+  });
+  // time
+  for (let k=0;k<3;k++){
+    const h=rnd(1,12), m=pick([0,5,10,15,20,30,40,45,50],1)[0];
+    const ans = native(h,true)+" 시"+(m?" "+sino(m)+" 분":"");
+    const wrong=[sino(h)+" 시"+(m?" "+sino(m)+" 분":""), native(h,true)+" 시"+(m?" "+native(m,true)+" 분":" 반"), native(h,false)+" 시"+(m?" "+sino(m)+" 분":""), native(h%12+1,true)+" 시"+(m?" "+sino(m)+" 분":"")];
+    qs.push({type:"Который час?", prompt:`${h}:${String(m).padStart(2,"0")}`, options:uniqOpts(ans,wrong), answer:ans, say:ans,
+      explain:`<span class="ko">${ans}</span>${m===30?` (= <span class="ko">${native(h,true)} 시 반</span>)`:""}: часы — корейские числа, минуты — китайские.`});
+  }
+  // days / months
+  const days=[["월요일","понедельник"],["화요일","вторник"],["수요일","среда"],["목요일","четверг"],["금요일","пятница"],["토요일","суббота"],["일요일","воскресенье"]];
+  const d=pick(days,1)[0];
+  qs.push({type:"День недели", prompt:d[1], options:uniqOpts(d[0], days.map(x=>x[0])), answer:d[0], say:d[0], explain:`${d[1]} — <span class="ko">${d[0]}</span>.`});
+  const mo=pick([[6,"유월"],[10,"시월"],[rnd(1,5),null],[rnd(11,12),null]],1)[0];
+  const mAns = mo[1] || sino(mo[0])+"월";
+  const mWrong = mo[0]===6?["육월","육 월","여섯 월"]: mo[0]===10?["십월","열 월","십 월"]:[native(mo[0],true)+" 월", native(mo[0],false)+"월", sino(mo[0]+1)+"월"];
+  qs.push({type:"Как называется месяц?", prompt:`${mo[0]}-й месяц (${["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"][mo[0]-1]})`, options:uniqOpts(mAns,mWrong), answer:mAns, say:mAns,
+    explain:`<span class="ko">${mAns}</span>. Месяцы — китайские числа + <span class="ko">월</span>; исключения: <span class="ko">유월</span> (июнь) и <span class="ko">시월</span> (октябрь).`});
+  return shuffle(qs);
+}
+
+function buildL3Grammar(){
+  const V=[["가다","가요","갑니다","идти"],["오다","와요","옵니다","приходить"],["보다","봐요","봅니다","смотреть"],["자다","자요","잡니다","спать"],["만나다","만나요","만납니다","встречаться"],["앉다","앉아요","앉습니다","садиться"],["받다","받아요","받습니다","получать"],["살다","살아요","삽니다","жить"],["좋다","좋아요","좋습니다","хороший"],["먹다","먹어요","먹습니다","есть"],["읽다","읽어요","읽습니다","читать"],["입다","입어요","입습니다","надевать"],["마시다","마셔요","마십니다","пить"],["기다리다","기다려요","기다립니다","ждать"],["가르치다","가르쳐요","가르칩니다","преподавать"],["배우다","배워요","배웁니다","учить"],["주다","줘요","줍니다","давать"],["보내다","보내요","보냅니다","отправлять"],["서다","서요","섭니다","стоять"],["쉬다","쉬어요","쉽니다","отдыхать"],["쓰다","써요","씁니다","писать"],["공부하다","공부해요","공부합니다","учиться"],["일하다","일해요","일합니다","работать"],["좋아하다","좋아해요","좋아합니다","любить"],["있다","있어요","있습니다","есть, иметься"],["만들다","만들어요","만듭니다","делать"]];
+  const rule = v => {
+    const st=v[0].slice(0,-1);
+    if (st.endsWith("하")) return "<span class='ko'>하다 → 해요</span>.";
+    if (v[0]==="쉬다") return "<span class='ko'>ㅟ</span> не сливается: <span class='ko'>쉬어요</span>.";
+    if (v[0]==="쓰다") return "<span class='ko'>ㅡ</span> выпадает: <span class='ko'>써요</span>.";
+    return v[1].includes("아") || /[가자사나봐와]요$/.test(v[1]) ? "Последняя гласная <span class='ko'>ㅏ/ㅗ</span> → <span class='ko'>-아요</span>" + (v[1].length<=v[0].length?", гласные слились.":".") : "Последняя гласная не <span class='ko'>ㅏ/ㅗ</span> → <span class='ko'>-어요</span>" + (v[1].length<=v[0].length?", гласные слились.":".");
+  };
+  const qs=[];
+  pick(V,5).forEach(v=>{
+    const st=v[0].slice(0,-1);
+    const wrong=[st+"아요", st+"어요", st+"요", v[2], st.endsWith("하")?st.slice(0,-1)+"하여요":st+"해요"];
+    qs.push({type:"Форма -요", prompt:`<span class="ko">${v[0]}</span> <span style="font-size:15px;color:var(--muted)">(${v[3]})</span>`, options:uniqOpts(v[1],wrong), answer:v[1], say:v[1], explain:`<span class="ko">${v[0]} → ${v[1]}</span>. ${rule(v)}`});
+  });
+  pick(V,3).forEach(v=>{
+    const st=v[0].slice(0,-1);
+    const wrong=[st+"습니다", st+"ㅂ니다".replace("ㅂ",""), v[1], st+"합니다", v[2].replace("니다","니까?")];
+    qs.push({type:"Официальный стиль", prompt:`<span class="ko">${v[0]}</span> <span style="font-size:15px;color:var(--muted)">(${v[3]})</span>`, options:uniqOpts(v[2],wrong), answer:v[2], say:v[2],
+      explain:`<span class="ko">${v[0]} → ${v[2]}</span>. ${v[0]==="살다"||v[0]==="만들다"?"<span class='ko'>ㄹ</span> выпадает перед <span class='ko'>ㅂ니다</span>.":hasBatchim(st)?"Основа на согласную → <span class='ko'>-습니다</span>.":"Основа на гласную → <span class='ko'>-ㅂ니다</span>."}`});
+  });
+  const O=[["빵","먹어요"],["커피","마셔요"],["한국어","배워요"],["신문","읽어요"],["영화","봐요"],["옷","사요"],["편지","써요"],["음악","좋아해요"],["친구","기다려요"]];
+  pick(O,2).forEach(([n,vb])=>{
+    const ok=hasBatchim(n)?"을":"를";
+    qs.push({type:"을 / 를", prompt:`<span class="ko">${n}___ ${vb}.</span>`, options:["을","를"], answer:ok, say:`${n}${ok} ${vb}`, explain:`После ${hasBatchim(n)?"согласной":"гласной"} → <span class="ko">${n}${ok}</span>.`});
+  });
+  return shuffle(qs);
+}
+
+
+
+function buildL4Grammar(){
+  const V=[["가다","갔어요","갔습니다","идти"],["오다","왔어요","왔습니다","приходить"],["보다","봤어요","봤습니다","смотреть"],["만나다","만났어요","만났습니다","встречаться"],["사다","샀어요","샀습니다","покупать"],["앉다","앉았어요","앉았습니다","садиться"],["받다","받았어요","받았습니다","получать"],["살다","살았어요","살았습니다","жить"],["좋다","좋았어요","좋았습니다","хороший"],["먹다","먹었어요","먹었습니다","есть"],["읽다","읽었어요","읽었습니다","читать"],["입다","입었어요","입었습니다","надевать"],["마시다","마셨어요","마셨습니다","пить"],["기다리다","기다렸어요","기다렸습니다","ждать"],["가르치다","가르쳤어요","가르쳤습니다","преподавать"],["배우다","배웠어요","배웠습니다","учить"],["보내다","보냈어요","보냈습니다","отправлять"],["쉬다","쉬었어요","쉬었습니다","отдыхать"],["쓰다","썼어요","썼습니다","писать"],["바쁘다","바빴어요","바빴습니다","занятой"],["아프다","아팠어요","아팠습니다","болеть"],["싸다","쌌어요","쌌습니다","дешёвый"],["공부하다","공부했어요","공부했습니다","учиться"],["일하다","일했어요","일했습니다","работать"],["피곤하다","피곤했어요","피곤했습니다","усталый"],["있다","있었어요","있었습니다","быть, иметься"],["재미있다","재미있었어요","재미있었습니다","интересный"]];
+  const PRES={"가다":"가요","오다":"와요","보다":"봐요","만나다":"만나요","사다":"사요","앉다":"앉아요","받다":"받아요","살다":"살아요","좋다":"좋아요","먹다":"먹어요","읽다":"읽어요","입다":"입어요","마시다":"마셔요","기다리다":"기다려요","가르치다":"가르쳐요","배우다":"배워요","보내다":"보내요","쉬다":"쉬어요","쓰다":"써요","바쁘다":"바빠요","아프다":"아파요","싸다":"싸요","공부하다":"공부해요","일하다":"일해요","피곤하다":"피곤해요","있다":"있어요","재미있다":"재미있어요"};
+  const qs=[];
+  pick(V,5).forEach(v=>{
+    const st=v[0].slice(0,-1);
+    const ALT={"보다":"보았어요","주다":"주었어요"}; const wrong=[st+"았어요", st+"었어요", PRES[v[0]], st.endsWith("하")?st+"었어요":st+"했어요", v[2]].filter(x=>x!==ALT[v[0]]);
+    qs.push({type:"Прошедшее -요", prompt:`<span class="ko">${v[0]}</span> <span style="font-size:15px;color:var(--muted)">(${v[3]})</span>`, options:uniqOpts(v[1],wrong), answer:v[1], say:v[1],
+      explain:`<span class="ko">${v[0]} → ${PRES[v[0]]} → ${v[1]}</span>. Трюк: в форме -요 замените <span class="ko">요</span> на <span class="ko">ㅆ어요</span>.`});
+  });
+  pick(V,2).forEach(v=>{
+    const st=v[0].slice(0,-1);
+    const wrong=[st+"았습니다", st+"었습니다", PRES[v[0]].replace(/요$/,"")+"습니다", v[1]];
+    qs.push({type:"Официальный стиль, прошедшее", prompt:`<span class="ko">${v[1]}</span> → ?`, options:uniqOpts(v[2],wrong), answer:v[2], say:v[2],
+      explain:`<span class="ko">${v[1]} → ${v[2]}</span>: после <span class="ko">ㅆ</span> всегда <span class="ko">습니다</span>.`});
+  });
+  const N=["학생","의사","가수","선생님","회사원","친구","일요일","생일","월요일","주말"];
+  pick(N,2).forEach(n=>{
+    const ok=hasBatchim(n)?"이었어요":"였어요";
+    qs.push({type:"이다 в прошедшем", prompt:`<span class="ko">${n}___.</span>`, options:["였어요","이었어요","이였어요","예었어요"], answer:ok, say:n+ok,
+      explain:`После ${hasBatchim(n)?"согласной":"гласной"} → <span class="ko">${n}${ok}</span>.`});
+  });
+  const pr=pick([["어제 영화를 ___.","봤어요","봐요","볼 거예요"],["지난주에 친구를 ___.","만났어요","만나요","만나"],["작년에 서울에 ___.","살았어요","살아요","살어요"]],1)[0];
+  qs.push({type:"Какое время нужно?", prompt:`<span class="ko">${pr[0]}</span>`, options:uniqOpts(pr[1],pr.slice(2)), answer:pr[1], say:pr[0].replace("___",pr[1]),
+    explain:`Слова <span class="ko">어제, 지난주, 작년</span> требуют прошедшего времени: <span class="ko">${pr[0].replace("___",pr[1])}</span>`});
+  return shuffle(qs);
+}
+
+
+function addFinal(syl, idx){ const c=syl.charCodeAt(0); return String.fromCharCode(c+idx); }
+function futureOf(dict){
+  const IRR={"듣다":"들을","돕다":"도울","붓다":"부을"};
+  if (IRR[dict]) return IRR[dict]+" 거예요";
+  const st=dict.slice(0,-1), last=st.slice(-1), c=last.charCodeAt(0), fin=(c-0xAC00)%28;
+  if (fin===0) return st.slice(0,-1)+addFinal(last,8)+" 거예요";
+  if (fin===8) return st+" 거예요";
+  return st+"을 거예요";
+}
+function buildL5Grammar(){
+  const V=[["가다","идти"],["보다","смотреть"],["먹다","есть"],["읽다","читать"],["공부하다","учиться"],["만나다","встречаться"],["입다","надевать"],["살다","жить"],["만들다","делать"],["놀다","гулять"],["마시다","пить"],["찾다","искать"],["듣다","слушать"],["쉬다","отдыхать"],["타다","кататься, ехать"],["씻다","мыться"],["사다","покупать"],["배우다","учить"],["돕다","помогать"],["여행하다","путешествовать"]];
+  const qs=[];
+  pick(V,5).forEach(([d,ru])=>{
+    const ans=futureOf(d), st=d.slice(0,-1);
+    const wrong=[st+"을 거예요", st+" 거예요", futureOf(d).replace(" 거예요","을 거예요"), st+"ㄹ 거예요", st+"고 있어요"];
+    qs.push({type:"Будущее -(으)ㄹ 거예요", prompt:`<span class="ko">${d}</span> <span style="font-size:15px;color:var(--muted)">(${ru})</span>`, options:uniqOpts(ans,wrong.filter(w=>w!==ans)), answer:ans, say:ans,
+      explain:`<span class="ko">${d} → ${ans}</span>. ${["듣다","돕다","붓다"].includes(d)?"Неправильный глагол — запомните.":hasBatchim(st)&&((st.slice(-1).charCodeAt(0)-0xAC00)%28)!==8?"Основа на согласную → <span class='ko'>-을 거예요</span>.":((st.slice(-1).charCodeAt(0)-0xAC00)%28)===8?"Основа на <span class='ko'>ㄹ</span> — ничего не добавляем.":"Основа на гласную → <span class='ko'>ㄹ</span> приклеивается к слогу."}`});
+  });
+  pick(V,2).forEach(([d,ru])=>{
+    const st=d.slice(0,-1), ans=st+"고 있어요";
+    const wrong=[futureOf(d), st+"어고 있어요", st+"고 있어", st+"는 있어요"];
+    qs.push({type:"Сейчас делаю: -고 있어요", prompt:`<span class="ko">${d}</span> <span style="font-size:15px;color:var(--muted)">(${ru})</span>`, options:uniqOpts(ans,wrong), answer:ans, say:ans,
+      explain:`<span class="ko">${ans}</span>: основа + <span class="ko">고 있어요</span>, без изменений.`});
+  });
+  const T=[["어제 친구를 ___.","만났어요",["만날 거예요","만나고 있어요"],"«вчера» → прошедшее"],["내일 영화를 ___.","볼 거예요",["봤어요","보고 있었어요"],"«завтра» → будущее"],["지금 음악을 ___.","듣고 있어요",["들었어요","들을 거예요"],"«сейчас» → -고 있어요"],["다음 주에 부산에 ___.","갈 거예요",["갔어요","가고 있었어요"],"«на следующей неделе» → будущее"],["요즘 한국어를 ___.","배우고 있어요",["배웠어요","배울 거예요"],"«в последнее время» → -고 있어요"],["작년에 서울에 ___.","살았어요",["살 거예요","살고 있어요"],"«в прошлом году» → прошедшее"]];
+  pick(T,3).forEach(([p,a,w,why])=>{
+    qs.push({type:"Какое время нужно?", prompt:`<span class="ko">${p}</span>`, options:uniqOpts(a,w), answer:a, say:p.replace("___",a), explain:`${why}: <span class="ko">${p.replace("___",a)}</span>`});
+  });
+  return shuffle(qs);
+}
+
+/* ---------- pronunciation (browser speech) ---------- */
+const TTS_OK = "speechSynthesis" in window && typeof SpeechSynthesisUtterance === "function";
+let koVoice = null;
+function pickVoice(){
+  if (!TTS_OK) return;
+  try {
+    const vs = speechSynthesis.getVoices();
+    koVoice = vs.find(v => /^ko([-_]|$)/i.test(v.lang)) || null;
+    const note = $("#ttsNote");
+    if (vs.length && !koVoice){ note.hidden = false; note.textContent = "На этом устройстве не найден корейский голос: произношение может звучать неправильно."; }
+    else note.hidden = true;
+  } catch(e){}
+}
+function ttsText(ko){ return String(ko).replace(/\s*\(([^)]+)\)/g, ", $1").replace(/\s*\/\s*/g, ", "); }
+function speak(ko){
+  if (!TTS_OK || !ko) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(ttsText(ko));
+    u.lang = "ko-KR"; if (koVoice) u.voice = koVoice;
+    u.rate = prefs().slow ? 0.6 : 0.9;
+    speechSynthesis.speak(u);
+  } catch(e){}
+}
+const SPK = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3z"/><path d="M16 8.5a4.5 4.5 0 0 1 0 7M18.5 6a8 8 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+const sayBtn = (ko, big) => TTS_OK ? `<button class="say${big?" big":""}" data-say="${esc(ko)}" aria-label="Произнести ${esc(ko)}" title="Произнести">${SPK}</button>` : "";
+function bindSay(root){ (root||panel).querySelectorAll(".say").forEach(b=>b.addEventListener("click", e=>{ e.stopPropagation(); speak(b.dataset.say); })); }
+function autoSay(ko){ if (prefs().auto) speak(ko); }
+
+/* ---------- storage: this browser + cloud sync across devices ---------- */
+const KEY = "ko-study-v1";
+let store = {};
+try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { store = {}; }
+if (!store.lessons){ // migrate the first version's flat shape {l1:{...}, l2:{...}}
+  const old = store; store = { lessons:{}, prefs:{}, updatedAt:0 };
+  for (const k of Object.keys(old)) if (old[k] && old[k].box) store.lessons[k] = old[k];
+  if (Object.keys(store.lessons).length) store.updatedAt = 1;
+}
+store.prefs = Object.assign({auto:true, slow:false, writeDir:"ru"}, store.prefs || {});
+const prefs = () => store.prefs;
+
+function saveLocal(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+function save(){ store.updatedAt = Date.now(); saveLocal(); queueRemote(); }
+function lessonState(id){ store.lessons[id] = store.lessons[id] || {box:{}, seen:{}, best:null}; return store.lessons[id]; }
+function hasProgress(){ return Object.values(store.lessons||{}).some(l => Object.keys(l.seen||{}).length || l.best != null); }
+
+/* ---------- cloud sync (Supabase) ---------- */
+// Fill these two values from Supabase → Project Settings → API. The publishable (anon) key is meant to be public:
+// row-level security on the `progress` table lets each signed-in person read and write only their own row.
+const SUPABASE_URL = "";
+const SUPABASE_KEY = "";
+const sb = (SUPABASE_URL && SUPABASE_KEY && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+let sbUser = null, saveTimer = null, writing = false, dirty = false, pulling = false;
+const SYNC_TEXT = {
+  off: "Прогресс хранится только на этом устройстве: синхронизация ещё не настроена.",
+  local: "Прогресс хранится только на этом устройстве. Войдите, чтобы он был одинаковым на всех ваших устройствах.",
+  connecting: "Проверяю облако…",
+  saving: "Сохраняю…",
+  saved: "Прогресс сохранён в облаке и одинаков на всех ваших устройствах",
+  error: "Нет связи с облаком. Прогресс сохранён на этом устройстве и отправится позже."
+};
+function setSync(s){
+  if (s === "off" && SUPABASE_URL && SUPABASE_KEY) s = "error";
+  $("#sync").dataset.s = s; $("#syncText").textContent = SYNC_TEXT[s];
+  const b = $("#acctBtn"); b.hidden = !sb; b.textContent = sbUser ? "Аккаунт" : "Войти";
+}
+function queueRemote(){ if (!sbUser) return; dirty = true; setSync("saving"); clearTimeout(saveTimer); saveTimer = setTimeout(flush, 1200); }
+async function flush(){
+  if (!sbUser || writing || !dirty) return;
+  writing = true; dirty = false;
+  let error = null;
+  try { ({ error } = await sb.from("progress").upsert({ user_id: sbUser.id, data: JSON.parse(JSON.stringify(store)), updated_at: new Date().toISOString() })); }
+  catch(e){ error = e; }
+  writing = false;
+  if (error){ dirty = true; setSync("error"); clearTimeout(saveTimer); saveTimer = setTimeout(flush, 8000); return; }
+  if (dirty){ clearTimeout(saveTimer); saveTimer = setTimeout(flush, 1200); } else setSync("saved");
+}
+function applyRemote(r){
+  store = JSON.parse(JSON.stringify(r));
+  store.lessons = store.lessons || {};
+  store.prefs = Object.assign({auto:true, slow:false, writeDir:"ru"}, store.prefs || {});
+  saveLocal(); syncPrefsUI(); updateStats();
+  if (mode === "dict") drawDictList();
+}
+async function pull(){
+  if (!sbUser || pulling || writing) return;
+  pulling = true;
+  try {
+    const { data, error } = await sb.from("progress").select("data").eq("user_id", sbUser.id).maybeSingle();
+    if (error){ setSync("error"); return; }
+    const r = data && data.data;
+    if (!r || !r.lessons){ if (hasProgress()){ dirty = true; flush(); } else setSync("saved"); return; }
+    const ru = r.updatedAt || 0, lu = store.updatedAt || 0;
+    if (ru > lu){ applyRemote(r); setSync("saved"); }
+    else if (ru < lu){ dirty = true; flush(); }
+    else setSync(dirty ? "saving" : "saved");
+  } catch(e){ setSync("error"); }
+  finally { pulling = false; }
+}
+async function connect(){
+  if (!sb){ setSync("off"); return; }
+  try { const { data } = await sb.auth.getSession(); sbUser = data.session ? data.session.user : null; } catch(e){ sbUser = null; }
+  sb.auth.onAuthStateChange((ev, session) => {
+    const u = session ? session.user : null;
+    const changed = (u && u.id) !== (sbUser && sbUser.id);
+    sbUser = u;
+    if (!changed) return;
+    // supabase-js: don't await other client calls inside this callback
+    setTimeout(() => { if (u){ setSync("connecting"); pull(); } else setSync("local"); if (mode === "account") renderAccount(); }, 0);
+  });
+  if (sbUser){ setSync("connecting"); pull(); } else setSync("local");
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") pull(); else if (dirty){ clearTimeout(saveTimer); flush(); } });
+  setInterval(() => { if (document.visibilityState === "visible" && !dirty) pull(); }, 60000);
+}
+
+/* ---------- account screen ---------- */
+const AUTH_ERR = [
+  [/invalid login credentials/i, "Неверная почта или пароль."],
+  [/email not confirmed/i, "Сначала подтвердите почту: откройте письмо от Supabase и нажмите ссылку."],
+  [/already registered|already been registered/i, "Такой аккаунт уже есть. Нажмите «Войти»."],
+  [/password should be at least|password.*characters/i, "Пароль должен быть не короче 6 символов."],
+  [/signups? not allowed|signup is disabled/i, "Регистрация новых аккаунтов выключена."],
+  [/rate limit/i, "Слишком много попыток. Подождите минуту и попробуйте снова."],
+  [/fetch|network/i, "Нет связи с интернетом."]
+];
+const authMsg = e => { const m = (e && e.message) || String(e); for (const [re, t] of AUTH_ERR) if (re.test(m)) return t; return m; };
+function renderAccount(){
+  if (!sb){ panel.innerHTML = `<div class="empty">Синхронизация ещё не настроена.</div>`; return; }
+  if (sbUser){
+    panel.innerHTML = `
+      <div class="meta"><span>Аккаунт</span></div>
+      <p>Вы вошли как <b id="acctEmail"></b>. Прогресс сохраняется в облаке и одинаков на всех устройствах, где вы вошли.</p>
+      <div class="row"><button class="btn-main" id="syncNow">Синхронизировать сейчас</button><button id="signOut">Выйти</button></div>
+      <p class="note" id="acctMsg" role="status"></p>`;
+    $("#acctEmail").textContent = sbUser.email || "";
+    $("#syncNow").addEventListener("click", async ()=>{ $("#acctMsg").textContent = "Синхронизирую…"; if (dirty){ clearTimeout(saveTimer); await flush(); } await pull(); $("#acctMsg").textContent = $("#syncText").textContent; });
+    $("#signOut").addEventListener("click", async ()=>{ if (dirty){ clearTimeout(saveTimer); await flush(); } await sb.auth.signOut(); });
+    return;
+  }
+  panel.innerHTML = `
+    <div class="meta"><span>Вход для синхронизации</span></div>
+    <p>Войдите на каждом устройстве под одной почтой — прогресс будет одинаковым везде. В первый раз нажмите «Создать аккаунт».</p>
+    <form id="authForm" class="auth" autocomplete="on">
+      <label for="authEmail">Почта</label>
+      <input type="email" id="authEmail" autocomplete="email" required>
+      <label for="authPass">Пароль (не короче 6 символов)</label>
+      <input type="password" id="authPass" autocomplete="current-password" minlength="6" required>
+      <div class="row"><button class="btn-main" type="submit" id="signIn">Войти</button><button type="button" id="signUp">Создать аккаунт</button></div>
+    </form>
+    <p class="note" id="acctMsg" role="status"></p>`;
+  const msg = t => { $("#acctMsg").textContent = t; };
+  const creds = () => ({ email: $("#authEmail").value.trim(), password: $("#authPass").value });
+  $("#authForm").addEventListener("submit", async e=>{
+    e.preventDefault(); msg("Вхожу…");
+    try { const { error } = await sb.auth.signInWithPassword(creds()); msg(error ? authMsg(error) : ""); } catch(err){ msg(authMsg(err)); }
+  });
+  $("#signUp").addEventListener("click", async ()=>{
+    const c = creds();
+    if (!c.email || c.password.length < 6){ msg("Введите почту и пароль не короче 6 символов."); return; }
+    msg("Создаю аккаунт…");
+    try {
+      const { data, error } = await sb.auth.signUp({ ...c, options: { emailRedirectTo: location.origin + location.pathname } });
+      if (error) msg(authMsg(error));
+      else if (!data.session) msg("Готово. Мы отправили письмо на " + c.email + ": откройте его, нажмите ссылку для подтверждения, затем вернитесь сюда и нажмите «Войти».");
+      else msg("");
+    } catch(err){ msg(authMsg(err)); }
+  });
+}
+
+/* ---------- app state ---------- */
+let lesson = LESSONS[LESSONS.length-1];
+let mode = "notes";
+function $(s){ return document.querySelector(s); }
+const panel = $("#panel");
+
+function initLessonSelect(){
+  const sel = $("#lesson");
+  sel.innerHTML = LESSONS.map((l,i)=>`<option value="${i}">${esc(l.title)}</option>`).join("") +
+    UPCOMING.map(t=>`<option disabled>${esc(t)}</option>`).join("");
+  sel.value = String(LESSONS.length-1);
+  sel.addEventListener("change", ()=>{ lesson = LESSONS[+sel.value]; render(); });
+}
+function syncPrefsUI(){ $("#prefAuto").checked = !!prefs().auto; $("#prefSlow").checked = !!prefs().slow; }
+function initPrefs(){
+  if (!TTS_OK){ $("#prefs").hidden = true; return; }
+  syncPrefsUI();
+  $("#prefAuto").addEventListener("change", e=>{ prefs().auto = e.target.checked; save(); });
+  $("#prefSlow").addEventListener("change", e=>{ prefs().slow = e.target.checked; save(); });
+  pickVoice();
+  try { speechSynthesis.addEventListener("voiceschanged", pickVoice); } catch(e){}
+}
+
+function boxOf(w){ return lessonState(lesson.id).box[w[0]] || 0; }
+function setBox(w, b){ const st = lessonState(lesson.id); st.box[w[0]] = Math.max(0, Math.min(4,b)); st.seen[w[0]] = true; save(); updateStats(); }
+function mistakes(){ const st = lessonState(lesson.id); return lesson.words.filter(w => st.seen[w[0]] && (st.box[w[0]]||0) === 0); }
+
+function updateStats(){
+  const st = lessonState(lesson.id);
+  const learned = lesson.words.filter(w => (st.box[w[0]]||0) >= 3).length;
+  $("#sLearned").textContent = `${learned}/${lesson.words.length}`;
+  $("#sBar").style.width = Math.round(100*learned/lesson.words.length) + "%";
+  $("#sReview").textContent = mistakes().length;
+  $("#sBest").textContent = st.best == null ? "—" : st.best + "%";
+}
+
+/* ---------- flashcards ---------- */
+let deck = [], di = 0, flipped = false, dir = "ko";
+function makeDeck(source, n){
+  // weaker words first, shuffled inside each box
+  const byBox = [0,1,2,3,4].map(b => shuffle(source.filter(w => boxOf(w) === b)));
+  return byBox.flat().slice(0, n || 20);
+}
+function renderCards(source, isReview){
+  if (!deck.length || di >= deck.length) { deck = makeDeck(source); di = 0; }
+  if (!deck.length){
+    panel.innerHTML = `<div class="empty">${isReview ? "Ошибок на повторение нет. Пройдите карточки или тест — слова, в которых вы ошибётесь, появятся здесь." : "Слов нет."}</div>`;
+    return;
+  }
+  const w = deck[di];
+  const front = dir === "ko" ? w[0] : w[1];
+  const back = dir === "ko" ? w[1] : w[0];
+  const koVisible = dir === "ko" || flipped;
+  panel.innerHTML = `
+    <div class="meta"><span>${isReview?"Повтор ошибок":"Карточки"} · ${di+1} из ${deck.length}</span>
+      <button class="link" id="dirBtn">${dir==="ko"?"Корейский → русский":"Русский → корейский"} (сменить)</button></div>
+    <div class="card" id="card" tabindex="0" role="button" aria-label="Перевернуть карточку">
+      ${koVisible ? sayBtn(w[0]) : ""}
+      <div class="front ${dir==="ru"?"ru":""}">${esc(front)}</div>
+      ${flipped ? `<div class="back ${dir==="ru"?"ko":""}">${esc(back)}</div>` : `<div class="tip">Нажмите, чтобы увидеть перевод</div>`}
+      <span class="chip">уровень ${boxOf(w)} из 4</span>
+    </div>
+    <div class="row">
+      <button class="btn-bad" id="no" ${flipped?"":"disabled"}>Не помню</button>
+      <button class="btn-good" id="yes" ${flipped?"":"disabled"}>Помню</button>
+    </div>`;
+  bindSay();
+  const flip = ()=>{ if (flipped) return; flipped = true; renderCards(source,isReview); if (dir === "ru") autoSay(w[0]); };
+  $("#card").addEventListener("click", flip);
+  $("#card").addEventListener("keydown", e=>{ if(e.key===" "||e.key==="Enter"){e.preventDefault();flip();} });
+  $("#dirBtn").addEventListener("click", e=>{ e.stopPropagation(); dir = dir==="ko"?"ru":"ko"; flipped=false; renderCards(source,isReview); });
+  $("#no").addEventListener("click", ()=>{ setBox(w,0); next(); });
+  $("#yes").addEventListener("click", ()=>{ setBox(w, boxOf(w)+1); next(); });
+  function next(){ di++; flipped=false;
+    if (di >= deck.length){
+      panel.innerHTML = `<div class="empty"><div class="result">Готово</div><p>Колода пройдена. Слова, которые вы не вспомнили, попали в «Повтор ошибок».</p><button class="btn-main" id="again">Ещё 20 карточек</button></div>`;
+      $("#again").addEventListener("click", ()=>{ deck=[]; renderCards(isReview?mistakes():lesson.words, isReview); });
+      return;
+    }
+    renderCards(source,isReview);
+    if (dir === "ko") autoSay(deck[di][0]);
+  }
+}
+
+/* ---------- conspect reader ---------- */
+const HANGUL_RUN = /[가-힣ㄱ-ㅣ](?:[가-힣ㄱ-ㅣ?!.]| (?=[가-힣ㄱ-ㅣ]))*/g;
+function wrapHangul(root){
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  for (const n of nodes){
+    const t = n.nodeValue; HANGUL_RUN.lastIndex = 0;
+    if (!HANGUL_RUN.test(t)) continue;
+    HANGUL_RUN.lastIndex = 0;
+    const frag = document.createDocumentFragment(); let last = 0, m;
+    while ((m = HANGUL_RUN.exec(t))){
+      if (m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+      const s = document.createElement("span"); s.className = "kw"; s.textContent = m[0];
+      frag.appendChild(s); last = m.index + m[0].length;
+    }
+    if (last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+    n.parentNode.replaceChild(frag, n);
+  }
+}
+function renderConspect(){
+  const html = CONSPECT[lesson.id];
+  if (!html){ panel.innerHTML = `<div class="empty">Конспекта к этому уроку пока нет.</div>`; return; }
+  panel.innerHTML = `<article class="cs">
+    <h2>${esc(lesson.title)}</h2>
+    <nav class="toc" aria-label="Разделы конспекта" id="toc"></nav>
+    ${TTS_OK ? `<p class="note">Нажмите на любое корейское слово или фразу, чтобы услышать произношение.</p>` : ""}
+    ${html}
+  </article>`;
+  $("#csWords").innerHTML = `<div class="wl">${lesson.words.map(([k,r])=>`<div>${esc(k)}</div><div>${esc(r)}</div>`).join("")}</div>`;
+  const cs = panel.querySelector(".cs");
+  $("#toc").innerHTML = [...cs.querySelectorAll("h3[id]")].map(h=>`<button data-to="${h.id}">${esc(h.textContent.replace(/^\d+\.\s*/,""))}</button>`).join("");
+  $("#toc").querySelectorAll("button").forEach(b=>b.addEventListener("click", ()=>document.getElementById(b.dataset.to).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"})));
+  if (TTS_OK){ wrapHangul(cs); cs.classList.add("tts"); }
+}
+panel.addEventListener("click", e=>{ const k = e.target.closest && e.target.closest(".cs.tts .kw"); if (k) speak(k.textContent); });
+
+/* ---------- dictionary: every lesson's words by category ---------- */
+function lessonGroups(l){
+  const out = []; let i = 0;
+  for (const [name, n] of (l.cats || [])){ out.push([name, l.words.slice(i, i+n)]); i += n; }
+  if (i < l.words.length) out.push(["Другие слова", l.words.slice(i)]);
+  return out;
+}
+const LEVEL_TEXT = ["новое","1 из 4","2 из 4","выучено","выучено"];
+function renderDict(){
+  panel.innerHTML = `
+    <div class="meta"><span>Словарь · все слова по урокам и темам</span><span>${LESSONS.reduce((s,l)=>s+l.words.length,0)} слов</span></div>
+    <input type="text" id="dictSearch" placeholder="Поиск: по-корейски или по-русски" aria-label="Поиск по словарю" autocomplete="off" value="${esc(dictQuery)}">
+    <nav class="toc" aria-label="Уроки">${LESSONS.map(l=>`<button data-to="d-${l.id}">${esc(l.title.split(" · ")[0])}</button>`).join("")}</nav>
+    <div id="dictList"></div>`;
+  const inp = $("#dictSearch");
+  inp.addEventListener("input", ()=>{ dictQuery = inp.value; drawDictList(); });
+  panel.querySelectorAll(".toc button").forEach(b=>b.addEventListener("click", ()=>{ const el = document.getElementById(b.dataset.to); if (el) el.scrollIntoView({block:"start"}); }));
+  drawDictList();
+}
+let dictQuery = "";
+function drawDictList(){
+  const q = dictQuery.trim().toLowerCase().replace(/ё/g,"е");
+  const match = w => !q || w[0].toLowerCase().includes(q) || w[1].toLowerCase().replace(/ё/g,"е").includes(q);
+  let total = 0;
+  const html = LESSONS.map(l=>{
+    const st = (store.lessons||{})[l.id] || {box:{}, seen:{}};
+    const groups = lessonGroups(l).map(([name, ws])=>[name, ws.filter(match)]).filter(g=>g[1].length);
+    if (!groups.length) return "";
+    return `<section class="dl" id="d-${l.id}"><h3>${esc(l.title)}</h3>${groups.map(([name, ws])=>{
+      total += ws.length;
+      return `<div class="dg"><h4>${esc(name)} <span>${ws.length}</span></h4><ul>${ws.map(w=>{
+        const b = st.box[w[0]] || 0, seen = st.seen[w[0]];
+        const lv = !seen ? "" : b >= 3 ? "ok" : b === 0 ? "bad" : "mid";
+        return `<li>${sayBtn(w[0])}<span class="dk">${esc(w[0])}</span><span class="dr">${esc(w[1])}</span><i class="lv ${lv}" title="${seen ? (b===0?"на повторении":LEVEL_TEXT[b]) : "ещё не встречалось"}"></i></li>`;
+      }).join("")}</ul></div>`;
+    }).join("")}</section>`;
+  }).join("");
+  $("#dictList").innerHTML = html || `<div class="empty">Ничего не нашлось по запросу «${esc(dictQuery)}».</div>`;
+  bindSay($("#dictList"));
+}
+
+/* ---------- write it yourself ---------- */
+const normKo = s => String(s).replace(/[\s.,!?~·…'"«»()\-]/g, "");
+const normRu = s => String(s).toLowerCase().replace(/ё/g,"е").replace(/[^a-zа-я0-9]/g, "");
+function koVariants(s){
+  const out = new Set([s, s.replace(/\s*\([^)]*\)/g,"")]);
+  (s.match(/\(([^)]+)\)/g)||[]).forEach(m=>out.add(m.slice(1,-1)));
+  s.split("/").forEach(p=>out.add(p));
+  return [...out].map(normKo).filter(Boolean);
+}
+function ruVariants(s){
+  const out = new Set();
+  [s, s.replace(/\([^)]*\)/g,"")].forEach(v=>{ out.add(v); v.split(/[;,/]/).forEach(p=>out.add(p)); });
+  return [...out].map(normRu).filter(Boolean);
+}
+const koMain = s => s.replace(/\s*\([^)]*\)/g,"").split("/")[0].trim();
+const ruMain = s => s.replace(/\([^)]*\)/g,"").split(/[;,]/)[0].trim();
+
+let ws = null; // write session
+const WRITE_DIRS = [["ru","Русский → корейский"],["ko","Корейский → русский"],["listen","Диктант"]];
+function newWriteSession(){
+  let d = prefs().writeDir; if (d === "listen" && !TTS_OK) d = "ru";
+  return { dir:d, items: makeDeck(lesson.words, 10), i:0, score:0, missed:[], state:"ask", hints:0, prevBox:0 };
+}
+function renderWrite(){
+  const w = ws.items[ws.i];
+  if (!w) return renderWriteEnd();
+  const toKo = ws.dir !== "ko";
+  const target = toKo ? w[0] : w[1];
+  const prompt = ws.dir === "ru" ? `<span class="ru">${esc(w[1])}</span>`
+    : ws.dir === "ko" ? `<span class="ko">${esc(w[0])}</span>${sayBtn(w[0])}`
+    : `${sayBtn(w[0], true)}`;
+  const hintText = ws.hints ? (toKo ? koMain(target) : ruMain(target)).slice(0, ws.hints) + "…" : "";
+  const answered = ws.state !== "ask";
+  panel.innerHTML = `
+    <div class="meta"><span>Напиши сам · ${ws.i+1} из ${ws.items.length} · верно: ${ws.score}</span>
+      <span class="seg" role="group" aria-label="Направление">${WRITE_DIRS.filter(d=>TTS_OK||d[0]!=="listen").map(([k,t])=>`<button data-wd="${k}" aria-pressed="${ws.dir===k}">${t}</button>`).join("")}</span></div>
+    <div class="q">${ws.dir==="ru"?"Напишите по-корейски":ws.dir==="ko"?"Напишите перевод по-русски":"Послушайте и напишите по-корейски"}</div>
+    <div class="write-prompt">${prompt}</div>
+    <form id="wForm" autocomplete="off">
+      <input type="text" id="writeInput" lang="${toKo?"ko":"ru"}" autocapitalize="off" autocorrect="off" spellcheck="false"
+        placeholder="${toKo?"한글로 쓰세요":"перевод"}" aria-label="Ваш ответ" ${answered?"readonly":""}
+        class="${ws.state==="right"?"ok":ws.state==="wrong"?"no":""}" value="${esc(ws.typed||"")}">
+    </form>
+    ${hintText && !answered ? `<div class="hint">Подсказка: ${esc(hintText)}</div>` : ""}
+    ${!answered ? `<div class="row">
+        <button id="wHint">Подсказка</button>
+        <button id="wSkip">Не знаю</button>
+        <button class="btn-main" id="wCheck">Проверить</button>
+      </div>` : `
+      <div class="explain ${ws.state==="right"?"":"bad"}">${sayBtn(w[0])}<div>
+        ${ws.state==="right" ? `<b>Верно${ws.hints?" (с подсказкой)":""}.</b> ` : `<b>${ws.typed?"Неверно.":"Правильный ответ:"}</b> `}
+        <span class="ko">${esc(w[0])}</span> — ${esc(w[1])}
+        ${ws.state==="wrong" && ws.typed ? `<br><span class="q">Ваш ответ: ${esc(ws.typed)}</span>` : ""}
+      </div></div>
+      <div class="row">
+        ${ws.state==="wrong" && ws.typed ? `<button id="wOverride">Засчитать как верный</button>` : ""}
+        <button class="btn-main" id="wNext">${ws.i+1<ws.items.length?"Дальше":"Результат"}</button>
+      </div>`}
+    ${toKo && !answered ? `<details class="note"><summary>Как включить корейскую клавиатуру</summary>
+      iPhone: Настройки → Основные → Клавиатура → Клавиатуры → Новые клавиатуры → Корейский (стандартная).
+      Android: Gboard → Настройки → Языки → Добавить → Корейский.
+      Mac: Системные настройки → Клавиатура → Источники ввода → «2-Set Korean». Переключение: 🌐 или Ctrl+Пробел.</details>` : ""}`;
+  bindSay();
+  panel.querySelectorAll("[data-wd]").forEach(b=>b.addEventListener("click", ()=>{ prefs().writeDir = b.dataset.wd; save(); ws = newWriteSession(); renderWrite(); if (ws.dir==="listen") speak(ws.items[0]?.[0]); }));
+  const inp = $("#writeInput");
+  $("#wForm").addEventListener("submit", e=>{ e.preventDefault(); if (e.isComposing) return; answered ? goNext() : check(); });
+  if (!answered){
+    inp.addEventListener("input", ()=>{ ws.typed = inp.value; });
+    $("#wCheck").addEventListener("click", check);
+    $("#wSkip").addEventListener("click", ()=>{ ws.typed = ""; fail(); });
+    $("#wHint").addEventListener("click", ()=>{ ws.hints++; ws.typed = inp.value; renderWrite(); });
+    inp.focus();
+  } else {
+    $("#wNext").addEventListener("click", goNext);
+    $("#wOverride")?.addEventListener("click", ()=>{
+      ws.state = "right"; ws.score++; ws.missed = ws.missed.filter(m=>m!==w);
+      setBox(w, ws.prevBox + 1); renderWrite();
+    });
+    $("#wNext").focus();
+  }
+  function check(){
+    const val = inp.value.trim(); ws.typed = val;
+    if (!val) { inp.focus(); return; }
+    const ok = toKo ? koVariants(w[0]).includes(normKo(val)) : ruVariants(w[1]).includes(normRu(val));
+    ws.prevBox = boxOf(w);
+    if (ok){ ws.state = "right"; ws.score++; setBox(w, ws.hints ? ws.prevBox : ws.prevBox + 1); renderWrite(); autoSay(w[0]); }
+    else fail();
+  }
+  function fail(){ ws.prevBox = boxOf(w); ws.state = "wrong"; ws.missed.push(w); setBox(w, 0); renderWrite(); autoSay(w[0]); }
+  function goNext(){
+    ws.i++; ws.state = "ask"; ws.hints = 0; ws.typed = "";
+    renderWrite();
+    const nw = ws.items[ws.i];
+    if (nw && (ws.dir === "listen" || ws.dir === "ko")) (ws.dir === "listen" ? speak : autoSay)(nw[0]);
+  }
+}
+function renderWriteEnd(){
+  if (!ws.items.length){ panel.innerHTML = `<div class="empty">Слов нет.</div>`; return; }
+  panel.innerHTML = `
+    <div class="result">${ws.score} / ${ws.items.length}</div>
+    <p>${ws.score===ws.items.length?"Всё написано верно.":"Слова с ошибками добавлены в «Повтор ошибок»."}</p>
+    ${ws.missed.length?`<div><b>Ошибки:</b><ul class="miss">${ws.missed.map(m=>`<li><span class="ko">${esc(m[0])}</span> — ${esc(m[1])}</li>`).join("")}</ul></div>`:""}
+    <div class="row"><button class="btn-main" id="again">Ещё 10 слов</button></div>`;
+  $("#again").addEventListener("click", ()=>{ ws = newWriteSession(); renderWrite(); if (ws.dir==="listen") speak(ws.items[0]?.[0]); });
+}
+
+/* ---------- quizzes ---------- */
+let quiz = null;
+function newVocabQuiz(){
+  const pool = lesson.words;
+  const items = pick(pool, 10).map((w,i)=>{
+    const toRu = i % 2 === 0;
+    const others = pick(pool.filter(x=>x!==w), 3);
+    return { type: toRu ? "Выберите перевод" : "Как это по-корейски?",
+      prompt: toRu ? `<span class="ko">${esc(w[0])}</span>` : esc(w[1]), promptSay: toRu ? w[0] : null,
+      options: shuffle([w, ...others]).map(x => toRu ? x[1] : x[0]),
+      answer: toRu ? w[1] : w[0], word: w, say: w[0],
+      explain: `<span class="ko">${esc(w[0])}</span> — ${esc(w[1])}` };
+  });
+  return { kind:"vocab", items, i:0, score:0, missed:[], answered:false };
+}
+function newGrammarQuiz(){ return { kind:"grammar", items: lesson.grammar(), i:0, score:0, missed:[], answered:false }; }
+
+function renderQuiz(){
+  const q = quiz.items[quiz.i];
+  if (!q){ return renderQuizEnd(); }
+  panel.innerHTML = `
+    <div class="meta"><span>${quiz.kind==="vocab"?"Тест на слова":"Грамматика"} · вопрос ${quiz.i+1} из ${quiz.items.length}</span><span>верно: ${quiz.score}</span></div>
+    <div class="q">${esc(q.type)}</div>
+    <div class="qline"><div class="qtext">${q.prompt}</div>${q.promptSay ? sayBtn(q.promptSay) : ""}</div>
+    <div class="opts">${q.options.map((o,k)=>`<button data-k="${k}">${esc(o)}</button>`).join("")}</div>
+    <div id="after"></div>`;
+  bindSay();
+  panel.querySelectorAll(".opts button").forEach(b=>b.addEventListener("click", ()=>{
+    if (quiz.answered) return; quiz.answered = true;
+    const chosen = q.options[+b.dataset.k]; const ok = chosen === q.answer;
+    panel.querySelectorAll(".opts button").forEach(x=>{ x.disabled = true; if (q.options[+x.dataset.k]===q.answer) x.classList.add("right"); });
+    if (!ok) b.classList.add("wrong");
+    if (ok) quiz.score++; else quiz.missed.push(q);
+    if (q.word){ ok ? setBox(q.word, boxOf(q.word)+1) : setBox(q.word, 0); }
+    $("#after").innerHTML = `<div class="explain">${q.say ? sayBtn(q.say) : ""}<div>${ok?"<b>Верно.</b> ":"<b>Неверно.</b> "}${q.explain}</div></div>
+      <div class="row" style="margin-top:10px"><button class="btn-main" id="nextQ">${quiz.i+1<quiz.items.length?"Дальше":"Результат"}</button></div>`;
+    bindSay($("#after"));
+    if (q.say) autoSay(q.say);
+    $("#nextQ").addEventListener("click", ()=>{ quiz.i++; quiz.answered=false; renderQuiz(); const nq = quiz.items[quiz.i]; if (nq && nq.promptSay) autoSay(nq.promptSay); });
+    $("#nextQ").focus();
+  }));
+}
+function renderQuizEnd(){
+  const pct = Math.round(100*quiz.score/quiz.items.length);
+  if (quiz.kind === "vocab"){ const st = lessonState(lesson.id); if (st.best == null || pct > st.best){ st.best = pct; save(); updateStats(); } }
+  panel.innerHTML = `
+    <div class="result">${quiz.score} / ${quiz.items.length}</div>
+    <p>${pct===100?"Без ошибок.":pct>=70?"Хороший результат. Разберите ошибки ниже.":"Стоит повторить конспект и пройти ещё раз."}</p>
+    ${quiz.missed.length?`<div><b>Ошибки:</b><ul class="miss">${quiz.missed.map(m=>`<li>${m.explain}</li>`).join("")}</ul></div>`:""}
+    ${quiz.kind==="vocab"&&quiz.missed.length?`<p class="q">Эти слова добавлены в «Повтор ошибок».</p>`:""}
+    <div class="row"><button class="btn-main" id="again">Пройти ещё раз</button></div>`;
+  $("#again").addEventListener("click", ()=>{ quiz = quiz.kind==="vocab"?newVocabQuiz():newGrammarQuiz(); renderQuiz(); });
+}
+
+/* ---------- routing ---------- */
+function render(){
+  updateStats();
+  if (TTS_OK) try { speechSynthesis.cancel(); } catch(e){}
+  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.mode===mode)));
+  deck = []; di = 0; flipped = false;
+  if (mode==="notes") renderConspect();
+  else if (mode==="dict") renderDict();
+  else if (mode==="account") renderAccount();
+  else if (mode==="cards") renderCards(lesson.words, false);
+  else if (mode==="review") renderCards(mistakes(), true);
+  else if (mode==="write"){ ws = newWriteSession(); renderWrite(); }
+  else if (mode==="quiz"){ quiz = newVocabQuiz(); renderQuiz(); }
+  else { quiz = newGrammarQuiz(); renderQuiz(); }
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click", ()=>{ mode = b.dataset.mode; render(); }));
+$("#acctBtn").addEventListener("click", ()=>{ mode = "account"; render(); panel.scrollIntoView({block:"start"}); });
+$("#reset").addEventListener("click", ()=>{ $("#resetConfirm").hidden = false; });
+$("#resetNo").addEventListener("click", ()=>{ $("#resetConfirm").hidden = true; });
+$("#resetYes").addEventListener("click", ()=>{ delete store.lessons[lesson.id]; save(); $("#resetConfirm").hidden = true; render(); });
+
+initLessonSelect();
+initPrefs();
+setSync("local");
+render();
+connect();
+if ("serviceWorker" in navigator) window.addEventListener("load", ()=>{ navigator.serviceWorker.register("./sw.js").catch(()=>{}); });
+</script>
+
+
+</body>
+</html>
