@@ -14,3 +14,6 @@ create policy "insert own progress" on public.progress
   for insert to authenticated with check (auth.uid() = user_id);
 create policy "update own progress" on public.progress
   for update to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- Let signed-in users reach the table through the API (row-level security above still limits them to their own row).
+grant select, insert, update on public.progress to authenticated;

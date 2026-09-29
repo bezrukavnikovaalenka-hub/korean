@@ -985,8 +985,8 @@ function hasProgress(){ return Object.values(store.lessons||{}).some(l => Object
 /* ---------- cloud sync (Supabase) ---------- */
 // Fill these two values from Supabase → Project Settings → API. The publishable (anon) key is meant to be public:
 // row-level security on the `progress` table lets each signed-in person read and write only their own row.
-const SUPABASE_URL = "";
-const SUPABASE_KEY = "";
+const SUPABASE_URL = "https://bzdsmxxroufyzlnttzfb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_tiRYRYeSHXK3yAxQcrWQMw_zO3bjYtJ";
 const sb = (SUPABASE_URL && SUPABASE_KEY && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 let sbUser = null, saveTimer = null, writing = false, dirty = false, pulling = false;
 const SYNC_TEXT = {
