@@ -54,6 +54,8 @@ button:hover{border-color:var(--accent)}
 button:disabled{cursor:default;opacity:.55}
 button:focus-visible,select:focus-visible,input:focus-visible,label.tog:focus-within{outline:2px solid var(--accent);outline-offset:2px}
 nav button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:600}
+select.mini{padding:4px 6px;font-size:13px;max-width:210px}
+#voiceHelp{flex-basis:100%}
 .prefs{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-size:13px;color:var(--muted)}
 label.tog{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border-radius:6px}
 label.tog input{accent-color:var(--accent);width:16px;height:16px;margin:0}
@@ -107,6 +109,44 @@ ul.miss{margin:0;padding-left:18px}
 ul.miss li{margin:3px 0}
 .ko{font-family:var(--ko-sans)}
 .empty{color:var(--muted);text-align:center;padding:30px 10px}
+/* reading */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.book{display:flex;flex-direction:column;padding:0;overflow:hidden;text-align:left;border-radius:12px}
+.book .cover-art,.art{display:block;background:#f3e6cf;line-height:0}
+.book .cover-art svg,.art svg{width:100%;height:auto;display:block}
+.book-info{display:flex;flex-direction:column;gap:4px;padding:10px 12px 12px;min-width:0}
+.book-ko{font-family:var(--ko);font-size:22px;color:var(--ink);line-height:1.2;word-break:keep-all}
+.book-ru{font-size:13px;color:var(--muted)}
+.book-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.chip.later{background:var(--bad-soft);color:var(--bad)}
+.chip.ok{background:var(--good-soft);color:var(--good)}
+.art{margin:0;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.story-title{margin:0;font-family:var(--ko);font-size:28px;color:var(--ink);text-wrap:balance;word-break:keep-all}
+.story-title small{font-family:var(--ui);font-size:15px;color:var(--muted);font-weight:400}
+.lines{display:flex;flex-direction:column;gap:10px}
+.line{border-left:3px solid var(--accent-soft);padding:4px 0 4px 12px;border-radius:2px}
+.line.now{border-left-color:var(--accent);background:var(--accent-soft)}
+.ko-line{margin:0;font-family:var(--ko-sans);font-size:21px;line-height:1.9;word-break:keep-all;overflow-wrap:break-word}
+.w{cursor:pointer;border-radius:4px;padding:1px 1px;border-bottom:1px dotted var(--line)}
+.w:hover,.w:focus-visible{background:var(--accent-soft);outline:none}
+.w.on{background:var(--accent);color:var(--surface)}
+.line-tools{display:flex;align-items:center;gap:10px;margin-top:2px}
+.line-tools .say{width:30px;height:30px}
+.ru-line{margin:4px 0 0;color:var(--muted);font-size:15px}
+.wpop{position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.18);display:flex;flex-direction:column;gap:6px;z-index:5}
+.wp-head{display:flex;align-items:center;gap:10px}
+.wp-ko{font-family:var(--ko);font-size:26px;flex:1;min-width:0;overflow-wrap:anywhere}
+.wp-gl{font-size:15px;line-height:1.5}
+.sub-h{margin:6px 0 0;font-size:17px}
+ol.rq{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ol.rq li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 10px;align-items:center}
+.rq-btns{display:flex;gap:6px}
+.rq-btns button{padding:6px 12px;font-size:14px}
+.rq-btns button.right{background:var(--good-soft);border-color:var(--good);color:var(--good);opacity:1}
+.rq-btns button.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);opacity:1}
+.full-tr{display:flex;flex-direction:column;gap:8px;font-size:15px}
+.full-tr p{margin:0;word-break:keep-all}
+.pager{justify-content:space-between}
 /* conspect */
 .cs{display:flex;flex-direction:column;gap:12px;min-width:0}
 .cs h2{margin:0;font-family:var(--ko);font-size:26px;color:var(--ink);text-wrap:balance}
@@ -190,6 +230,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;display:flex;flex-dir
 
   <nav aria-label="Режимы">
     <button data-mode="notes" aria-pressed="false">Конспект</button>
+    <button data-mode="read" aria-pressed="false">Чтение</button>
     <button data-mode="dict" aria-pressed="false">Словарь</button>
     <button data-mode="cards" aria-pressed="true">Карточки</button>
     <button data-mode="quiz" aria-pressed="false">Тест на слова</button>
@@ -200,7 +241,16 @@ footer{font-size:12px;color:var(--muted);text-align:center;display:flex;flex-dir
 
   <div class="prefs" id="prefs">
     <label class="tog"><input type="checkbox" id="prefAuto"> Озвучивать автоматически</label>
-    <label class="tog"><input type="checkbox" id="prefSlow"> Медленное произношение</label>
+    <label class="tog" for="prefVoice">Голос <select id="prefVoice" class="mini"></select></label>
+    <label class="tog" for="prefRate">Скорость <select id="prefRate" class="mini"><option value="0.6">медленно</option><option value="0.75">спокойно</option><option value="0.9">обычно</option><option value="1.05">быстро</option></select></label>
+    <button class="link" id="voiceTest" type="button">▶ Проверить голос</button>
+    <details class="note" id="voiceHelp"><summary>Как установить голос получше</summary>
+      Программа говорит голосами, которые установлены на вашем устройстве. Лучше всего звучат голоса с пометкой «улучшенный», Premium, Enhanced, Natural или Online.<br>
+      <b>Mac:</b> Системные настройки → Универсальный доступ → Устный контент → Системный голос → Управление голосами → Корейский → скачайте «Yuna (улучшенный)» или Premium.<br>
+      <b>iPhone / iPad:</b> Настройки → Универсальный доступ → Устный контент → Голоса → Корейский → скачайте голос с пометкой «улучшенный».<br>
+      <b>Windows:</b> браузер Edge даёт естественные голоса Microsoft (SunHi, InJoon — Online / Natural).<br>
+      <b>Android:</b> Настройки → Синтез речи → Google → Установить голосовые данные → Корейский.<br>
+      После установки перезагрузите страницу и выберите новый голос в списке.</details>
     <span id="ttsNote" hidden></span>
   </div>
 
@@ -938,14 +988,30 @@ function buildL5Grammar(){
 
 /* ---------- pronunciation (browser speech) ---------- */
 const TTS_OK = "speechSynthesis" in window && typeof SpeechSynthesisUtterance === "function";
-let koVoice = null;
+let koVoice = null, koVoices = [];
+function voiceScore(v){
+  const n = (v.name||"").toLowerCase(); let s = 0;
+  if (/natural|neural|online/.test(n)) s += 6;
+  if (/premium|enhanced|улучш|고품질/.test(n)) s += 5;
+  if (/google/.test(n)) s += 3;
+  if (/yuna|sunhi|injoon|heami|sora|minsu|jimin|seoyeon/.test(n)) s += 1;
+  if (/compact|eloquence|grandma|grandpa|rocko|shelley|sandy|flo|reed|eddy/.test(n)) s -= 4;
+  return s;
+}
 function pickVoice(){
   if (!TTS_OK) return;
   try {
     const vs = speechSynthesis.getVoices();
-    koVoice = vs.find(v => /^ko([-_]|$)/i.test(v.lang)) || null;
+    koVoices = vs.filter(v => /^ko([-_]|$)/i.test(v.lang)).sort((a,b)=>voiceScore(b)-voiceScore(a));
+    koVoice = koVoices.find(v => v.name === prefs().voice) || koVoices[0] || null;
+    const sel = $("#prefVoice");
+    if (sel){
+      sel.innerHTML = koVoices.length ? koVoices.map(v=>`<option value="${esc(v.name)}">${esc(v.name.replace(/^Microsoft\s+/,"").replace(/\s*-\s*Korean.*$/i,""))}${voiceScore(v)>=5?" ★":""}</option>`).join("") : `<option>нет корейских голосов</option>`;
+      sel.disabled = !koVoices.length;
+      if (koVoice) sel.value = koVoice.name;
+    }
     const note = $("#ttsNote");
-    if (vs.length && !koVoice){ note.hidden = false; note.textContent = "На этом устройстве не найден корейский голос: произношение может звучать неправильно."; }
+    if (vs.length && !koVoice){ note.hidden = false; note.textContent = "На этом устройстве не найден корейский голос: установите его (см. «Как установить голос получше»)."; }
     else note.hidden = true;
   } catch(e){}
 }
@@ -956,7 +1022,7 @@ function speak(ko){
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(ttsText(ko));
     u.lang = "ko-KR"; if (koVoice) u.voice = koVoice;
-    u.rate = prefs().slow ? 0.6 : 0.9;
+    u.rate = +prefs().rate || 0.9;
     speechSynthesis.speak(u);
   } catch(e){}
 }
@@ -974,7 +1040,8 @@ if (!store.lessons){ // migrate the first version's flat shape {l1:{...}, l2:{..
   for (const k of Object.keys(old)) if (old[k] && old[k].box) store.lessons[k] = old[k];
   if (Object.keys(store.lessons).length) store.updatedAt = 1;
 }
-store.prefs = Object.assign({auto:true, slow:false, writeDir:"ru"}, store.prefs || {});
+store.prefs = Object.assign({auto:true, slow:false, writeDir:"ru", rate:null, voice:null}, store.prefs || {});
+if (store.prefs.rate == null) store.prefs.rate = store.prefs.slow ? 0.6 : 0.9;
 const prefs = () => store.prefs;
 
 function saveLocal(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
@@ -1016,7 +1083,7 @@ async function flush(){
 function applyRemote(r){
   store = JSON.parse(JSON.stringify(r));
   store.lessons = store.lessons || {};
-  store.prefs = Object.assign({auto:true, slow:false, writeDir:"ru"}, store.prefs || {});
+  store.prefs = Object.assign({auto:true, slow:false, writeDir:"ru", rate:null, voice:null}, store.prefs || {});
   saveLocal(); syncPrefsUI(); updateStats();
   if (mode === "dict") drawDictList();
 }
@@ -1118,12 +1185,14 @@ function initLessonSelect(){
   sel.value = String(LESSONS.length-1);
   sel.addEventListener("change", ()=>{ lesson = LESSONS[+sel.value]; render(); });
 }
-function syncPrefsUI(){ $("#prefAuto").checked = !!prefs().auto; $("#prefSlow").checked = !!prefs().slow; }
+function syncPrefsUI(){ $("#prefAuto").checked = !!prefs().auto; $("#prefRate").value = String(prefs().rate || 0.9); if ($("#prefRate").value === "") $("#prefRate").value = "0.9"; pickVoice(); }
 function initPrefs(){
   if (!TTS_OK){ $("#prefs").hidden = true; return; }
   syncPrefsUI();
   $("#prefAuto").addEventListener("change", e=>{ prefs().auto = e.target.checked; save(); });
-  $("#prefSlow").addEventListener("change", e=>{ prefs().slow = e.target.checked; save(); });
+  $("#prefRate").addEventListener("change", e=>{ prefs().rate = +e.target.value; prefs().slow = prefs().rate < 0.7; save(); speak("안녕하세요. 한국어를 배우고 있어요."); });
+  $("#prefVoice").addEventListener("change", e=>{ prefs().voice = e.target.value; koVoice = koVoices.find(v=>v.name===e.target.value) || koVoice; save(); speak("안녕하세요. 한국어를 배우고 있어요."); });
+  $("#voiceTest").addEventListener("click", ()=>speak("안녕하세요. 저는 한국어를 배우고 있어요. 만나서 반가워요!"));
   pickVoice();
   try { speechSynthesis.addEventListener("voiceschanged", pickVoice); } catch(e){}
 }
@@ -1426,6 +1495,272 @@ function renderQuizEnd(){
   $("#again").addEventListener("click", ()=>{ quiz = quiz.kind==="vocab"?newVocabQuiz():newGrammarQuiz(); renderQuiz(); });
 }
 
+/* ---------- reading: short texts and tales ---------- */
+/* Illustrations: flat picture-book scenes drawn inline; they sit on their own paper card in both themes. */
+const ART = {
+room: `<svg viewBox="0 0 320 190" role="img" aria-label="Комната: стол с компьютером, кровать с кошкой, окно">
+<rect width="320" height="190" fill="#f3e6cf"/><rect y="150" width="320" height="40" fill="#d9b98c"/>
+<rect x="196" y="22" width="92" height="70" rx="4" fill="#bfe3ef" stroke="#7a5a3a" stroke-width="4"/><line x1="242" y1="22" x2="242" y2="92" stroke="#7a5a3a" stroke-width="3"/><circle cx="270" cy="44" r="10" fill="#ffd66b"/>
+<rect x="28" y="96" width="112" height="10" fill="#9a6b43"/><rect x="36" y="106" width="8" height="46" fill="#9a6b43"/><rect x="124" y="106" width="8" height="46" fill="#9a6b43"/>
+<rect x="52" y="60" width="50" height="34" rx="3" fill="#3b4a5a"/><rect x="56" y="64" width="42" height="26" fill="#8fd0c8"/><rect x="72" y="94" width="10" height="4" fill="#3b4a5a"/>
+<rect x="108" y="78" width="22" height="18" fill="#d8504d"/><rect x="110" y="80" width="18" height="3" fill="#fff"/>
+<rect x="170" y="118" width="130" height="30" rx="6" fill="#e9a3a3"/><rect x="170" y="108" width="36" height="20" rx="8" fill="#fff"/><rect x="292" y="96" width="10" height="56" fill="#9a6b43"/><rect x="166" y="112" width="8" height="40" fill="#9a6b43"/>
+<ellipse cx="248" cy="113" rx="22" ry="11" fill="#6b6b6b"/><circle cx="228" cy="104" r="10" fill="#6b6b6b"/><path d="M221 97 l3-8 5 6z M230 96 l5-7 2 8z" fill="#6b6b6b"/><path d="M270 112 q14-2 10-16" stroke="#6b6b6b" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="225" cy="104" r="1.6" fill="#fff"/><circle cx="231" cy="104" r="1.6" fill="#fff"/>
+<rect x="150" y="128" width="14" height="22" rx="2" fill="#b86b3a"/><path d="M157 128 q-14-16-4-26 q6 10 4 26 q4-18 14-20 q2 12-14 20z" fill="#4f9a57"/>
+</svg>`,
+cafe: `<svg viewBox="0 0 320 190" role="img" aria-label="Кафе: прилавок, чашки кофе и пирожные">
+<rect width="320" height="190" fill="#f1e2cc"/><rect x="0" y="0" width="320" height="34" fill="#2f6f6a"/><text x="160" y="23" text-anchor="middle" font-size="16" fill="#fff" font-family="sans-serif">CAFE 카페</text>
+<rect x="20" y="118" width="280" height="72" fill="#8a5a36"/><rect x="20" y="110" width="280" height="12" fill="#6b4428"/>
+<rect x="40" y="50" width="70" height="40" rx="4" fill="#fff" stroke="#6b4428" stroke-width="2"/><text x="75" y="66" text-anchor="middle" font-size="9" fill="#333" font-family="sans-serif">아메리카노 4,000</text><text x="75" y="80" text-anchor="middle" font-size="9" fill="#333" font-family="sans-serif">라테 4,500</text>
+<path d="M150 88 h26 l-3 22 h-20z" fill="#fff" stroke="#6b4428" stroke-width="2"/><path d="M176 94 q9 2 0 10" stroke="#6b4428" stroke-width="2" fill="none"/><path d="M158 82 q4-6 0-10 M166 82 q4-6 0-10" stroke="#b9a58f" stroke-width="2" fill="none"/>
+<path d="M196 88 h26 l-3 22 h-20z" fill="#e8d3b5" stroke="#6b4428" stroke-width="2"/><path d="M222 94 q9 2 0 10" stroke="#6b4428" stroke-width="2" fill="none"/>
+<path d="M240 110 l22-24 22 24z" fill="#f7c9d4"/><rect x="240" y="104" width="44" height="6" fill="#fff"/><circle cx="262" cy="84" r="4" fill="#d8504d"/>
+<circle cx="80" cy="130" r="0" fill="none"/>
+<circle cx="110" cy="118" r="14" fill="#f2c9a0"/><path d="M96 116 q14-20 28 0 q-2-16-14-16 q-12 0-14 16z" fill="#3a2a22"/><circle cx="105" cy="118" r="1.8" fill="#333"/><circle cx="115" cy="118" r="1.8" fill="#333"/><path d="M106 124 q4 3 8 0" stroke="#333" stroke-width="1.5" fill="none"/>
+</svg>`,
+race: `<svg viewBox="0 0 320 190" role="img" aria-label="Заяц и черепаха на старте забега">
+<rect width="320" height="190" fill="#dff0f6"/><rect y="120" width="320" height="70" fill="#9ccf7a"/><path d="M0 150 q160-20 320 0" stroke="#e8d59b" stroke-width="18" fill="none"/>
+<circle cx="270" cy="36" r="16" fill="#ffd66b"/><rect x="40" y="60" width="4" height="70" fill="#7a5a3a"/><rect x="44" y="60" width="40" height="22" fill="#fff" stroke="#7a5a3a"/><text x="64" y="75" text-anchor="middle" font-size="10" fill="#333" font-family="sans-serif">출발</text>
+<ellipse cx="120" cy="140" rx="24" ry="16" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><circle cx="140" cy="122" r="12" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><ellipse cx="136" cy="98" rx="4" ry="15" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><ellipse cx="146" cy="99" rx="4" ry="15" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><circle cx="144" cy="120" r="2" fill="#333"/><circle cx="96" cy="136" r="6" fill="#fff" stroke="#8a8a8a" stroke-width="2"/>
+<ellipse cx="210" cy="146" rx="30" ry="18" fill="#6aa35a"/><path d="M186 146 q24-30 48 0z" fill="#4f7f43"/><path d="M196 138 l14 -10 14 10 M200 146 h20" stroke="#8cc27a" stroke-width="2" fill="none"/><ellipse cx="244" cy="146" rx="10" ry="8" fill="#a3c98a"/><circle cx="247" cy="144" r="1.8" fill="#333"/><rect x="194" y="158" width="8" height="8" rx="3" fill="#a3c98a"/><rect x="220" y="158" width="8" height="8" rx="3" fill="#a3c98a"/>
+</svg>`,
+sleep: `<svg viewBox="0 0 320 190" role="img" aria-label="Заяц спит под деревом, черепаха идёт дальше">
+<rect width="320" height="190" fill="#dff0f6"/><rect y="120" width="320" height="70" fill="#9ccf7a"/><path d="M0 150 q160-20 320 0" stroke="#e8d59b" stroke-width="18" fill="none"/>
+<rect x="66" y="70" width="16" height="64" fill="#8a5a36"/><circle cx="74" cy="60" r="36" fill="#4f9a57"/><circle cx="50" cy="74" r="22" fill="#5aa862"/><circle cx="100" cy="72" r="22" fill="#5aa862"/>
+<ellipse cx="104" cy="140" rx="24" ry="12" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><circle cx="84" cy="134" r="11" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><ellipse cx="72" cy="126" rx="14" ry="4" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><path d="M79 134 h6" stroke="#333" stroke-width="2"/>
+<text x="110" y="112" font-size="16" fill="#5b6b76" font-family="sans-serif">z z Z</text>
+<ellipse cx="236" cy="146" rx="30" ry="18" fill="#6aa35a"/><path d="M212 146 q24-30 48 0z" fill="#4f7f43"/><ellipse cx="270" cy="146" rx="10" ry="8" fill="#a3c98a"/><circle cx="273" cy="144" r="1.8" fill="#333"/><rect x="220" y="158" width="8" height="8" rx="3" fill="#a3c98a"/><rect x="246" y="158" width="8" height="8" rx="3" fill="#a3c98a"/>
+</svg>`,
+finish: `<svg viewBox="0 0 320 190" role="img" aria-label="Черепаха первой пришла к финишу">
+<rect width="320" height="190" fill="#dff0f6"/><rect y="120" width="320" height="70" fill="#9ccf7a"/>
+<rect x="230" y="56" width="4" height="84" fill="#7a5a3a"/><rect x="296" y="56" width="4" height="84" fill="#7a5a3a"/><rect x="234" y="58" width="62" height="20" fill="#fff" stroke="#7a5a3a"/><text x="265" y="72" text-anchor="middle" font-size="10" fill="#333" font-family="sans-serif">도착</text>
+<ellipse cx="258" cy="146" rx="30" ry="18" fill="#6aa35a"/><path d="M234 146 q24-30 48 0z" fill="#4f7f43"/><ellipse cx="292" cy="140" rx="10" ry="8" fill="#a3c98a"/><circle cx="295" cy="138" r="1.8" fill="#333"/><path d="M288 144 q4 3 8 0" stroke="#333" stroke-width="1.5" fill="none"/>
+<path d="M250 110 l4 -10 4 10 10 0 -8 6 3 10 -9-6 -9 6 3-10 -8-6z" fill="#ffd66b"/>
+<ellipse cx="70" cy="140" rx="22" ry="14" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><circle cx="92" cy="124" r="11" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><ellipse cx="88" cy="102" rx="4" ry="13" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><ellipse cx="98" cy="103" rx="4" ry="13" fill="#f4f1ea" stroke="#8a8a8a" stroke-width="2"/><circle cx="95" cy="122" r="2" fill="#333"/><text x="106" y="110" font-size="18" fill="#d8504d" font-family="sans-serif">!?</text>
+</svg>`,
+pond: `<svg viewBox="0 0 320 190" role="img" aria-label="Дровосек плачет у пруда в горах">
+<rect width="320" height="190" fill="#e3f0dc"/><path d="M0 100 l70-60 60 50 50-40 80 70 60-30 v100 h-320z" fill="#8fbf7a"/><path d="M0 120 h320 v70 h-320z" fill="#7aae67"/>
+<ellipse cx="200" cy="150" rx="90" ry="26" fill="#6fb6d8"/><ellipse cx="200" cy="146" rx="70" ry="16" fill="#8fd0ec"/><path d="M190 146 q10-8 20 0" stroke="#fff" stroke-width="2" fill="none"/>
+<circle cx="70" cy="104" r="12" fill="#f2c9a0"/><path d="M58 100 q12-14 24 0z" fill="#3a2a22"/><rect x="60" y="116" width="20" height="28" rx="4" fill="#b8623a"/><rect x="61" y="144" width="7" height="16" fill="#4a3a2a"/><rect x="72" y="144" width="7" height="16" fill="#4a3a2a"/><path d="M66 108 q0 6 -2 8 M75 108 q0 6 2 8" stroke="#5aa9d6" stroke-width="2"/>
+<circle cx="200" cy="140" r="4" fill="#fff" opacity=".8"/><circle cx="208" cy="136" r="2.5" fill="#fff" opacity=".8"/>
+</svg>`,
+spirit: `<svg viewBox="0 0 320 190" role="img" aria-label="Горный дух выходит из пруда с золотым и серебряным топорами">
+<rect width="320" height="190" fill="#e3f0dc"/><path d="M0 120 h320 v70 h-320z" fill="#7aae67"/><ellipse cx="170" cy="156" rx="110" ry="26" fill="#6fb6d8"/>
+<path d="M140 150 q30-110 60 0z" fill="#fff" opacity=".9"/><circle cx="170" cy="70" r="14" fill="#f5dcc0"/><path d="M158 76 q12 30 24 0" fill="#f4f1ea" stroke="#c9c2b5"/><path d="M156 64 q14-18 28 0" fill="#f4f1ea"/><circle cx="165" cy="68" r="1.6" fill="#333"/><circle cx="175" cy="68" r="1.6" fill="#333"/>
+<rect x="116" y="86" width="4" height="40" fill="#7a5a3a" transform="rotate(-20 118 106)"/><path d="M104 84 q10-14 22-4 l-6 14z" fill="#f2c230" stroke="#b8901a"/>
+<rect x="220" y="86" width="4" height="40" fill="#7a5a3a" transform="rotate(20 222 106)"/><path d="M236 84 q-10-14 -22-4 l6 14z" fill="#d7dde3" stroke="#8a95a0"/>
+<circle cx="50" cy="104" r="12" fill="#f2c9a0"/><path d="M38 100 q12-14 24 0z" fill="#3a2a22"/><rect x="40" y="116" width="20" height="28" rx="4" fill="#b8623a"/><text x="62" y="92" font-size="16" fill="#d8504d" font-family="sans-serif">?</text>
+</svg>`,
+happy: `<svg viewBox="0 0 320 190" role="img" aria-label="Дровосек с тремя топорами у своего дома">
+<rect width="320" height="190" fill="#fbecc8"/><path d="M0 130 h320 v60 h-320z" fill="#9ccf7a"/><circle cx="270" cy="40" r="18" fill="#ffd66b"/>
+<rect x="170" y="80" width="100" height="56" fill="#e7c9a0"/><path d="M160 84 l60-40 60 40z" fill="#8a5a36"/><rect x="208" y="104" width="22" height="32" fill="#7a5a3a"/><rect x="182" y="96" width="18" height="16" fill="#bfe3ef"/>
+<circle cx="90" cy="100" r="13" fill="#f2c9a0"/><path d="M77 96 q13-15 26 0z" fill="#3a2a22"/><path d="M84 104 q6 5 12 0" stroke="#333" stroke-width="1.6" fill="none"/><rect x="79" y="113" width="22" height="30" rx="4" fill="#b8623a"/><rect x="80" y="143" width="8" height="16" fill="#4a3a2a"/><rect x="92" y="143" width="8" height="16" fill="#4a3a2a"/>
+<path d="M40 118 q8-10 16-2 l-5 10z" fill="#f2c230"/><rect x="46" y="120" width="3" height="30" fill="#7a5a3a"/><path d="M122 118 q8-10 16-2 l-5 10z" fill="#d7dde3"/><rect x="128" y="120" width="3" height="30" fill="#7a5a3a"/><path d="M140 136 q8-10 16-2 l-5 10z" fill="#8a8f94"/><rect x="146" y="138" width="3" height="22" fill="#7a5a3a"/>
+</svg>`
+};
+
+/* Each sentence: [korean, russian]. Glossary keys are words as written in the text (without punctuation). */
+const STORIES = [
+{ id:"s1", title:"제 방", ru:"Моя комната", after:1, kind:"Текст",
+  pages:[
+    { art:"room", lines:[
+      ["여기는 제 방이에요.","Это моя комната."],
+      ["방에 책상이 있어요.","В комнате есть стол."],
+      ["책상 위에 컴퓨터하고 책이 있어요.","На столе компьютер и книга."],
+      ["창문 옆에 침대가 있어요.","У окна кровать."],
+      ["침대 위에 고양이가 있어요.","На кровати кошка."],
+      ["고양이 이름은 나비예요.","Кошку зовут Наби."],
+      ["나비는 제 친구예요.","Наби — мой друг."],
+      ["방에 텔레비전이 없어요.","Телевизора в комнате нет."]
+    ]}
+  ],
+  gloss:{
+    "여기는":"여기 — здесь, это место + 는 (частица темы: «что касается…»)","제":"мой (вежливо)","방이에요":"방 — комната + 이에요 — «это …» (урок 1)","방에":"방 — комната + 에 — в","책상이":"책상 — (письменный) стол + 이 (подлежащее)","있어요":"있다 — есть, находится","책상":"письменный стол","위에":"위 — верх + 에 → «на»","컴퓨터하고":"컴퓨터 — компьютер + 하고 — и","책이":"책 — книга + 이","창문":"окно","옆에":"옆 — бок + 에 → «рядом, у»","침대가":"침대 — кровать + 가 (подлежащее)","침대":"кровать","고양이가":"고양이 — кошка + 가","고양이":"кошка","이름은":"이름 — имя + 은 (тема)","나비예요":"나비 — Наби (кличка; букв. «бабочка») + 예요","나비는":"나비 — Наби + 는 (тема)","친구예요":"친구 — друг + 예요","텔레비전이":"텔레비전 — телевизор + 이","없어요":"없다 — нет, отсутствует"
+  },
+  questions:[["На столе есть компьютер.",true],["Кошка спит под кроватью.",false],["В комнате есть телевизор.",false],["Кошку зовут Наби.",true]]
+},
+{ id:"s2", title:"카페에서", ru:"В кафе", after:2, kind:"Диалог",
+  pages:[
+    { art:"cafe", lines:[
+      ["직원: 어서 오세요!","Сотрудник: Добро пожаловать!"],
+      ["민지: 안녕하세요. 아메리카노 한 잔하고 라테 한 잔 주세요.","Минджи: Здравствуйте. Один американо и один латте, пожалуйста."],
+      ["직원: 케이크도 있어요.","Сотрудник: У нас есть и пирожные."],
+      ["민지: 케이크는 얼마예요?","Минджи: Сколько стоит пирожное?"],
+      ["직원: 한 개에 오천오백 원이에요.","Сотрудник: 5 500 вон за штуку."],
+      ["민지: 그럼 케이크 두 개 주세요.","Минджи: Тогда два пирожных, пожалуйста."],
+      ["직원: 네. 모두 만 구천오백 원이에요.","Сотрудник: Хорошо. Всего 19 500 вон."],
+      ["민지: 여기 있어요.","Минджи: Вот, пожалуйста."],
+      ["직원: 감사합니다. 맛있게 드세요!","Сотрудник: Спасибо. Приятного аппетита!"]
+    ]}
+  ],
+  gloss:{
+    "직원":"сотрудник, работник","어서":"скорее, пожалуйста (в приветствии)","오세요":"오다 — приходить; -세요 — вежливая просьба. 어서 오세요 — «добро пожаловать»","민지":"Минджи (имя)","안녕하세요":"здравствуйте","아메리카노":"американо","한":"하나 — один (краткая форма перед счётным словом, урок 2)","잔하고":"잔 — чашка (счётное слово) + 하고 — и","라테":"латте","잔":"чашка (счётное слово)","주세요":"дайте, пожалуйста","케이크도":"케이크 — пирожное, торт + 도 — тоже, и","케이크는":"케이크 — пирожное + 는 (тема: «а пирожное…»)","케이크":"пирожное, торт","있어요":"있다 — есть","얼마예요":"얼마 — сколько (о цене) + 예요","개에":"개 — штука + 에 — за (цена за единицу)","오천오백":"5 500 (китайские числа: 오천 + 오백)","원이에요":"원 — вона + 이에요","그럼":"тогда, в таком случае","두":"둘 — два (краткая форма)","개":"штука (счётное слово)","네":"да; хорошо","모두":"всего, все вместе","만":"10 000","구천오백":"9 500 → всего 만 구천오백 = 19 500","여기":"здесь, вот","감사합니다":"спасибо (официально-вежливо)","맛있게":"맛있다 — вкусный → 맛있게 — вкусно","드세요":"드시다 — есть (вежливо) + -세요. 맛있게 드세요 — «приятного аппетита»"
+  },
+  questions:[["Минджи заказала два американо.",false],["Пирожное стоит 5 500 вон.",true],["Минджи взяла одно пирожное.",false],["Всего она заплатила 19 500 вон.",true]]
+},
+{ id:"s3", title:"토끼와 거북이", ru:"Заяц и черепаха", after:4, kind:"Сказка",
+  pages:[
+    { art:"race", lines:[
+      ["옛날에 토끼하고 거북이가 살았어요.","Давным-давно жили заяц и черепаха."],
+      ["토끼는 빨랐어요. 거북이는 느렸어요.","Заяц был быстрым. Черепаха была медленной."],
+      ["어느 날 토끼가 말했어요.","Однажды заяц сказал:"],
+      ["\"거북이 씨, 우리 달리기 시합을 해요!\"","«Черепаха, давай устроим забег!»"],
+      ["거북이가 대답했어요. \"좋아요!\"","Черепаха ответила: «Хорошо!»"]
+    ]},
+    { art:"sleep", lines:[
+      ["토끼는 아주 빨리 달렸어요.","Заяц побежал очень быстро."],
+      ["거북이는 천천히 걸었어요.","Черепаха шла медленно."],
+      ["토끼가 뒤를 봤어요. 거북이가 없었어요.","Заяц оглянулся. Черепахи не было."],
+      ["\"시간이 많아요. 좀 잘 거예요.\"","«Времени много. Посплю немного»."],
+      ["토끼는 나무 밑에서 잤어요.","Заяц заснул под деревом."],
+      ["거북이는 계속 걸었어요.","А черепаха всё шла и шла."]
+    ]},
+    { art:"finish", lines:[
+      ["토끼가 일어났어요.","Заяц проснулся."],
+      ["그런데 거북이가 벌써 도착했어요!","Но черепаха уже пришла к финишу!"],
+      ["거북이가 이겼어요.","Черепаха победила."],
+      ["천천히, 하지만 계속!","Медленно, но упорно!"]
+    ]}
+  ],
+  gloss:{
+    "옛날에":"옛날 — давние времена + 에 → «давным-давно» (так начинаются сказки)","토끼하고":"토끼 — заяц + 하고 — и","거북이가":"거북이 — черепаха + 가 (подлежащее)","살았어요":"살다 — жить → прошедшее (урок 4)","토끼는":"토끼 — заяц + 는 (тема; противопоставление «а заяц…»)","빨랐어요":"빠르다 — быстрый → 빨랐어요 (неправильный глагол на 르, как 모르다 → 몰랐어요)","거북이는":"거북이 — черепаха + 는 (тема)","느렸어요":"느리다 — медленный → 느렸어요 (ㅣ + 었 → 렸)","어느":"какой-то, некий","날":"день. 어느 날 — однажды","토끼가":"토끼 — заяц + 가","말했어요":"말하다 — говорить → 말했어요","거북이":"черепаха","씨":"вежливое обращение после имени (здесь в шутку: «госпожа черепаха»)","우리":"мы. В начале предложения — «давай(те) мы…»","달리기":"бег (달리다 — бегать)","시합을":"시합 — состязание + 을. 달리기 시합 — забег","해요":"하다 — делать; здесь предложение: «давай сделаем» (урок 3: -요 служит и предложением)","대답했어요":"대답하다 — отвечать → прошедшее","좋아요":"좋다 — хороший → «хорошо, согласен»","아주":"очень","빨리":"быстро","달렸어요":"달리다 — бегать → 달렸어요","천천히":"медленно","걸었어요":"걷다 — идти пешком → 걸었어요 (неправильный, как 듣다 → 들었어요)","뒤를":"뒤 — зад + 를. 뒤를 보다 — оглянуться","봤어요":"보다 — смотреть → 봤어요","없었어요":"없다 — нет → 없었어요 «не было»","시간이":"시간 — время + 이","많아요":"많다 — много (есть много)","좀":"немного","잘":"자다 — спать → 잘 (будущее, урок 5: 잘 거예요 — посплю)","거예요":"часть будущего времени -(으)ㄹ 거예요","나무":"дерево","밑에서":"밑 — низ + 에서 → «под» (место действия)","잤어요":"자다 — спать → 잤어요","계속":"продолжая, всё время","일어났어요":"일어나다 — вставать, просыпаться → 일어났어요","그런데":"но, однако","벌써":"уже","도착했어요":"도착하다 — прибывать → 도착했어요","이겼어요":"이기다 — победить → 이겼어요","천천히,":"медленно","하지만":"но","계속!":"продолжая, упорно"
+  },
+  questions:[["Заяц был медленным.",false],["Заяц предложил устроить забег.",true],["Черепаха заснула под деревом.",false],["Черепаха пришла первой.",true]]
+},
+{ id:"s4", title:"금도끼 은도끼", ru:"Золотой топор, серебряный топор", after:5, kind:"Корейская сказка",
+  pages:[
+    { art:"pond", lines:[
+      ["옛날에 한 나무꾼이 살았어요.","Давным-давно жил один дровосек."],
+      ["나무꾼은 가난했어요. 하지만 착했어요.","Дровосек был бедным, но добрым."],
+      ["어느 날 나무꾼이 산에서 나무를 했어요.","Однажды дровосек рубил дрова в горах."],
+      ["그런데 도끼가 연못에 빠졌어요.","И вдруг топор упал в пруд."],
+      ["나무꾼은 울었어요.","Дровосек заплакал."]
+    ]},
+    { art:"spirit", lines:[
+      ["그때 연못에서 산신령이 나왔어요.","Тогда из пруда вышел горный дух."],
+      ["산신령이 금도끼를 보여 줬어요. \"이게 당신 도끼예요?\"","Дух показал золотой топор: «Это ваш топор?»"],
+      ["나무꾼이 대답했어요. \"아니요, 제 도끼가 아니에요.\"","Дровосек ответил: «Нет, это не мой топор»."],
+      ["산신령이 은도끼를 보여 줬어요. \"그럼 이게 당신 도끼예요?\"","Дух показал серебряный топор: «Тогда, может, этот?»"],
+      ["\"아니요, 그것도 아니에요.\"","«Нет, и это не мой»."],
+      ["마지막으로 쇠도끼를 보여 줬어요. \"네! 그게 제 도끼예요!\"","Наконец дух показал железный топор. «Да! Это мой топор!»"]
+    ]},
+    { art:"happy", lines:[
+      ["산신령이 웃었어요. \"당신은 정직한 사람이에요.\"","Дух улыбнулся: «Вы честный человек»."],
+      ["\"금도끼하고 은도끼도 가져가세요.\"","«Возьмите и золотой, и серебряный топор»."],
+      ["나무꾼은 부자가 됐어요.","Дровосек разбогател."],
+      ["나무꾼은 지금도 행복하게 살고 있어요.","И до сих пор он живёт счастливо."]
+    ]}
+  ],
+  gloss:{
+    "옛날에":"давным-давно","한":"один, некий (한 사람 — один человек)","나무꾼이":"나무꾼 — дровосек + 이","나무꾼은":"나무꾼 — дровосек + 은 (тема)","나무꾼이":"나무꾼 — дровосек + 이","살았어요":"살다 — жить → прошедшее","가난했어요":"가난하다 — бедный → прошедшее","하지만":"но","착했어요":"착하다 — добрый, хороший (о человеке) → прошедшее","어느":"некий. 어느 날 — однажды","날":"день","산에서":"산 — гора + 에서 (место действия)","나무를":"나무 — дерево; дрова + 를. 나무를 하다 — рубить дрова","했어요":"하다 — делать → 했어요","그런데":"но вдруг, однако","도끼가":"도끼 — топор + 가","연못에":"연못 — пруд + 에 (куда)","빠졌어요":"빠지다 — упасть (в воду) → 빠졌어요","울었어요":"울다 — плакать → 울었어요","그때":"тогда, в тот момент","연못에서":"연못 — пруд + 에서 — из","산신령이":"산신령 — горный дух (из корейских сказок) + 이","나왔어요":"나오다 — выходить → 나왔어요","금도끼를":"금 — золото + 도끼 — топор + 를","보여":"보이다 — показывать; 보여 주다 — показать (кому-то)","줬어요":"주다 — давать → 줬어요 (보여 줬어요 — показал)","이게":"이것이 → 이게 — «это» (подлежащее, разговорно)","당신":"вы (в сказках и книгах; в жизни так почти не говорят)","도끼예요":"도끼 — топор + 예요","대답했어요":"대답하다 — отвечать → прошедшее","아니요,":"нет","제":"мой","도끼가":"도끼 — топор + 가","아니에요":"아니다 — не являться → «это не …»","은도끼를":"은 — серебро + 도끼 + 를","그럼":"тогда, в таком случае","그것도":"그것 — то, это + 도 — тоже → «и это тоже (не)»","마지막으로":"마지막 — последний + 으로 → «наконец, напоследок»","쇠도끼를":"쇠 — железо + 도끼 + 를","네!":"да!","그게":"그것이 → 그게 — «то, это» (подлежащее)","도끼예요!":"도끼 — топор + 예요","웃었어요":"웃다 — смеяться, улыбаться → 웃었어요","당신은":"당신 — вы + 은","정직한":"정직하다 — честный → 정직한 — «честный» (перед существительным)","사람이에요":"사람 — человек + 이에요","금도끼하고":"금도끼 — золотой топор + 하고 — и","은도끼도":"은도끼 — серебряный топор + 도 — тоже","가져가세요":"가져가다 — брать с собой + -세요 (вежливая просьба)","부자가":"부자 — богач + 가","됐어요":"되다 — становиться → 됐어요. 부자가 되다 — разбогатеть","지금도":"지금 — сейчас + 도 → «и сейчас, до сих пор»","행복하게":"행복하다 — счастливый → 행복하게 — счастливо","살고":"살다 — жить + 고 있어요 (урок 5: живёт и сейчас)","있어요":"часть формы -고 있어요"
+  },
+  questions:[["Дровосек был богатым.",false],["Топор упал в пруд.",true],["Дровосек сказал, что золотой топор — его.",false],["Дух отдал дровосеку все три топора.",true]]
+}
+];
+
+function storyWords(line){ return line.split(/\s+/).filter(Boolean); }
+const stripP = t => t.replace(/^[\"“”«»(]+|[\"“”«».,!?:)]+$/g,"");
+let rs = null; // reading session {story, page, showTr:{}}
+function readState(){ store.read = store.read || {}; return store.read; }
+
+function renderReadList(){
+  const done = readState();
+  const cur = LESSONS.indexOf(lesson) + 1;
+  panel.innerHTML = `
+    <div class="meta"><span>Короткие тексты и сказки</span><span>${Object.keys(done).length} из ${STORIES.length} прочитано</span></div>
+    <p class="note" style="margin:0">Нажмите на слово — появится перевод и озвучка. Текст помечен уроком, после которого вся грамматика в нём уже знакома.</p>
+    <div class="shelf">${STORIES.map(s=>`
+      <button class="book" data-story="${s.id}">
+        <span class="cover-art">${ART[s.pages[0].art]}</span>
+        <span class="book-info">
+          <span class="book-ko">${esc(s.title)}</span>
+          <span class="book-ru">${esc(s.ru)}</span>
+          <span class="book-tags"><span class="chip">${esc(s.kind)}</span><span class="chip ${s.after<=cur?"":"later"}">после урока ${s.after}</span>${done[s.id]?`<span class="chip ok">прочитано</span>`:""}</span>
+        </span>
+      </button>`).join("")}</div>`;
+  panel.querySelectorAll("[data-story]").forEach(b=>b.addEventListener("click", ()=>{ rs = {story: STORIES.find(s=>s.id===b.dataset.story), page:0, showTr:{}, answers:{}}; renderStory(); panel.scrollIntoView({block:"start"}); }));
+}
+
+function renderStory(){
+  const s = rs.story, last = rs.page >= s.pages.length;
+  const pageHtml = last ? renderStoryEnd(s) : (()=>{
+    const pg = s.pages[rs.page];
+    return `<figure class="art">${ART[pg.art]}</figure>
+      <div class="lines">${pg.lines.map(([ko,ru],i)=>{
+        const key = rs.page+"-"+i;
+        return `<div class="line">
+          <p class="ko-line">${storyWords(ko).map(w=>`<span class="w" tabindex="0" role="button" data-w="${esc(w)}">${esc(w)}</span>`).join(" ")}</p>
+          <div class="line-tools">${sayBtn(ko.replace(/^[^:]{1,6}:\s*/,""))}<button class="link tr-btn" data-tr="${key}">${rs.showTr[key]?"скрыть перевод":"перевод"}</button></div>
+          ${rs.showTr[key]?`<p class="ru-line">${esc(ru)}</p>`:""}
+        </div>`;}).join("")}</div>`;
+  })();
+  panel.innerHTML = `
+    <div class="meta"><button class="link" id="toShelf">← Все тексты</button><span>${last?"Конец":`Страница ${rs.page+1} из ${s.pages.length}`}</span></div>
+    <h2 class="story-title"><span>${esc(s.title)}</span> <small>${esc(s.ru)}</small></h2>
+    ${!last && TTS_OK ? `<div class="row"><button id="readAll">▶ Прочитать страницу вслух</button></div>` : ""}
+    ${pageHtml}
+    <div id="wordPop" class="wpop" hidden></div>
+    <div class="row pager">
+      ${rs.page>0?`<button id="prevP">← Назад</button>`:""}
+      ${!last?`<button class="btn-main" id="nextP">${rs.page+1<s.pages.length?"Дальше →":"Конец и перевод →"}</button>`:""}
+    </div>`;
+  bindSay();
+  $("#toShelf").addEventListener("click", ()=>{ rs=null; if (TTS_OK) try{speechSynthesis.cancel();}catch(e){} renderReadList(); });
+  $("#prevP")?.addEventListener("click", ()=>{ rs.page--; renderStory(); });
+  $("#nextP")?.addEventListener("click", ()=>{ rs.page++; if (rs.page>=s.pages.length){ readState()[s.id]=Date.now(); save(); } renderStory(); panel.scrollIntoView({block:"start"}); });
+  panel.querySelectorAll("[data-tr]").forEach(b=>b.addEventListener("click", ()=>{ rs.showTr[b.dataset.tr]=!rs.showTr[b.dataset.tr]; renderStory(); }));
+  panel.querySelectorAll(".w").forEach(el=>{
+    const open = ()=>showWord(el, s);
+    el.addEventListener("click", open);
+    el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();open();} });
+  });
+  $("#readAll")?.addEventListener("click", ()=>{
+    if (!TTS_OK) return;
+    try { speechSynthesis.cancel(); } catch(e){}
+    const lines = s.pages[rs.page].lines, els = panel.querySelectorAll(".line");
+    lines.forEach(([ko],i)=>{
+      const u = new SpeechSynthesisUtterance(ko.replace(/^[^:]{1,6}:\s*/,""));
+      u.lang="ko-KR"; if (koVoice) u.voice=koVoice; u.rate = (+prefs().rate || 0.9) * 0.95;
+      u.onstart=()=>{ els.forEach(x=>x.classList.remove("now")); els[i]?.classList.add("now"); };
+      u.onend=()=>{ if(i===lines.length-1) els[i]?.classList.remove("now"); };
+      speechSynthesis.speak(u);
+    });
+  });
+  if (last) bindStoryQuiz(s);
+}
+
+function showWord(el, s){
+  panel.querySelectorAll(".w.on").forEach(x=>x.classList.remove("on"));
+  el.classList.add("on");
+  const raw = el.dataset.w, key = stripP(raw);
+  if (!s._g){ s._g = {}; for (const k in s.gloss) s._g[stripP(k)] = s.gloss[k]; }
+  const g = s._g[key] || "Слово без отдельного перевода — посмотрите перевод предложения.";
+  const pop = $("#wordPop");
+  pop.innerHTML = `<div class="wp-head">${sayBtn(key)}<span class="wp-ko">${esc(key)}</span><button class="link" id="wpClose" aria-label="Закрыть">✕</button></div><div class="wp-gl">${esc(g)}</div>`;
+  pop.hidden = false;
+  bindSay(pop);
+  $("#wpClose").addEventListener("click", ()=>{ pop.hidden = true; el.classList.remove("on"); });
+  speak(key);
+}
+
+function renderStoryEnd(s){
+  const all = s.pages.flatMap(p=>p.lines);
+  return `<div class="tipbox"><b>Готово!</b> Проверьте, как вы поняли текст, и сверьтесь с полным переводом.</div>
+    <h3 class="sub-h">Вопросы: правда или нет?</h3>
+    <ol class="rq">${s.questions.map(([q,a],i)=>{
+      const ans = rs.answers[i];
+      return `<li><span>${esc(q)}</span> <span class="rq-btns"><button data-q="${i}" data-v="1" ${ans!==undefined?"disabled":""} class="${ans!==undefined&&a?"right":""} ${ans===true&&!a?"wrong":""}">Правда</button><button data-q="${i}" data-v="0" ${ans!==undefined?"disabled":""} class="${ans!==undefined&&!a?"right":""} ${ans===false&&a?"wrong":""}">Неправда</button></span></li>`;}).join("")}</ol>
+    <h3 class="sub-h">Полный перевод</h3>
+    <div class="full-tr">${all.map(([ko,ru])=>`<p><span class="ko">${esc(ko)}</span><br><span class="q">${esc(ru)}</span></p>`).join("")}</div>
+    <div class="row"><button id="again">Прочитать ещё раз</button><button class="btn-main" id="backShelf">Другие тексты</button></div>`;
+}
+function bindStoryQuiz(s){
+  panel.querySelectorAll("[data-q]").forEach(b=>b.addEventListener("click", ()=>{ rs.answers[+b.dataset.q] = b.dataset.v==="1"; renderStory(); }));
+  $("#again")?.addEventListener("click", ()=>{ rs.page=0; rs.showTr={}; rs.answers={}; renderStory(); });
+  $("#backShelf")?.addEventListener("click", ()=>{ rs=null; renderReadList(); });
+}
+function renderRead(){ rs ? renderStory() : renderReadList(); }
+
 /* ---------- routing ---------- */
 function render(){
   updateStats();
@@ -1435,6 +1770,7 @@ function render(){
   if (mode==="notes") renderConspect();
   else if (mode==="dict") renderDict();
   else if (mode==="account") renderAccount();
+  else if (mode==="read") renderRead();
   else if (mode==="cards") renderCards(lesson.words, false);
   else if (mode==="review") renderCards(mistakes(), true);
   else if (mode==="write"){ ws = newWriteSession(); renderWrite(); }
@@ -1454,6 +1790,8 @@ render();
 connect();
 if ("serviceWorker" in navigator) window.addEventListener("load", ()=>{ navigator.serviceWorker.register("./sw.js").catch(()=>{}); });
 </script>
+
+
 
 
 </body>
