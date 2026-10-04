@@ -148,6 +148,48 @@ ol.rq li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 10px;
 .full-tr{display:flex;flex-direction:column;gap:8px;font-size:15px}
 .full-tr p{margin:0;word-break:keep-all}
 .pager{justify-content:space-between}
+/* games */
+.ws{display:grid;gap:4px;max-width:420px;width:100%;margin:0 auto}
+.wc{aspect-ratio:1;padding:0;font-family:var(--ko-sans);font-size:clamp(15px,4.6vw,22px);border-radius:8px;min-width:0}
+.wc.sel{outline:3px solid var(--accent);outline-offset:-3px}
+ul.wl2{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px}
+ul.wl2 li{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-width:0;font-size:14px}
+ul.wl2 li.done{background:var(--good-soft);border-color:transparent}
+ul.wl2 li.done span{text-decoration:line-through;color:var(--muted)}
+ul.wl2 li b{margin-left:auto;font-size:16px}
+ul.wl2 .say{width:28px;height:28px}
+.cw-wrap{overflow-x:auto;max-width:100%}
+.cw{display:grid;gap:2px;margin:0 auto;width:100%}
+.cw-x{aspect-ratio:1}
+.cw-c{aspect-ratio:1;position:relative;padding:0;border-radius:4px;border:1.5px solid var(--fg);background:var(--surface);font-family:var(--ko-sans);font-size:clamp(13px,3.8vw,19px);min-width:0}
+.cw-c i{position:absolute;top:1px;left:3px;font-style:normal;font-size:9px;color:var(--muted);line-height:1}
+.cw-c.on{background:var(--accent-soft);border-color:var(--accent)}
+.cw-c.ok{background:var(--good-soft)}
+.cw-form{display:flex;flex-direction:column;gap:8px;border:1px solid var(--accent);border-radius:10px;padding:10px 12px}
+.cw-form input{flex:1 1 160px;font-size:18px;font-family:var(--ko-sans)}
+.cw-clues{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.cw-h{margin:0 0 4px;font-size:14px;color:var(--accent)}
+ol.cw-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+ol.cw-list li{cursor:pointer;padding:5px 8px;border-radius:6px;font-size:14px}
+ol.cw-list li:hover,ol.cw-list li.on{background:var(--accent-soft)}
+ol.cw-list li.done{color:var(--muted)}
+.gpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px}
+.gpick button{padding:8px 6px;font-size:14px}
+.gpick button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:600}
+.sb-line{min-height:58px;border:2px dashed var(--line);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.sb-line.right{border-color:var(--good);background:var(--good-soft)}
+.sb-line.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.sb-bank{display:flex;flex-wrap:wrap;gap:6px}
+.chipbtn{padding:8px 12px;border-radius:99px;font-size:17px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.chipbtn.ghost{opacity:.25}
+.mp{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:460px){.mp{grid-template-columns:repeat(3,1fr)}}
+.mpc{min-height:78px;padding:6px;font-size:14px;border-radius:10px;background:var(--accent);color:var(--surface);border-color:var(--accent);font-weight:600;overflow-wrap:anywhere}
+.mpc.up{background:var(--surface);color:var(--fg);border-color:var(--line);font-weight:400}
+.mpc.up.ko{font-size:18px;font-family:var(--ko-sans)}
+.mpc.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.sp-t{font-size:16px;color:var(--ink)}
+.opts button.ko{font-family:var(--ko-sans)}
 /* conspect */
 .cs{display:flex;flex-direction:column;gap:12px;min-width:0}
 .cs h2{margin:0;font-family:var(--ko);font-size:26px;color:var(--ink);text-wrap:balance}
@@ -232,6 +274,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;display:flex;flex-dir
   <nav aria-label="Режимы">
     <button data-mode="notes" aria-pressed="false">Конспект</button>
     <button data-mode="read" aria-pressed="false">Чтение</button>
+    <button data-mode="games" aria-pressed="false">Игры</button>
     <button data-mode="dict" aria-pressed="false">Словарь</button>
     <button data-mode="cards" aria-pressed="true">Карточки</button>
     <button data-mode="quiz" aria-pressed="false">Тест на слова</button>
@@ -2377,6 +2420,355 @@ function bindStoryQuiz(s){
 }
 function renderRead(){ rs ? renderStory() : renderReadList(); }
 
+/* ---------- games: word search (филворд) and crossword ---------- */
+const HANGUL_ONLY = /^[가-힣]+$/;
+function gameWords(all){
+  const src = all ? LESSONS.slice(0, LESSONS.indexOf(lesson)+1).flatMap(l=>l.words) : lesson.words;
+  const seen = new Set(), out = [];
+  for (const [ko, ru] of src){
+    const w = ko.replace(/\s*\([^)]*\)/g,"").trim();
+    if (!HANGUL_ONLY.test(w) || w.length < 2 || w.length > 5 || seen.has(w)) continue;
+    seen.add(w);
+    out.push({ko:w, ru: ru.split("→")[0].split("←")[0].trim()});
+  }
+  return out;
+}
+let gameKind = "search", gameAll = false, gs = null;
+
+const GAMES=[["search","Филворд"],["cross","Кроссворд"],["build","Собери предложение"],["pairs","Найди пару"],["speed","На скорость"],["listen","Аудирование"],["nums","Числа"]];
+function renderGames(){
+  clearInterval(speedTimer);
+  const usesAll = !["build","nums"].includes(gameKind);
+  panel.innerHTML = `
+    <div class="gpick" role="group" aria-label="Игра">${GAMES.map(([k,t])=>`<button data-gk="${k}" aria-pressed="${gameKind===k}">${t}</button>`).join("")}</div>
+    ${usesAll?`<label class="tog" style="font-size:13px;color:var(--muted)"><input type="checkbox" id="gameAll" ${gameAll?"checked":""}> слова всех пройденных уроков (до выбранного)</label>`:""}
+    <div id="gameBox"></div>`;
+  panel.querySelectorAll("[data-gk]").forEach(b=>b.addEventListener("click", ()=>{ gameKind=b.dataset.gk; gs=null; renderGames(); }));
+  $("#gameAll")?.addEventListener("change", e=>{ gameAll=e.target.checked; gs=null; renderGames(); });
+  const MAKE={search:newSearch,cross:newCross,build:newBuild,pairs:newPairs,speed:newSpeed,listen:newListen,nums:newNums};
+  const DRAW={search:drawSearch,cross:drawCross,build:drawBuild,pairs:drawPairs,speed:drawSpeed,listen:drawListen,nums:drawNums};
+  if (!gs || gs.kind!==gameKind) gs = MAKE[gameKind]();
+  DRAW[gameKind]();
+}
+/* ---- word search ---- */
+function newSearch(){
+  const pool = shuffle(gameWords(gameAll));
+  const N = 7, grid = Array.from({length:N},()=>Array(N).fill(null));
+  const dirs = [[0,1],[1,0],[1,1]], placed = [];
+  for (const w of pool){
+    if (placed.length >= 7) break;
+    const syl = [...w.ko]; let ok = false;
+    for (let t=0; t<120 && !ok; t++){
+      const [dr,dc] = dirs[Math.floor(Math.random()*dirs.length)];
+      const r0 = rnd(0, N-1 - dr*(syl.length-1)), c0 = rnd(0, N-1 - dc*(syl.length-1));
+      if (r0<0||c0<0) continue;
+      if (syl.every((s,i)=>{ const g=grid[r0+dr*i][c0+dc*i]; return g===null||g===s; })){
+        syl.forEach((s,i)=>grid[r0+dr*i][c0+dc*i]=s);
+        placed.push({...w, cells: syl.map((_,i)=>[r0+dr*i,c0+dc*i]), found:false});
+        ok = true;
+      }
+    }
+  }
+  const filler = [...new Set(gameWords(true).flatMap(w=>[...w.ko]))];
+  for (let r=0;r<N;r++) for (let c=0;c<N;c++) if (grid[r][c]===null) grid[r][c] = filler[Math.floor(Math.random()*filler.length)];
+  return {kind:"search", N, grid, words:placed, start:null, showKo:false, colors:{}};
+}
+const FOUND_COLORS = ["#f4b6c8","#c9b6f4","#b6e3f4","#f4d9b6","#bdf4b6","#f4f0b6","#f4c2b6"];
+function drawSearch(){
+  const g = gs, box = $("#gameBox");
+  const done = g.words.every(w=>w.found);
+  box.innerHTML = `
+    <p class="note" style="margin:0">Найдите корейские слова по переводу. Нажмите на <b>первый</b> слог слова, потом на <b>последний</b>. Слова идут вправо, вниз или по диагонали.</p>
+    <div class="ws" style="grid-template-columns:repeat(${g.N},1fr)">${g.grid.map((row,r)=>row.map((s,c)=>{
+      const k=r+","+c, col=g.colors[k];
+      return `<button class="wc ${g.start===k?"sel":""}" data-rc="${k}" style="${col?`background:${col};color:#251b2c`:""}">${s}</button>`;}).join("")).join("")}</div>
+    <div class="row" style="align-items:center"><span class="q">Найдено ${g.words.filter(w=>w.found).length} из ${g.words.length}</span>
+      <label class="tog" style="font-size:13px;color:var(--muted)"><input type="checkbox" id="wsKo" ${g.showKo?"checked":""}> показать корейские слова</label></div>
+    <ul class="wl2">${g.words.map(w=>`<li class="${w.found?"done":""}">${w.found?sayBtn(w.ko):""}<span>${esc(w.ru)}</span>${w.found||g.showKo?`<b class="ko">${esc(w.ko)}</b>`:""}</li>`).join("")}</ul>
+    ${done?`<div class="tipbox"><b>Все слова найдены!</b></div>`:""}
+    <div class="row"><button class="btn-main" id="gNew">Новый филворд</button></div>`;
+  bindSay(box);
+  $("#wsKo").addEventListener("change", e=>{ g.showKo=e.target.checked; drawSearch(); });
+  $("#gNew").addEventListener("click", ()=>{ gs=newSearch(); drawSearch(); });
+  box.querySelectorAll(".wc").forEach(b=>b.addEventListener("click", ()=>{
+    const k=b.dataset.rc;
+    if (!g.start){ g.start=k; drawSearch(); return; }
+    const [r1,c1]=g.start.split(",").map(Number), [r2,c2]=k.split(",").map(Number);
+    g.start=null;
+    const hit = g.words.find(w=>!w.found && ((w.cells[0]+""===[r1,c1]+"" && w.cells.at(-1)+""===[r2,c2]+"")||(w.cells[0]+""===[r2,c2]+"" && w.cells.at(-1)+""===[r1,c1]+"")));
+    if (hit){
+      hit.found=true; const col=FOUND_COLORS[g.words.indexOf(hit)%FOUND_COLORS.length];
+      hit.cells.forEach(([r,c])=>g.colors[r+","+c]=col); speak(hit.ko);
+    }
+    drawSearch();
+  }));
+}
+
+/* ---- crossword ---- */
+function newCross(){
+  let best=null;
+  const own=new Set(gameWords(gameAll).map(w=>w.ko));
+  const score=g=>g.words.length+2*g.words.filter(w=>own.has(w.ko)).length;
+  for (let t=0;t<60;t++){ const g=buildCross(); if(!best||score(g)>score(best)) best=g; }
+  return best;
+}
+function buildCross(){
+  const own = shuffle(gameWords(gameAll)), ownSet=new Set(own.map(w=>w.ko));
+  const extra = shuffle(gameWords(true).filter(w=>!ownSet.has(w.ko)));
+  const pool = [...own, ...extra];
+  const S=21, grid=Array.from({length:S},()=>Array(S).fill(null)), placed=[], used={};
+  const can=(syl,r,c,dr,dc)=>{
+    if (r<0||c<0||r+dr*(syl.length-1)>=S||c+dc*(syl.length-1)>=S) return -1;
+    const br=r-dr, bc=c-dc, ar=r+dr*syl.length, ac=c+dc*syl.length;
+    if (br>=0&&bc>=0&&grid[br][bc]) return -1;
+    if (ar<S&&ac<S&&grid[ar][ac]) return -1;
+    let cross=0;
+    for (let i=0;i<syl.length;i++){
+      const rr=r+dr*i, cc=c+dc*i, g=grid[rr][cc];
+      if (g){ if (g!==syl[i] || used[rr+","+cc+","+dr]) return -1; cross++; continue; }
+      const n1=[rr+dc,cc+dr], n2=[rr-dc,cc-dr];
+      for (const [x,y] of [n1,n2]) if (x>=0&&y>=0&&x<S&&y<S&&grid[x][y]) return -1;
+    }
+    return cross;
+  };
+  const put=(w,r,c,dr,dc)=>{ [...w.ko].forEach((s,i)=>{ grid[r+dr*i][c+dc*i]=s; used[(r+dr*i)+","+(c+dc*i)+","+dr]=1; }); placed.push({...w,r,c,dr,dc}); };
+  for (const w of [...pool, ...own]){
+    if (placed.length>=8) break;
+    if (placed.some(p=>p.ko===w.ko)) continue;
+    const syl=[...w.ko];
+    if (!placed.length){ put(w,10,10-Math.floor(syl.length/2),0,1); continue; }
+    let best=null;
+    for (let r=0;r<S;r++) for (let c=0;c<S;c++) for (const [dr,dc] of [[0,1],[1,0]]){
+      const x=can(syl,r,c,dr,dc); if (x>0 && (!best||x>best.x)) best={r,c,dr,dc,x};
+    }
+    if (best) put(w,best.r,best.c,best.dr,best.dc);
+  }
+  let r0=S,c0=S,r1=0,c1=0;
+  placed.forEach(p=>{ r0=Math.min(r0,p.r); c0=Math.min(c0,p.c); r1=Math.max(r1,p.r+p.dr*(p.ko.length-1)); c1=Math.max(c1,p.c+p.dc*(p.ko.length-1)); });
+  placed.forEach(p=>{ p.r-=r0; p.c-=c0; });
+  const starts={}; let n=0;
+  [...placed].sort((a,b)=>a.r-b.r||a.c-b.c).forEach(p=>{ const k=p.r+","+p.c; if(!starts[k]) starts[k]=++n; p.num=starts[k]; });
+  placed.forEach(p=>{ p.solved=false; p.hints=0; });
+  return {kind:"cross", rows:r1-r0+1, cols:c1-c0+1, words:placed, starts, active:null, msg:""};
+}
+function crossCells(g){
+  const cells={};
+  g.words.forEach(w=>[...w.ko].forEach((s,i)=>{
+    const k=(w.r+w.dr*i)+","+(w.c+w.dc*i);
+    cells[k]=cells[k]||{s,show:false,words:[]};
+    cells[k].words.push(w);
+    if (w.solved || i<w.hints) cells[k].show=true;
+  }));
+  return cells;
+}
+function drawCross(){
+  const g=gs, box=$("#gameBox"), cells=crossCells(g);
+  const aw=g.active!=null?g.words[g.active]:null;
+  const activeKeys=new Set(aw?[...aw.ko].map((_,i)=>(aw.r+aw.dr*i)+","+(aw.c+aw.dc*i)):[]);
+  const clue=(dir,label)=>{
+    const list=g.words.map((w,i)=>({w,i})).filter(x=>(dir?x.w.dr:x.w.dc)===1).sort((a,b)=>a.w.num-b.w.num);
+    return list.length?`<div><h4 class="cw-h">${label}</h4><ol class="cw-list">${list.map(({w,i})=>`<li class="${w.solved?"done":""} ${g.active===i?"on":""}" data-ci="${i}"><b>${w.num}.</b> ${esc(w.ru)} <span class="q">(${w.ko.length} ${w.ko.length<5?"слога":"слогов"})</span>${w.solved?` <span class="ko">${esc(w.ko)}</span>`:""}</li>`).join("")}</ol></div>`:"";
+  };
+  const done=g.words.every(w=>w.solved);
+  box.innerHTML=`
+    <p class="note" style="margin:0">Нажмите на подсказку или клетку и впишите слово по-корейски. Одна клетка — один слог.</p>
+    <div class="cw-wrap"><div class="cw" style="grid-template-columns:repeat(${g.cols},minmax(0,1fr));max-width:${g.cols*44}px">${
+      Array.from({length:g.rows},(_,r)=>Array.from({length:g.cols},(_,c)=>{
+        const k=r+","+c, cell=cells[k];
+        if(!cell) return `<div class="cw-x"></div>`;
+        return `<button class="cw-c ${activeKeys.has(k)?"on":""} ${cell.words.every(w=>w.solved)?"ok":""}" data-ck="${k}">${g.starts[k]?`<i>${g.starts[k]}</i>`:""}<span>${cell.show?cell.s:""}</span></button>`;
+      }).join("")).join("")}</div></div>
+    ${aw&&!aw.solved?`<form id="cwForm" class="cw-form" autocomplete="off">
+      <div class="q"><b>${aw.num}. ${aw.dc?"По горизонтали":"По вертикали"}:</b> ${esc(aw.ru)}</div>
+      <div class="row"><input type="text" id="cwIn" lang="ko" placeholder="한글로 쓰세요" aria-label="Ответ" spellcheck="false" autocapitalize="off">
+      <button type="submit" class="btn-main">Проверить</button><button type="button" id="cwHint">Подсказка</button></div>
+      ${g.msg?`<div class="explain bad">${g.msg}</div>`:""}</form>`:""}
+    ${done?`<div class="tipbox"><b>Кроссворд решён!</b></div>`:""}
+    <div class="cw-clues">${clue(false,"По горизонтали")}${clue(true,"По вертикали")}</div>
+    <div class="row"><button id="cwShow">Показать ответы</button><button class="btn-main" id="gNew">Новый кроссворд</button></div>`;
+  const pickWord=i=>{ g.active=i; g.msg=""; drawCross(); $("#cwIn")?.focus(); };
+  box.querySelectorAll("[data-ci]").forEach(li=>li.addEventListener("click",()=>pickWord(+li.dataset.ci)));
+  box.querySelectorAll("[data-ck]").forEach(b=>b.addEventListener("click",()=>{
+    const ws=cells[b.dataset.ck].words.filter(w=>!w.solved); if(!ws.length) return;
+    const cur=ws.indexOf(aw); pickWord(g.words.indexOf(ws[(cur+1)%ws.length]));
+  }));
+  $("#cwForm")?.addEventListener("submit",e=>{ e.preventDefault(); if(e.isComposing) return;
+    const v=$("#cwIn").value.replace(/\s/g,"");
+    if(v===aw.ko){ aw.solved=true; speak(aw.ko); const nx=g.words.findIndex(w=>!w.solved); g.active=nx<0?null:nx; g.msg=""; }
+    else g.msg=v?`«${esc(v)}» — не подходит. Попробуйте ещё раз или возьмите подсказку.`:"Впишите слово.";
+    drawCross(); $("#cwIn")?.focus();
+  });
+  $("#cwHint")?.addEventListener("click",()=>{ aw.hints=Math.min(aw.ko.length,aw.hints+1); if(aw.hints>=aw.ko.length) aw.solved=true; drawCross(); $("#cwIn")?.focus(); });
+  $("#cwShow").addEventListener("click",()=>{ g.words.forEach(w=>w.solved=true); g.active=null; drawCross(); });
+  $("#gNew").addEventListener("click",()=>{ gs=newCross(); drawCross(); });
+}
+
+/* ---------- more games ---------- */
+function passedLessonIdx(){ return LESSONS.indexOf(lesson)+1; }
+function gamePool(all){ // words with short translations for quick games
+  const src = all ? LESSONS.slice(0, passedLessonIdx()).flatMap(l=>l.words) : lesson.words;
+  const seen=new Set(), out=[];
+  for (const [ko,ru] of src){ const k=ko.trim(); if(seen.has(k)) continue; seen.add(k);
+    out.push({ko:k, ru:ru.split("→")[0].split("←")[0].trim(), say:k.replace(/\s*\([^)]*\)/g,"")}); }
+  return out;
+}
+function gameStore(){ store.games = store.games || {}; return store.games; }
+
+/* ---- 3. sentence builder ---- */
+function sentencePool(){
+  const max = passedLessonIdx();
+  return STORIES.filter(s=>s.after<=max).flatMap(s=>s.pages.flatMap(p=>p.lines))
+    .map(([ko,ru])=>[ko.replace(/^[^:\s]{1,6}:\s*/,"").replace(/["“”]/g,"").trim(), ru.replace(/^[^:]{1,10}:\s*/,"")])
+    .filter(([ko])=>{ const n=ko.split(/\s+/).length; return n>=3 && n<=7 && !/[.!?].+[.!?]$/.test(ko.slice(0,-1)); });
+}
+function newBuild(){
+  const pool=sentencePool(); const [ko,ru]=pool[Math.floor(Math.random()*pool.length)];
+  const words=ko.split(/\s+/);
+  let mixed=shuffle(words.map((w,i)=>({w,i}))); if(mixed.every((m,i)=>m.i===i)) mixed=mixed.reverse();
+  return {kind:"build", ko, ru, words, mixed, picked:[], state:"ask", score:(gs&&gs.kind==="build")?gs.score:0, total:(gs&&gs.kind==="build")?gs.total:0};
+}
+function drawBuild(){
+  const g=gs, box=$("#gameBox");
+  const answer=g.picked.map(i=>g.mixed[i].w).join(" ");
+  box.innerHTML=`
+    <p class="note" style="margin:0">Соберите предложение: нажимайте на слова в правильном порядке. Помните: глагол — в конце. Предложения взяты из текстов вкладки «Чтение» до выбранного урока.</p>
+    <div class="q">Счёт: ${g.score} из ${g.total}</div>
+    <div class="qtext" style="font-size:19px">${esc(g.ru)}</div>
+    <div class="sb-line ${g.state}">${g.picked.length?g.picked.map((i,k)=>`<button class="chipbtn ko" data-un="${k}">${esc(g.mixed[i].w)}</button>`).join(""):`<span class="q">Нажимайте на слова ниже…</span>`}</div>
+    <div class="sb-bank">${g.mixed.map((m,i)=>g.picked.includes(i)?`<span class="chipbtn ghost">${esc(m.w)}</span>`:`<button class="chipbtn ko" data-pk="${i}">${esc(m.w)}</button>`).join("")}</div>
+    ${g.state==="right"?`<div class="explain">${sayBtn(g.ko)}<div><b>Верно!</b> <span class="ko">${esc(g.ko)}</span></div></div>`:""}
+    ${g.state==="wrong"?`<div class="explain bad">${sayBtn(g.ko)}<div><b>Правильно так:</b> <span class="ko">${esc(g.ko)}</span></div></div>`:""}
+    <div class="row">${g.state==="ask"?`<button id="sbClear">Сбросить</button><button class="btn-main" id="sbCheck" ${g.picked.length<g.words.length?"disabled":""}>Проверить</button>`:`<button class="btn-main" id="sbNext">Следующее предложение</button>`}</div>`;
+  bindSay(box);
+  box.querySelectorAll("[data-pk]").forEach(b=>b.addEventListener("click",()=>{ g.picked.push(+b.dataset.pk); drawBuild(); }));
+  box.querySelectorAll("[data-un]").forEach(b=>b.addEventListener("click",()=>{ if(g.state!=="ask") return; g.picked.splice(+b.dataset.un,1); drawBuild(); }));
+  $("#sbClear")?.addEventListener("click",()=>{ g.picked=[]; drawBuild(); });
+  $("#sbCheck")?.addEventListener("click",()=>{ g.total++; const ok=answer===g.ko; if(ok) g.score++; g.state=ok?"right":"wrong"; speak(g.ko); drawBuild(); });
+  $("#sbNext")?.addEventListener("click",()=>{ gs=newBuild(); drawBuild(); });
+}
+
+/* ---- 4. memory pairs ---- */
+function newPairs(){
+  const pool=shuffle(gamePool(gameAll).filter(w=>w.ko.length<=8 && w.ru.length<=24)).slice(0,6);
+  const cards=shuffle(pool.flatMap((w,i)=>[{p:i,t:w.ko,ko:true,say:w.say},{p:i,t:w.ru,ko:false}]));
+  return {kind:"pairs", cards, open:[], done:new Set(), moves:0, start:Date.now(), lock:false};
+}
+function drawPairs(){
+  const g=gs, box=$("#gameBox"), won=g.done.size===6;
+  box.innerHTML=`
+    <p class="note" style="margin:0">Найдите пары «корейское слово — перевод». Открывайте по две карточки.</p>
+    <div class="q">Ходов: ${g.moves} · пар найдено: ${g.done.size} из 6</div>
+    <div class="mp">${g.cards.map((c,i)=>{ const show=g.open.includes(i)||g.done.has(c.p);
+      return `<button class="mpc ${show?"up":""} ${g.done.has(c.p)?"ok":""} ${c.ko?"ko":""}" data-mi="${i}" aria-label="Карточка">${show?esc(c.t):"?"}</button>`; }).join("")}</div>
+    ${won?`<div class="tipbox"><b>Готово!</b> ${g.moves} ходов, ${Math.round((Date.now()-g.start)/1000)} сек.</div>`:""}
+    <div class="row"><button class="btn-main" id="gNew">Новая игра</button></div>`;
+  box.querySelectorAll("[data-mi]").forEach(b=>b.addEventListener("click",()=>{
+    const i=+b.dataset.mi, c=g.cards[i];
+    if(g.lock||g.open.includes(i)||g.done.has(c.p)) return;
+    g.open.push(i); if(c.ko) speak(c.say);
+    if(g.open.length===2){
+      g.moves++; const [a,b2]=g.open.map(k=>g.cards[k]);
+      if(a.p===b2.p){ g.done.add(a.p); g.open=[]; }
+      else { g.lock=true; setTimeout(()=>{ g.open=[]; g.lock=false; drawPairs(); },900); }
+    }
+    drawPairs();
+  }));
+  $("#gNew").addEventListener("click",()=>{ gs=newPairs(); drawPairs(); });
+}
+
+/* ---- 5. speed round ---- */
+let speedTimer=null;
+function newSpeed(){ return {kind:"speed", state:"ready", score:0, mistakes:[], left:60, q:null}; }
+function speedQ(){
+  const pool=gamePool(gameAll); const w=pool[Math.floor(Math.random()*pool.length)];
+  const toRu=Math.random()<.5;
+  const others=pick(pool.filter(x=>x!==w && x.ru!==w.ru),3);
+  return {w, toRu, prompt: toRu?w.ko:w.ru, options: shuffle([w,...others]).map(x=>toRu?x.ru:x.ko), answer: toRu?w.ru:w.ko};
+}
+function drawSpeed(){
+  const g=gs, box=$("#gameBox"), key=lesson.id+(gameAll?"+":""), best=gameStore().speed?.[key];
+  if(g.state==="ready"){
+    box.innerHTML=`<p class="note" style="margin:0">60 секунд: ответьте на как можно больше вопросов. Ошибка — минус 3 секунды.</p>
+      <div class="result">${best!=null?`Рекорд: ${best}`:"Рекорда пока нет"}</div>
+      <div class="row"><button class="btn-main" id="spGo">Старт!</button></div>`;
+    $("#spGo").addEventListener("click",()=>{ g.state="run"; g.q=speedQ(); clearInterval(speedTimer);
+      speedTimer=setInterval(()=>{ if(gs!==g){clearInterval(speedTimer);return;} g.left--; const t=$("#spT"); if(t) t.textContent=g.left; if(g.left<=0){ clearInterval(speedTimer); endSpeed(); } },1000); drawSpeed(); });
+    return;
+  }
+  if(g.state==="end"){
+    box.innerHTML=`<div class="result">${g.score} ${g.newBest?"· новый рекорд!":""}</div>
+      ${g.mistakes.length?`<div><b>Ошибки:</b><ul class="miss">${g.mistakes.map(w=>`<li><span class="ko">${esc(w.ko)}</span> — ${esc(w.ru)}</li>`).join("")}</ul></div>`:""}
+      <div class="row"><button class="btn-main" id="spAgain">Ещё раз</button></div>`;
+    $("#spAgain").addEventListener("click",()=>{ gs=newSpeed(); drawSpeed(); });
+    return;
+  }
+  const q=g.q;
+  box.innerHTML=`<div class="meta"><span>Очки: <b>${g.score}</b></span><span class="sp-t">⏱ <b id="spT">${g.left}</b></span></div>
+    <div class="qtext ${q.toRu?"ko":""}" style="text-align:center;font-size:30px">${esc(q.prompt)}</div>
+    <div class="opts">${q.options.map((o,k)=>`<button data-so="${k}" class="${q.toRu?"":"ko"}">${esc(o)}</button>`).join("")}</div>`;
+  box.querySelectorAll("[data-so]").forEach(b=>b.addEventListener("click",()=>{
+    const ok=q.options[+b.dataset.so]===q.answer;
+    if(ok){ g.score++; } else { g.left=Math.max(0,g.left-3); g.mistakes.push(q.w); }
+    b.classList.add(ok?"right":"wrong");
+    setTimeout(()=>{ if(g.state!=="run") return; if(g.left<=0){ clearInterval(speedTimer); endSpeed(); return; } g.q=speedQ(); drawSpeed(); }, ok?150:500);
+  }));
+}
+function endSpeed(){
+  const g=gs; if(g.state==="end") return; g.state="end";
+  const key=lesson.id+(gameAll?"+":""), st=gameStore(); st.speed=st.speed||{};
+  if(st.speed[key]==null||g.score>st.speed[key]){ st.speed[key]=g.score; g.newBest=true; save(); }
+  drawSpeed();
+}
+
+/* ---- 6. listening ---- */
+function newListen(){ return {kind:"listen", score:0, total:0, q:null, answered:false}; }
+function listenQ(){
+  const pool=gamePool(gameAll); const w=pool[Math.floor(Math.random()*pool.length)];
+  return {w, options: shuffle([w,...pick(pool.filter(x=>x!==w && x.say!==w.say),3)])};
+}
+function drawListen(){
+  const g=gs, box=$("#gameBox");
+  if(!TTS_OK){ box.innerHTML=`<div class="empty">На этом устройстве нет озвучки, поэтому аудирование недоступно.</div>`; return; }
+  if(!g.q){ g.q=listenQ(); setTimeout(()=>speak(g.q.w.say),200); }
+  const q=g.q;
+  box.innerHTML=`<p class="note" style="margin:0">Послушайте и выберите слово, которое прозвучало. Нажмите на динамик, чтобы послушать ещё раз.</p>
+    <div class="q">Счёт: ${g.score} из ${g.total}</div>
+    <div class="write-prompt">${sayBtn(q.w.say,true)}</div>
+    <div class="opts">${q.options.map((o,k)=>`<button data-lo="${k}" class="ko ${g.answered&&o===q.w?"right":""} ${g.answered===k&&o!==q.w?"wrong":""}" ${g.answered!==false?"disabled":""}>${esc(o.ko)}</button>`).join("")}</div>
+    ${g.answered!==false?`<div class="explain"><div><span class="ko">${esc(q.w.ko)}</span> — ${esc(q.w.ru)}</div></div><div class="row"><button class="btn-main" id="lsNext">Дальше</button></div>`:""}`;
+  bindSay(box);
+  box.querySelectorAll("[data-lo]").forEach(b=>b.addEventListener("click",()=>{ const k=+b.dataset.lo; g.answered=k; g.total++; if(q.options[k]===q.w) g.score++; drawListen(); }));
+  $("#lsNext")?.addEventListener("click",()=>{ g.q=null; g.answered=false; drawListen(); });
+}
+
+/* ---- 7. numbers ---- */
+function newNums(){ return {kind:"nums", score:0, total:0, q:null, state:"ask", typed:""}; }
+function numQ(){
+  const type=pick(["price","time","count","date"],1)[0];
+  if(type==="price"){ const n=pick([rnd(1,9)*1000+rnd(0,9)*100, rnd(1,9)*10000+rnd(0,9)*1000, rnd(10,99)*1000, rnd(11,30)*10000],1)[0];
+    return {label:"Цена в вонах — напишите цифрами", ko:sino(n)+" 원", ans:String(n), hint:n.toLocaleString("ru-RU")+" вон"}; }
+  if(type==="time"){ const h=rnd(1,12), m=pick([0,5,10,15,20,25,30,40,45,50,55],1)[0];
+    return {label:"Время — напишите как ЧЧ:ММ", ko:native(h,true)+" 시"+(m?" "+sino(m)+" 분":""), ans:`${h}:${String(m).padStart(2,"0")}`, alt:m?null:String(h), hint:`${h}:${String(m).padStart(2,"0")}`}; }
+  if(type==="count"){ const it=pick([["사과","개","яблок"],["학생","명","студентов"],["커피","잔","чашек кофе"],["물","병","бутылок воды"],["책","권","книг"],["고양이","마리","кошек"]],1)[0], n=pick([1,2,3,4,5,6,7,8,9,10,11,12,20],1)[0];
+    return {label:"Сколько? Напишите цифрой", ko:`${it[0]} ${native(n,true)} ${it[1]}`, ans:String(n), hint:`${n} ${it[2]}`}; }
+  const mo=rnd(1,12), d=rnd(1,28), mk=mo===6?"유월":mo===10?"시월":sino(mo)+"월";
+  return {label:"Дата — напишите как ДД.ММ", ko:`${mk} ${sino(d)} 일`, ans:`${d}.${String(mo).padStart(2,"0")}`, alt:`${String(d).padStart(2,"0")}.${String(mo).padStart(2,"0")}`, hint:`${d}.${String(mo).padStart(2,"0")}`};
+}
+function drawNums(){
+  const g=gs, box=$("#gameBox"); if(!g.q) g.q=numQ(); const q=g.q;
+  box.innerHTML=`<p class="note" style="margin:0">Прочитайте (или послушайте) число по-корейски и напишите его цифрами. Тренирует обе системы счёта из урока 2.</p>
+    <div class="q">Счёт: ${g.score} из ${g.total} · ${q.label}</div>
+    <div class="write-prompt"><span class="ko" style="font-size:30px">${esc(q.ko)}</span>${sayBtn(q.ko)}</div>
+    <form id="nmF" class="row" autocomplete="off"><input type="text" id="nmIn" inputmode="decimal" placeholder="цифрами" aria-label="Ответ" value="${esc(g.typed)}" ${g.state!=="ask"?"readonly":""} style="flex:1 1 140px;font-size:20px">
+    ${g.state==="ask"?`<button class="btn-main" type="submit">Проверить</button>`:`<button class="btn-main" type="button" id="nmNext">Дальше</button>`}</form>
+    ${g.state!=="ask"?`<div class="explain ${g.state==="right"?"":"bad"}"><div><b>${g.state==="right"?"Верно!":"Правильно:"}</b> ${esc(q.hint)} = <span class="ko">${esc(q.ko)}</span></div></div>`:""}`;
+  bindSay(box);
+  $("#nmF").addEventListener("submit",e=>{ e.preventDefault(); if(g.state!=="ask") return;
+    const v=$("#nmIn").value.replace(/[\s,]/g,"").replace(/^0(\d:)/,"$1"); g.typed=v; if(!v) return;
+    g.total++; const ok=v===q.ans||v===q.alt||v.replace(/^0/,"")===q.ans; if(ok) g.score++; g.state=ok?"right":"wrong"; speak(q.ko); drawNums(); });
+  $("#nmNext")?.addEventListener("click",()=>{ g.q=null; g.state="ask"; g.typed=""; drawNums(); $("#nmIn").focus(); });
+}
+
 /* ---------- routing ---------- */
 function render(){
   updateStats();
@@ -2387,6 +2779,7 @@ function render(){
   else if (mode==="dict") renderDict();
   else if (mode==="account") renderAccount();
   else if (mode==="read") renderRead();
+  else if (mode==="games") { gs=null; renderGames(); }
   else if (mode==="cards") renderCards(lesson.words, false);
   else if (mode==="review") renderCards(mistakes(), true);
   else if (mode==="write"){ ws = newWriteSession(); renderWrite(); }
