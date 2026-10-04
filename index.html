@@ -47,13 +47,10 @@ select,input[type=text],input[type=email],input[type=password]{font:inherit;padd
 .stat span{font-size:12px;color:var(--muted)}
 .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
 .bar i{display:block;height:100%;background:var(--accent)}
-nav{display:flex;flex-wrap:wrap;gap:6px}
-nav button{flex:1 1 auto}
 button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:9px 14px}
 button:hover{border-color:var(--accent)}
 button:disabled{cursor:default;opacity:.55}
 button:focus-visible,select:focus-visible,input:focus-visible,label.tog:focus-within{outline:2px solid var(--accent);outline-offset:2px}
-nav button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:600}
 select.mini{padding:4px 6px;font-size:13px;max-width:210px}
 #voiceHelp{flex-basis:100%}
 .prefs{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-size:13px;color:var(--muted)}
@@ -240,6 +237,65 @@ ol.cw-list li.done{color:var(--muted)}
 .lv.ok{background:var(--good);border-color:var(--good)}
 .lv.mid{background:var(--accent-soft);border-color:var(--accent)}
 .lv.bad{background:var(--bad);border-color:var(--bad)}
+/* layout: home + lesson view */
+.topbar{display:flex;align-items:center;gap:10px;min-height:44px}
+.topbar .brand{font-size:28px}
+.top-r{margin-left:auto;display:flex;align-items:center;gap:12px}
+.streak{font-size:13px;color:var(--muted)}
+.gear{width:40px;height:40px;border-radius:50%;padding:0;font-size:18px;color:var(--muted);display:grid;place-items:center}
+.gear[aria-expanded="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.backbtn{border:none;background:none;padding:6px 4px;font-weight:600;font-size:15px}
+.pillbtn{border-radius:99px;padding:7px 14px;font-weight:600;font-size:14px}
+.prefs{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+body[data-view="home"] #homeBtn,body[data-view="home"] #lessonPill,body[data-view="home"] .tabbar{display:none}
+body[data-view="lesson"] #brand{display:none}
+.hero{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:20px 22px;border-radius:16px;background:linear-gradient(120deg,#6d3fc0,#b8326a);color:#fff}
+.hero h2{margin:6px 0 2px;font-size:22px;text-wrap:balance}
+.hero p{margin:0;opacity:.88;font-size:14px}
+.hero .chip{background:rgba(255,255,255,.2);color:#fff}
+.hero button{background:#fff;color:#6d3fc0;border-color:#fff;font-weight:600;padding:11px 18px}
+.home{display:flex;flex-direction:column;gap:14px}
+.sec-h{margin:4px 0 0;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.tile{display:flex;flex-direction:column;align-items:stretch;gap:4px;text-align:left;padding:12px;border-radius:14px;min-height:122px;min-width:0}
+.tile .n{font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+.tile .k{font-family:var(--ko);font-size:19px;font-weight:700;color:var(--ink);line-height:1.25;word-break:keep-all}
+.tile .r{font-size:12px;color:var(--muted);flex:1}
+.tile.now{border:2px solid var(--accent)}
+.tile.done .bar i{background:var(--good)}
+.tile.soon{opacity:.6;border:1px dashed var(--line);background:var(--surface);cursor:default}
+.lview{display:flex;flex-direction:column;gap:12px}
+.lhead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.lh-ko{margin:4px 0 0;font-family:var(--ko);font-size:30px;line-height:1.2;color:var(--ink);word-break:keep-all}
+.lh-ru{color:var(--muted);font-size:14px}
+.lh-r{flex:0 1 280px;min-width:200px}
+.lh-stat{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted)}
+.lh-stat b{color:var(--fg);font-variant-numeric:tabular-nums}
+.groups{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.groups button{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 8px;border-radius:12px;font-weight:600}
+.groups button span{font-size:18px}
+.groups button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.subs{display:flex;flex-wrap:wrap;gap:6px}
+.subs:empty{display:none}
+.subs button{border-radius:99px;padding:6px 14px;font-size:14px}
+.subs button[aria-pressed="true"]{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
+.tabbar{display:none}
+@media (max-width:700px){
+  .groups,#homeBtn{display:none}
+  .streak{display:none}
+  body[data-view="lesson"] .wrap{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+  .tabbar button{border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;font-size:11px;color:var(--muted)}
+  .tabbar button span{font-size:20px;line-height:1}
+  .tabbar button[aria-pressed="true"]{color:var(--accent);font-weight:700}
+  .lh-ko{font-size:26px}
+  .hero{padding:16px}
+  .hero button{width:100%}
+  .tiles{grid-template-columns:1fr 1fr}
+  .wpop{bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}
+}
+@media (min-width:701px){ #lessonPill{display:none} }
+@media (min-width:900px){ .wrap{max-width:920px} }
 .auth{display:flex;flex-direction:column;gap:6px;max-width:420px}
 .auth label{font-size:13px;color:var(--muted)}
 .auth input{font:inherit;font-size:16px;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
@@ -258,32 +314,13 @@ footer{font-size:12px;color:var(--muted);text-align:center;display:flex;flex-dir
 <body>
 
 <div class="wrap">
-  <header>
-    <div class="brand">한국어 공부<small>Карточки и тесты к конспектам</small></div>
-    <label for="lesson" style="font-size:13px;color:var(--muted)">Урок<br>
-      <select id="lesson"></select>
-    </label>
+  <header class="topbar">
+    <div class="brand" id="brand">한국어 공부</div>
+    <button class="backbtn" id="homeBtn" type="button">← Все уроки</button>
+    <button class="pillbtn" id="lessonPill" type="button" aria-label="Выбрать урок">Урок 1 ▾</button>
+    <div class="top-r"><span class="streak" id="streak"></span><button class="gear" id="gearBtn" type="button" aria-expanded="false" aria-controls="prefs" aria-label="Настройки голоса">⚙</button></div>
   </header>
-
-  <div class="stats">
-    <div class="stat"><b id="sLearned">0</b><span>слов выучено</span><div class="bar"><i id="sBar" style="width:0%"></i></div></div>
-    <div class="stat"><b id="sReview">0</b><span>на повторении</span></div>
-    <div class="stat"><b id="sBest">—</b><span>лучший тест</span></div>
-  </div>
-
-  <nav aria-label="Режимы">
-    <button data-mode="notes" aria-pressed="false">Конспект</button>
-    <button data-mode="read" aria-pressed="false">Чтение</button>
-    <button data-mode="games" aria-pressed="false">Игры</button>
-    <button data-mode="dict" aria-pressed="false">Словарь</button>
-    <button data-mode="cards" aria-pressed="true">Карточки</button>
-    <button data-mode="quiz" aria-pressed="false">Тест на слова</button>
-    <button data-mode="write" aria-pressed="false">Напиши сам</button>
-    <button data-mode="grammar" aria-pressed="false">Грамматика</button>
-    <button data-mode="review" aria-pressed="false">Повтор ошибок</button>
-  </nav>
-
-  <div class="prefs" id="prefs">
+  <div class="prefs" id="prefs" hidden>
     <label class="tog"><input type="checkbox" id="prefAuto"> Озвучивать автоматически</label>
     <label class="tog" for="prefVoice">Голос <select id="prefVoice" class="mini"></select></label>
     <label class="tog" for="prefRate">Скорость <select id="prefRate" class="mini"><option value="0.6">медленно</option><option value="0.75">спокойно</option><option value="0.9">обычно</option><option value="1.05">быстро</option></select></label>
@@ -298,7 +335,22 @@ footer{font-size:12px;color:var(--muted);text-align:center;display:flex;flex-dir
     <span id="ttsNote" hidden></span>
   </div>
 
-  <section class="panel" id="panel" aria-live="polite"></section>
+  <section id="home" class="home" hidden></section>
+
+  <div id="lessonView" class="lview">
+    <div class="lhead">
+      <div class="lh-l"><span class="chip" id="lhNum">Урок 1</span><h1 class="lh-ko" id="lhKo"></h1><div class="lh-ru" id="lhRu"></div></div>
+      <div class="lh-r"><div class="lh-stat"><span><b id="sLearned">0</b> слов выучено</span><span>на повторении <b id="sReview">0</b></span><span>тест <b id="sBest">—</b></span></div><div class="bar"><i id="sBar" style="width:0%"></i></div></div>
+    </div>
+    <nav class="groups" id="groups" aria-label="Разделы">
+      <button data-group="learn" type="button"><span aria-hidden="true">📖</span>Учить</button>
+      <button data-group="train" type="button"><span aria-hidden="true">🃏</span>Тренировка</button>
+      <button data-group="games" type="button"><span aria-hidden="true">🎮</span>Игры</button>
+      <button data-group="read" type="button"><span aria-hidden="true">📚</span>Чтение</button>
+    </nav>
+    <div class="subs" id="subs"></div>
+    <section class="panel" id="panel" aria-live="polite"></section>
+  </div>
 
   <footer>
     <span class="sync" id="sync" data-s="local"><i></i><span id="syncText">Прогресс хранится на этом устройстве</span></span>
@@ -306,6 +358,13 @@ footer{font-size:12px;color:var(--muted);text-align:center;display:flex;flex-dir
     <span><button class="link" id="reset">Сбросить прогресс урока</button> <span id="resetConfirm" hidden> — точно? <button class="link" id="resetYes">Да, сбросить</button> · <button class="link" id="resetNo">Отмена</button></span></span>
   </footer>
 </div>
+<nav class="tabbar" id="tabbar" aria-label="Разделы">
+  <button data-tab="notes" type="button"><span aria-hidden="true">📖</span>Конспект</button>
+  <button data-tab="train" type="button"><span aria-hidden="true">🃏</span>Тренировка</button>
+  <button data-tab="games" type="button"><span aria-hidden="true">🎮</span>Игры</button>
+  <button data-tab="read" type="button"><span aria-hidden="true">📚</span>Чтение</button>
+  <button data-tab="more" type="button"><span aria-hidden="true">⋯</span>Ещё</button>
+</nav>
 
 <script>
 const LESSONS = [
@@ -1629,12 +1688,87 @@ let mode = "notes";
 function $(s){ return document.querySelector(s); }
 const panel = $("#panel");
 
-function initLessonSelect(){
-  const sel = $("#lesson");
-  sel.innerHTML = LESSONS.map((l,i)=>`<option value="${i}">${esc(l.title)}</option>`).join("") +
-    UPCOMING.map(t=>`<option disabled>${esc(t)}</option>`).join("");
-  sel.value = String(LESSONS.length-1);
-  sel.addEventListener("change", ()=>{ lesson = LESSONS[+sel.value]; render(); });
+const TILE = {
+ l1:["이다, 있다","есть / нет, где что"], l2:["하나, 둘, 셋","числа, даты, время"], l3:["-아요/어요","настоящее время"],
+ l4:["-았어요/었어요","прошедшее время"], l5:["-(으)ㄹ 거예요","будущее, -고 있어요"], l6:["안, 못","отрицание"],
+ l7:["은/는, 도, 만","частицы"], l8:["에서, 까지, 한테","места и направления"], l9:["-고 싶어요","хочу, пожалуйста, давайте"]
+};
+const tileOf = l => TILE[l.id] || [l.title.split("·").slice(1).join("·").trim(), ""];
+const lessonNum = l => LESSONS.indexOf(l) + 1;
+const GROUPS = { learn:["notes","dict"], train:["cards","quiz","write","grammar","review"], games:["games"], read:["read"] };
+const PHONE_TABS = { notes:["notes"], train:["cards","quiz","write","grammar","review"], games:["games"], read:["read"], more:["dict"] };
+const MODE_NAME = { notes:"Конспект", dict:"Словарь", cards:"Карточки", quiz:"Тест на слова", write:"Напиши сам", grammar:"Грамматика", review:"Ошибки", games:"Игры", read:"Чтение" };
+const phoneMQ = window.matchMedia("(max-width:700px)");
+let view = "home";
+function groupOf(m, tabs){ return Object.keys(tabs).find(k => tabs[k].includes(m)); }
+function learnedIn(l){ const st = (store.lessons||{})[l.id] || {box:{}}; return l.words.filter(w => ((st.box||{})[w[0]]||0) >= 3).length; }
+function mistakesIn(l){ const st = (store.lessons||{})[l.id] || {box:{}, seen:{}}; return l.words.filter(w => (st.seen||{})[w[0]] && ((st.box||{})[w[0]]||0) === 0).length; }
+const dayKey = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+function markDay(){ store.days = store.days || {}; const k = dayKey(new Date()); if (!store.days[k]){ store.days[k] = 1; } }
+function streakDays(){
+  const days = store.days || {}; const d = new Date(); let n = 0;
+  if (!days[dayKey(d)]) d.setDate(d.getDate()-1);
+  while (days[dayKey(d)]){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+function plural(n, a, b, c){ const m10=n%10, m100=n%100; return (m10===1&&m100!==11)?a:(m10>=2&&m10<=4&&(m100<12||m100>14))?b:c; }
+function updateTop(){
+  const total = LESSONS.reduce((s,l)=>s+learnedIn(l),0), st = streakDays();
+  $("#streak").textContent = (st ? `🔥 ${st} ${plural(st,"день","дня","дней")} подряд · ` : "") + `${total} ${plural(total,"слово","слова","слов")} выучено`;
+  $("#lessonPill").textContent = `Урок ${lessonNum(lesson)} ▾`;
+}
+function rememberPlace(){ store.prefs.last = {lesson: lesson.id, mode}; }
+function openLesson(l, m){ lesson = l; if (m) mode = m; view = "lesson"; rememberPlace(); save(); render(); window.scrollTo(0,0); }
+function goHome(){ view = "home"; render(); window.scrollTo(0,0); }
+function renderHome(){
+  const last = (store.prefs && store.prefs.last) || {};
+  const cur = LESSONS.find(l => l.id === last.lesson) || LESSONS[0];
+  const curMode = last.mode || "notes";
+  const t = tileOf(cur), lr = learnedIn(cur), mi = mistakesIn(cur);
+  const home = $("#home");
+  home.innerHTML = `<div class="hero"><div><span class="chip">${last.lesson ? "Продолжить" : "Начать"}</span><h2>Урок ${lessonNum(cur)} · ${esc(t[1] || t[0])}</h2><p>${esc(MODE_NAME[curMode]||"")} · выучено ${lr} из ${cur.words.length} слов${mi ? ` · ${mi} на повторении` : ""}</p></div><button type="button" id="contBtn">${last.lesson ? "Продолжить" : "Начать"} →</button></div>
+  <h2 class="sec-h">Уроки</h2>
+  <div class="tiles">${LESSONS.map(l => { const [k,r] = tileOf(l), n = learnedIn(l), pct = Math.round(100*n/l.words.length);
+    return `<button type="button" class="tile${l===cur?" now":""}${pct>=90?" done":""}" data-l="${l.id}"><span class="n">Урок ${lessonNum(l)}${l===cur?" · сейчас":""}</span><span class="k">${esc(k)}</span><span class="r">${esc(r)}</span><span class="bar"><i style="width:${pct}%"></i></span></button>`; }).join("")}
+  ${UPCOMING.map(t2 => { const m = t2.match(/^Урок (\d+) · (.*) \(скоро\)$/); return `<div class="tile soon" aria-disabled="true"><span class="n">Урок ${m?m[1]:""} · скоро</span><span class="k">${esc(m?m[2]:t2)}</span><span class="r">готовится</span></div>`; }).join("")}</div>`;
+  $("#contBtn").addEventListener("click", ()=>openLesson(cur, curMode));
+  home.querySelectorAll("[data-l]").forEach(b => b.addEventListener("click", ()=>{
+    const l = LESSONS.find(x => x.id === b.dataset.l); openLesson(l, l===cur ? curMode : "notes"); }));
+}
+function renderNavState(){
+  const phone = phoneMQ.matches, tabs = phone ? PHONE_TABS : GROUPS, g = groupOf(mode, tabs);
+  document.querySelectorAll("#groups button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.group === groupOf(mode, GROUPS))));
+  document.querySelectorAll("#tabbar button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tab === groupOf(mode, PHONE_TABS))));
+  const list = tabs[g] || [];
+  const showSubs = list.length > 1 || (phone && g === "more");
+  const nM = mistakes().length;
+  $("#subs").innerHTML = showSubs ? list.map(m => `<button type="button" data-sub="${m}" aria-pressed="${m===mode}">${MODE_NAME[m]}${m==="review" && nM ? " · "+nM : ""}</button>`).join("") + (phone && g === "more" ? `<button type="button" data-sub="gear">⚙ Голос и скорость</button>` : "") : "";
+  $("#subs").querySelectorAll("[data-sub]").forEach(b => b.addEventListener("click", ()=>{
+    if (b.dataset.sub === "gear"){ toggleGear(); return; }
+    mode = b.dataset.sub; rememberPlace(); save(); render(); }));
+  const [k] = tileOf(lesson);
+  $("#lhNum").textContent = `Урок ${lessonNum(lesson)}`;
+  $("#lhKo").textContent = k;
+  $("#lhRu").textContent = lesson.title.split("·").slice(1).join("·").trim();
+}
+function toggleGear(force){
+  const p = $("#prefs"); if (!TTS_OK) return;
+  const open = force != null ? force : p.hidden;
+  p.hidden = !open; $("#gearBtn").setAttribute("aria-expanded", String(open));
+  if (open) p.scrollIntoView({block:"nearest"});
+}
+function initNav(){
+  $("#homeBtn").addEventListener("click", goHome);
+  $("#lessonPill").addEventListener("click", goHome);
+  $("#gearBtn").addEventListener("click", ()=>toggleGear());
+  document.querySelectorAll("#groups button").forEach(b => b.addEventListener("click", ()=>{
+    const list = GROUPS[b.dataset.group]; if (list.includes(mode)) return;
+    mode = list[0]; rememberPlace(); save(); render(); }));
+  document.querySelectorAll("#tabbar button").forEach(b => b.addEventListener("click", ()=>{
+    const list = PHONE_TABS[b.dataset.tab]; if (list.includes(mode)) return;
+    mode = list[0]; rememberPlace(); save(); render(); window.scrollTo(0,0); }));
+  try { phoneMQ.addEventListener("change", ()=>{ if (view === "lesson") renderNavState(); }); } catch(e){}
+  if (!TTS_OK) $("#gearBtn").hidden = true;
 }
 function syncPrefsUI(){ $("#prefAuto").checked = !!prefs().auto; $("#prefRate").value = String(prefs().rate || 0.9); if ($("#prefRate").value === "") $("#prefRate").value = "0.9"; pickVoice(); }
 function initPrefs(){
@@ -1649,7 +1783,7 @@ function initPrefs(){
 }
 
 function boxOf(w){ return lessonState(lesson.id).box[w[0]] || 0; }
-function setBox(w, b){ const st = lessonState(lesson.id); st.box[w[0]] = Math.max(0, Math.min(4,b)); st.seen[w[0]] = true; save(); updateStats(); }
+function setBox(w, b){ const st = lessonState(lesson.id); st.box[w[0]] = Math.max(0, Math.min(4,b)); st.seen[w[0]] = true; markDay(); save(); updateStats(); }
 function mistakes(){ const st = lessonState(lesson.id); return lesson.words.filter(w => st.seen[w[0]] && (st.box[w[0]]||0) === 0); }
 
 function updateStats(){
@@ -1659,6 +1793,7 @@ function updateStats(){
   $("#sBar").style.width = Math.round(100*learned/lesson.words.length) + "%";
   $("#sReview").textContent = mistakes().length;
   $("#sBest").textContent = st.best == null ? "—" : st.best + "%";
+  updateTop();
 }
 
 /* ---------- flashcards ---------- */
@@ -1936,7 +2071,7 @@ function renderQuiz(){
 }
 function renderQuizEnd(){
   const pct = Math.round(100*quiz.score/quiz.items.length);
-  if (quiz.kind === "vocab"){ const st = lessonState(lesson.id); if (st.best == null || pct > st.best){ st.best = pct; save(); updateStats(); } }
+  if (quiz.kind === "vocab"){ const st = lessonState(lesson.id); markDay(); if (st.best == null || pct > st.best){ st.best = pct; } save(); updateStats(); }
   panel.innerHTML = `
     <div class="result">${quiz.score} / ${quiz.items.length}</div>
     <p>${pct===100?"Без ошибок.":pct>=70?"Хороший результат. Разберите ошибки ниже.":"Стоит повторить конспект и пройти ещё раз."}</p>
@@ -2773,7 +2908,11 @@ function drawNums(){
 function render(){
   updateStats();
   if (TTS_OK) try { speechSynthesis.cancel(); } catch(e){}
-  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.mode===mode)));
+  document.body.dataset.view = view;
+  $("#home").hidden = view !== "home"; $("#lessonView").hidden = view !== "lesson";
+  $("#reset").parentElement.hidden = view !== "lesson";
+  if (view === "home"){ renderHome(); return; }
+  renderNavState();
   deck = []; di = 0; flipped = false;
   if (mode==="notes") renderConspect();
   else if (mode==="dict") renderDict();
@@ -2786,13 +2925,13 @@ function render(){
   else if (mode==="quiz"){ quiz = newVocabQuiz(); renderQuiz(); }
   else { quiz = newGrammarQuiz(); renderQuiz(); }
 }
-document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click", ()=>{ mode = b.dataset.mode; render(); }));
-$("#acctBtn").addEventListener("click", ()=>{ mode = "account"; render(); panel.scrollIntoView({block:"start"}); });
+$("#acctBtn").addEventListener("click", ()=>{ if (typeof view !== "undefined") view = "lesson"; mode = "account"; render(); panel.scrollIntoView({block:"start"}); });
 $("#reset").addEventListener("click", ()=>{ $("#resetConfirm").hidden = false; });
 $("#resetNo").addEventListener("click", ()=>{ $("#resetConfirm").hidden = true; });
 $("#resetYes").addEventListener("click", ()=>{ delete store.lessons[lesson.id]; save(); $("#resetConfirm").hidden = true; render(); });
 
-initLessonSelect();
+{ const last = (store.prefs && store.prefs.last) || {}; const l = LESSONS.find(x => x.id === last.lesson); if (l){ lesson = l; mode = last.mode || "notes"; } }
+initNav();
 initPrefs();
 setSync("local");
 render();
