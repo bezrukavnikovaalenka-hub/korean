@@ -2277,6 +2277,418 @@ function renderQuizEnd(){
 
 /* ---------- reading: short texts and tales ---------- */
 /* Illustrations: flat picture-book scenes drawn inline; they sit on their own paper card in both themes. */
+const COVER = {
+/* 1. Моя комната — уютная комната на закате */
+s1: `<svg viewBox="0 0 400 260" role="img" aria-label="Уютная комната на закате: окно, стол с ноутбуком, кошка спит на кровати">
+<defs>
+<linearGradient id="c1sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3b78"/><stop offset=".55" stop-color="#e2799a"/><stop offset="1" stop-color="#ffc58a"/></linearGradient>
+<linearGradient id="c1wall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3c2f4f"/><stop offset="1" stop-color="#5a4566"/></linearGradient>
+<radialGradient id="c1lamp" cx=".22" cy=".42" r=".55"><stop offset="0" stop-color="#ffd59a" stop-opacity=".75"/><stop offset=".5" stop-color="#ffb070" stop-opacity=".18"/><stop offset="1" stop-color="#ffb070" stop-opacity="0"/></radialGradient>
+<linearGradient id="c1floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4a3a"/><stop offset="1" stop-color="#3a271f"/></linearGradient>
+<linearGradient id="c1screen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe9ff"/><stop offset="1" stop-color="#7cb8f0"/></linearGradient>
+<radialGradient id="c1sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff3c4"/><stop offset="1" stop-color="#ffb36b" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#c1wall)"/>
+<g transform="translate(222 34)"><rect width="146" height="118" rx="6" fill="url(#c1sky)"/><circle cx="96" cy="86" r="34" fill="url(#c1sun)"/><circle cx="96" cy="86" r="13" fill="#fff1c9"/>
+<path d="M0 118 V92 h12 v-14 h10 v20 h8 v-30 h14 v34 h10 v-18 h12 v24 h10 v-40 h8 v-6 h6 v46 h12 v-22 h14 v28 h10 v-16 h10 v22 V118z" fill="#2e2446" opacity=".85"/>
+<rect width="146" height="118" rx="6" fill="none" stroke="#e9d9c4" stroke-width="6"/><line x1="73" y1="0" x2="73" y2="118" stroke="#e9d9c4" stroke-width="4"/><line x1="0" y1="59" x2="146" y2="59" stroke="#e9d9c4" stroke-width="3"/></g>
+<path d="M214 30 q-10 70 4 130 l-14 0 q-6-70 2-130z" fill="#c86a7e" opacity=".9"/><path d="M376 30 q10 70-4 130 l14 0 q6-70-2-130z" fill="#c86a7e" opacity=".9"/>
+<rect y="196" width="400" height="64" fill="url(#c1floor)"/><ellipse cx="300" cy="226" rx="90" ry="14" fill="#8e5d6f" opacity=".5"/>
+<rect width="400" height="260" fill="url(#c1lamp)"/>
+<g><rect x="70" y="58" width="6" height="58" fill="#2a2232"/><path d="M52 58 h42 l-10-26 h-22z" fill="#ffcf86"/><ellipse cx="73" cy="58" rx="21" ry="3" fill="#ffe8b8"/></g>
+<rect x="30" y="132" width="160" height="10" rx="2" fill="#8a5a3c"/><rect x="38" y="142" width="8" height="58" fill="#6e4630"/><rect x="174" y="142" width="8" height="58" fill="#6e4630"/>
+<g transform="translate(96 96)"><rect width="64" height="38" rx="4" fill="#26222e"/><rect x="4" y="4" width="56" height="30" rx="2" fill="url(#c1screen)"/><text x="32" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4f8a" font-family="sans-serif">한국어</text><path d="M-8 38 h80 l-6 6 h-68z" fill="#3a3542"/></g>
+<rect x="52" y="112" width="30" height="20" rx="2" fill="#e6b84f"/><rect x="56" y="108" width="24" height="6" rx="1" fill="#d65a5a"/>
+<g transform="translate(16 150)"><path d="M10 50 h26 l-4 -28 h-18z" fill="#c9774b"/><path d="M23 24 q-22-20-8-38 q10 16 8 38 q2-26 22-30 q2 18-22 30" fill="#5fae6c"/></g>
+<g><rect x="214" y="168" width="176" height="34" rx="10" fill="#f0c9d2"/><rect x="214" y="186" width="176" height="18" rx="6" fill="#d7a3b4"/><rect x="220" y="152" width="50" height="24" rx="10" fill="#fff6f0"/>
+<g transform="translate(300 168)"><ellipse cx="0" cy="0" rx="30" ry="13" fill="#7a7189"/><circle cx="-26" cy="-6" r="12" fill="#7a7189"/><path d="M-36-14 l3-11 7 8z M-24-17 l6-9 2 11z" fill="#7a7189"/><path d="M-31-6 q3 2 6 0 M-23-6 q3 2 6 0" stroke="#2a2232" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M28 2 q16 6 4 -10" stroke="#7a7189" stroke-width="7" fill="none" stroke-linecap="round"/></g></g>
+<text x="330" y="140" font-size="14" fill="#fff" opacity=".8" font-family="sans-serif">z</text><text x="342" y="128" font-size="11" fill="#fff" opacity=".6" font-family="sans-serif">z</text>
+</svg>`,
+
+/* 2. В кафе — вечернее кафе, латте, лампы */
+s2: `<svg viewBox="0 0 400 260" role="img" aria-label="Вечернее кафе: тёплые лампы, латте и пирожные на прилавке">
+<defs>
+<linearGradient id="c2bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f2a3a"/><stop offset="1" stop-color="#4b3a3a"/></linearGradient>
+<linearGradient id="c2win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2b4f"/><stop offset="1" stop-color="#5a5f8f"/></linearGradient>
+<radialGradient id="c2glow" cx=".5" cy="0" r=".9"><stop offset="0" stop-color="#ffd38a" stop-opacity=".9"/><stop offset="1" stop-color="#ffd38a" stop-opacity="0"/></radialGradient>
+<linearGradient id="c2wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9774a"/><stop offset="1" stop-color="#6e3f25"/></linearGradient>
+<radialGradient id="c2cup" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e3dcd4"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#c2bg)"/>
+<rect x="24" y="22" width="352" height="120" rx="8" fill="url(#c2win)"/>
+<g fill="#fff" opacity=".55"><circle cx="60" cy="48" r="1.5"/><circle cx="140" cy="36" r="1.2"/><circle cx="300" cy="44" r="1.4"/><circle cx="350" cy="70" r="1"/></g>
+<g fill="#ffcf7a" opacity=".85"><rect x="40" y="96" width="30" height="46"/><rect x="74" y="78" width="22" height="64"/><rect x="250" y="88" width="34" height="54"/><rect x="290" y="70" width="26" height="72"/><rect x="320" y="100" width="40" height="42"/></g>
+<g fill="#2f2a3a" opacity=".45"><rect x="44" y="102" width="6" height="6"/><rect x="56" y="114" width="6" height="6"/><rect x="78" y="88" width="5" height="5"/><rect x="258" y="96" width="6" height="6"/><rect x="296" y="80" width="5" height="5"/><rect x="330" y="110" width="6" height="6"/></g>
+<g stroke="#9fb0e6" stroke-width="1.2" opacity=".5"><line x1="110" y1="30" x2="104" y2="48"/><line x1="160" y1="60" x2="154" y2="78"/><line x1="200" y1="34" x2="194" y2="52"/><line x1="230" y1="80" x2="224" y2="98"/><line x1="130" y1="100" x2="124" y2="118"/></g>
+<rect x="24" y="22" width="352" height="120" rx="8" fill="none" stroke="#5a463c" stroke-width="6"/><line x1="200" y1="22" x2="200" y2="142" stroke="#5a463c" stroke-width="5"/>
+<g><line x1="110" y1="0" x2="110" y2="34" stroke="#1d1a22" stroke-width="2"/><path d="M92 34 h36 l-6 18 h-24z" fill="#2b2530"/><ellipse cx="110" cy="54" rx="70" ry="60" fill="url(#c2glow)" opacity=".55"/><circle cx="110" cy="54" r="6" fill="#fff2c2"/></g>
+<g><line x1="290" y1="0" x2="290" y2="34" stroke="#1d1a22" stroke-width="2"/><path d="M272 34 h36 l-6 18 h-24z" fill="#2b2530"/><ellipse cx="290" cy="54" rx="70" ry="60" fill="url(#c2glow)" opacity=".55"/><circle cx="290" cy="54" r="6" fill="#fff2c2"/></g>
+<rect x="0" y="176" width="400" height="84" fill="url(#c2wood)"/><rect x="0" y="170" width="400" height="10" fill="#d49766"/>
+<g transform="translate(96 132)"><path d="M-12 26 q2 14 12 16 h28 q10-2 12-16z" fill="none"/><ellipse cx="16" cy="44" rx="40" ry="7" fill="#e9e1d8"/><path d="M-12 6 h56 l-6 34 q-2 6-8 6 h-28 q-6 0-8-6z" fill="url(#c2cup)"/><path d="M44 14 q16 0 12 14 q-3 8-14 8" stroke="#e3dcd4" stroke-width="5" fill="none"/><ellipse cx="16" cy="6" rx="28" ry="6" fill="#a4683f"/><path d="M16 2 q-8 4 0 8 q8-4 0-8z M16 4 q-4 2 0 4" fill="#f6e7d4"/>
+<path d="M4-4 q-6-10 2-18 q6-8 0-16" stroke="#fff" stroke-width="2.5" fill="none" opacity=".5" stroke-linecap="round"/><path d="M24-6 q-6-10 2-18 q6-8 0-14" stroke="#fff" stroke-width="2.5" fill="none" opacity=".4" stroke-linecap="round"/></g>
+<g transform="translate(230 146)"><ellipse cx="36" cy="30" rx="50" ry="8" fill="#e9e1d8"/><path d="M6 28 l28-34 l28 34z" fill="#f7d9a8"/><path d="M6 28 l28-34 l28 34" fill="none" stroke="#e7b874" stroke-width="2"/><path d="M14 18 h40" stroke="#e98aa3" stroke-width="5"/><circle cx="34" cy="-8" r="6" fill="#d63d55"/><path d="M34-14 q2-6 6-6" stroke="#3c8a4a" stroke-width="2" fill="none"/></g>
+<g transform="translate(320 152)"><circle cx="18" cy="12" r="15" fill="#c98b4a"/><circle cx="18" cy="12" r="9" fill="#3a2418" opacity=".25"/><circle cx="40" cy="18" r="11" fill="#e3b06b"/></g>
+</svg>`,
+
+/* 3. Муравей и кузнечик — летний луг на закате */
+s2b: `<svg viewBox="0 0 400 260" role="img" aria-label="Летний луг на закате: кузнечик играет на скрипке, муравей несёт зёрнышко">
+<defs>
+<linearGradient id="c3sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9e6d"/><stop offset=".55" stop-color="#ffd38a"/><stop offset="1" stop-color="#fff0c2"/></linearGradient>
+<radialGradient id="c3sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffbe6"/><stop offset=".35" stop-color="#ffe9a8"/><stop offset="1" stop-color="#ffd38a" stop-opacity="0"/></radialGradient>
+<linearGradient id="c3h1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8c76a"/><stop offset="1" stop-color="#6f9a46"/></linearGradient>
+<linearGradient id="c3h2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fa04a"/><stop offset="1" stop-color="#3e6d32"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#c3sky)"/>
+<circle cx="290" cy="110" r="90" fill="url(#c3sun)"/><circle cx="290" cy="110" r="30" fill="#fff6d6"/>
+<path d="M0 150 q80-40 170-10 t230-20 V260 H0z" fill="#c9b27a" opacity=".55"/>
+<path d="M0 170 q100-36 200-6 t200-10 V260 H0z" fill="url(#c3h1)"/>
+<path d="M0 200 q120-30 230 0 t170-8 V260 H0z" fill="url(#c3h2)"/>
+<g stroke="#2f5a28" stroke-width="2" stroke-linecap="round" fill="none"><path d="M20 260 q4-30-6-50"/><path d="M34 260 q-2-36 10-58"/><path d="M370 260 q-6-40 8-62"/><path d="M386 260 q2-30-10-46"/><path d="M60 260 q6-24-2-40"/></g>
+<g fill="#ffd34d"><circle cx="40" cy="206" r="5"/><circle cx="372" cy="200" r="5"/><circle cx="352" cy="226" r="4"/></g>
+<g transform="translate(118 150)"><path d="M-60 60 q30-70 90-74" stroke="#4e8a3a" stroke-width="5" fill="none"/><path d="M-20 4 q40-40 90-20 q-40 30-90 20z" fill="#7cbf52"/><path d="M-20 4 q40-20 90-20" stroke="#5a9a3c" stroke-width="2" fill="none"/>
+<g transform="translate(26 -18) rotate(-10)"><ellipse cx="0" cy="0" rx="22" ry="7" fill="#58b34a"/><circle cx="-22" cy="-3" r="7" fill="#58b34a"/><circle cx="-24" cy="-5" r="2" fill="#1d2a18"/><path d="M-26-9 q-10-20-2-28 M-22-9 q2-22 12-26" stroke="#3e7a32" stroke-width="1.5" fill="none"/><path d="M4 2 l14 14 l10-2 M-6 4 l-6 14" stroke="#3e7a32" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<g transform="translate(-12 -18) rotate(-30)"><path d="M0 0 q-6 4 0 9 q-5 4 0 9 q8 1 8-9 q0-10-8-9z" fill="#a05a2c"/><line x1="4" y1="-10" x2="4" y2="18" stroke="#5a3218" stroke-width="1.5"/></g><line x1="-30" y1="-30" x2="6" y2="-4" stroke="#7a4a2a" stroke-width="1.2"/></g></g>
+<g fill="#ffe680"><circle cx="170" cy="120" r="2"/><circle cx="200" cy="100" r="1.6"/><circle cx="150" cy="96" r="1.4"/><circle cx="230" cy="130" r="1.8"/></g>
+<g transform="translate(250 220)"><ellipse cx="0" cy="0" rx="7" ry="5" fill="#3a2a2a"/><circle cx="-10" cy="-2" r="4.5" fill="#3a2a2a"/><circle cx="10" cy="1" r="6" fill="#3a2a2a"/><path d="M-4 4 l-4 7 M2 4 l1 8 M8 5 l5 6" stroke="#3a2a2a" stroke-width="1.6"/><path d="M-12-6 q-4-8 0-12" stroke="#3a2a2a" stroke-width="1.2" fill="none"/><ellipse cx="-4" cy="-12" rx="7" ry="5" fill="#f2e2b8" stroke="#c8ae74"/></g>
+</svg>`,
+
+/* 4. Заяц и черепаха — дорога через холмы */
+s3: `<svg viewBox="0 0 400 260" role="img" aria-label="Дорога через зелёные холмы: черепаха идёт к финишу, заяц спит под деревом">
+<defs>
+<linearGradient id="c4sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ec8f2"/><stop offset="1" stop-color="#d9f0ff"/></linearGradient>
+<linearGradient id="c4g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd468"/><stop offset="1" stop-color="#5fa548"/></linearGradient>
+<linearGradient id="c4g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#78bb54"/><stop offset="1" stop-color="#3f8a3e"/></linearGradient>
+<linearGradient id="c4road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3dfb2"/><stop offset="1" stop-color="#d9b77d"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#c4sky)"/>
+<g fill="#fff" opacity=".9"><ellipse cx="80" cy="46" rx="34" ry="12"/><ellipse cx="104" cy="38" rx="22" ry="14"/><ellipse cx="300" cy="34" rx="30" ry="10"/><ellipse cx="320" cy="28" rx="18" ry="11"/></g>
+<path d="M0 120 q60-30 120-8 t140-6 t140 -10 V260 H0z" fill="#b6dba0" opacity=".8"/>
+<path d="M0 150 q90-40 200-12 t200-4 V260 H0z" fill="url(#c4g1)"/>
+<path d="M150 260 q30-50 90-70 q50-16 60-48 q4-10 20-12 l8 0 q-16 6-18 16 q-14 40-62 56 q-56 20-66 58z" fill="url(#c4road)"/>
+<path d="M0 196 q70-24 140-4 l-10 68 H0z" fill="url(#c4g2)"/>
+<path d="M260 260 q30-46 140-56 V260z" fill="url(#c4g2)"/>
+<g transform="translate(318 96)"><line x1="0" y1="0" x2="0" y2="40" stroke="#6b4a2a" stroke-width="3"/><path d="M0 0 h26 v16 h-26z" fill="#fff"/><g fill="#1d1d1f"><rect x="0" y="0" width="6.5" height="5.3"/><rect x="13" y="0" width="6.5" height="5.3"/><rect x="6.5" y="5.3" width="6.5" height="5.3"/><rect x="19.5" y="5.3" width="6.5" height="5.3"/><rect x="0" y="10.6" width="6.5" height="5.4"/><rect x="13" y="10.6" width="6.5" height="5.4"/></g></g>
+<g transform="translate(60 150)"><rect x="-4" y="0" width="10" height="46" fill="#7a5032"/><circle cx="0" cy="-10" r="30" fill="#4f9a45"/><circle cx="-22" cy="4" r="20" fill="#5aaa4e"/><circle cx="22" cy="2" r="22" fill="#468d3e"/><circle cx="4" cy="-28" r="18" fill="#62b456"/></g>
+<g transform="translate(92 196)"><ellipse cx="0" cy="8" rx="26" ry="5" fill="#2f6a30" opacity=".35"/><ellipse cx="0" cy="0" rx="20" ry="11" fill="#f3efe8"/><circle cx="-18" cy="-4" r="9" fill="#f3efe8"/><path d="M-22-10 q-14-6-18 2 q8 2 18 0z M-18-12 q-8-12-16-8 q4 6 16 8z" fill="#f3efe8" stroke="#e7c9c9"/><path d="M-22-4 q2 2 4 0" stroke="#3a2a2a" stroke-width="1.4" fill="none"/><circle cx="18" cy="-2" r="4" fill="#fff"/><text x="-2" y="-22" font-size="10" fill="#3a6a8a" font-family="sans-serif">z z</text></g>
+<g transform="translate(232 196)"><ellipse cx="0" cy="10" rx="24" ry="4" fill="#7a5a32" opacity=".3"/><path d="M-20 6 q0-24 20-24 q20 0 20 24z" fill="#5c8f3a"/><path d="M-12 -6 l6-8 l8 0 l6 8 l-6 8 h-8z M-18 4 l6-8 M18 4 l-6-8" stroke="#3f6a26" stroke-width="1.6" fill="none"/><circle cx="26" cy="0" r="6.5" fill="#8fbf6a"/><circle cx="28" cy="-2" r="1.5" fill="#1d2a18"/><path d="M-14 8 v6 M12 8 v6" stroke="#8fbf6a" stroke-width="5" stroke-linecap="round"/></g>
+</svg>`,
+
+/* 5. Золотой топор — волшебный пруд в лесу */
+s4: `<svg viewBox="0 0 400 260" role="img" aria-label="Волшебный пруд в лесу: из воды поднимается дух с золотым топором">
+<defs>
+<linearGradient id="c5sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#162a3a"/><stop offset="1" stop-color="#2f5a5a"/></linearGradient>
+<radialGradient id="c5moon" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffbe0"/><stop offset=".3" stop-color="#fff2b0" stop-opacity=".6"/><stop offset="1" stop-color="#fff2b0" stop-opacity="0"/></radialGradient>
+<linearGradient id="c5water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f8a8a"/><stop offset="1" stop-color="#1a3f4a"/></linearGradient>
+<radialGradient id="c5spirit" cx=".5" cy=".4" r=".6"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#d8f6ff" stop-opacity=".8"/><stop offset="1" stop-color="#a0e6ff" stop-opacity="0"/></radialGradient>
+<linearGradient id="c5gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset=".5" stop-color="#ffc83d"/><stop offset="1" stop-color="#c88a12"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#c5sky)"/>
+<circle cx="320" cy="50" r="60" fill="url(#c5moon)"/><circle cx="320" cy="50" r="16" fill="#fff7d0"/>
+<g fill="#fff" opacity=".7"><circle cx="40" cy="30" r="1.2"/><circle cx="120" cy="18" r="1"/><circle cx="210" cy="40" r="1.3"/><circle cx="260" cy="16" r="1"/><circle cx="370" cy="100" r="1"/></g>
+<g fill="#10222c"><path d="M0 170 l20-80 l20 80z M26 170 l24-110 l24 110z M64 170 l18-70 l18 70z"/><path d="M300 170 l22-90 l22 90z M336 170 l26-120 l26 120z M374 170 l16-60 l16 60z"/></g>
+<g fill="#1b3a40"><path d="M90 172 l14-50 l14 50z M276 172 l14-56 l14 56z"/></g>
+<ellipse cx="200" cy="196" rx="190" ry="44" fill="url(#c5water)"/>
+<ellipse cx="200" cy="186" rx="120" ry="14" fill="#bff0ff" opacity=".18"/>
+<g stroke="#bff0ff" stroke-width="1.5" fill="none" opacity=".45"><ellipse cx="200" cy="190" rx="40" ry="6"/><ellipse cx="200" cy="190" rx="64" ry="10"/><ellipse cx="200" cy="190" rx="92" ry="14" opacity=".6"/></g>
+<ellipse cx="200" cy="120" rx="80" ry="90" fill="url(#c5spirit)" opacity=".75"/>
+<g transform="translate(200 120)"><path d="M-22 70 q-6-50 0-80 q10-20 22-20 q12 0 22 20 q6 30 0 80 q-22-10-44 0z" fill="#f2fbff" opacity=".92"/><circle cx="0" cy="-34" r="16" fill="#fff"/><path d="M-16-40 q16-24 32 0 q-4 22-16 26 q-12-4-16-26z" fill="#e8f7ff"/><path d="M-14-30 q-14 30-6 60 M14-30 q14 30 6 60" stroke="#d8eff8" stroke-width="3" fill="none"/>
+<path d="M-6-30 q2 2 4 0 M3-30 q2 2 4 0" stroke="#5a7a8a" stroke-width="1.4" fill="none"/><path d="M-4-22 q4 3 8 0" stroke="#5a7a8a" stroke-width="1.4" fill="none"/>
+<g transform="translate(30 -10) rotate(20)"><rect x="-2" y="-6" width="5" height="54" rx="2" fill="#8a5a2a"/><path d="M-4-8 q-22-8-24 10 q12 4 24 2z" fill="url(#c5gold)"/></g>
+<g transform="translate(-32 -4) rotate(-20)"><rect x="-2" y="-6" width="5" height="50" rx="2" fill="#7a5a3a"/><path d="M4-8 q20-6 22 10 q-12 4-22 2z" fill="#dfe6ea"/></g></g>
+<g fill="#ffe680"><circle cx="150" cy="80" r="2"/><circle cx="252" cy="70" r="2"/><circle cx="270" cy="120" r="1.6"/><circle cx="130" cy="130" r="1.6"/></g>
+<path d="M0 240 q60-16 120 0 V260 H0z M280 244 q60-18 120-4 V260 H280z" fill="#0d1c22"/>
+</svg>`,
+
+/* 6. Привередливая кошка — кошка у окна с миской */
+s5: `<svg viewBox="0 0 400 260" role="img" aria-label="Пушистая кошка сидит у окна и недовольно смотрит на полную миску">
+<defs>
+<linearGradient id="c6wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe3e8"/><stop offset="1" stop-color="#f6c7d1"/></linearGradient>
+<linearGradient id="c6sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd8ff"/><stop offset="1" stop-color="#e6f6ff"/></linearGradient>
+<radialGradient id="c6fur" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffd7a0"/><stop offset="1" stop-color="#e59a52"/></radialGradient>
+<radialGradient id="c6light" cx=".7" cy=".2" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#c6wall)"/>
+<g transform="translate(206 20)"><rect width="168" height="140" rx="10" fill="url(#c6sky)"/><g fill="#fff"><ellipse cx="50" cy="40" rx="26" ry="9"/><ellipse cx="66" cy="34" rx="16" ry="10"/><ellipse cx="128" cy="70" rx="22" ry="7"/></g><path d="M0 120 q40-20 84-6 t84-4 V140 H0z" fill="#a8dba0"/>
+<rect width="168" height="140" rx="10" fill="none" stroke="#fff" stroke-width="8"/><line x1="84" y1="0" x2="84" y2="140" stroke="#fff" stroke-width="6"/></g>
+<rect width="400" height="260" fill="url(#c6light)"/>
+<rect x="190" y="160" width="200" height="12" rx="4" fill="#fff"/>
+<rect y="210" width="400" height="50" fill="#d8a1b0"/>
+<g transform="translate(110 214)"><ellipse cx="0" cy="18" rx="48" ry="6" fill="#b97a8c" opacity=".5"/><path d="M-40 0 h80 l-8 18 h-64z" fill="#5b8def"/><ellipse cx="0" cy="0" rx="40" ry="8" fill="#7aa6ff"/><ellipse cx="0" cy="-2" rx="32" ry="6" fill="#c9784a"/><g fill="#a85a32"><circle cx="-14" cy="-4" r="4"/><circle cx="2" cy="-6" r="4"/><circle cx="14" cy="-3" r="4"/><circle cx="-4" cy="-1" r="3.5"/></g><text x="0" y="13" text-anchor="middle" font-size="9" fill="#fff" font-weight="700" font-family="sans-serif">나비</text></g>
+<g transform="translate(280 168)"><path d="M40 30 q40 10 26-30" stroke="#e59a52" stroke-width="12" fill="none" stroke-linecap="round"/><ellipse cx="0" cy="10" rx="44" ry="34" fill="url(#c6fur)"/><circle cx="-8" cy="-36" r="30" fill="url(#c6fur)"/><path d="M-34-50 l-4-26 l20 14z M18-52 l8-24 l-24 12z" fill="#e59a52"/><path d="M-32-54 l-2-14 l10 8z M14-56 l4-12 l-12 6z" fill="#ffb4b4"/>
+<path d="M-22-38 q6-4 12 0 M2-38 q6-4 12 0" stroke="#3a2a2a" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M-8-28 l-3 3 h6z" fill="#e76d7a"/><path d="M-14-20 q6-4 12 0" stroke="#3a2a2a" stroke-width="1.8" fill="none"/>
+<path d="M-40-26 h-20 M-40-22 l-18 4 M24-26 h20 M24-22 l18 4" stroke="#fff" stroke-width="1.4"/><path d="M-20-6 q-4 30 0 40 M10-6 q4 30 0 40" stroke="#d98a44" stroke-width="2" fill="none" opacity=".5"/></g>
+<g transform="translate(206 112)"><path d="M0 0 q-14 0-14 12 q0 12 14 12 h40 q14 0 14-12 q0-12-14-12z" fill="#fff" opacity=".95"/><text x="20" y="16" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#3a2a2a">흥!</text></g>
+</svg>`,
+
+/* 7. Кто съел торт? — ночная кухня, открытый холодильник */
+s6: `<svg viewBox="0 0 400 260" role="img" aria-label="Ночная кухня: открытый холодильник светится, от торта откушен кусок, рядом лупа">
+<defs>
+<linearGradient id="c7bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1c33"/><stop offset="1" stop-color="#2c2a48"/></linearGradient>
+<linearGradient id="c7beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff4c8" stop-opacity=".75"/><stop offset="1" stop-color="#fff4c8" stop-opacity="0"/></linearGradient>
+<radialGradient id="c7in" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#fffbe8"/><stop offset="1" stop-color="#e8e2c4"/></radialGradient>
+<linearGradient id="c7cake" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2f5"/><stop offset="1" stop-color="#f6c6d2"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#c7bg)"/>
+<rect y="200" width="400" height="60" fill="#232239"/>
+<path d="M120 52 L400 20 V260 H120z" fill="url(#c7beam)" opacity=".5"/>
+<g transform="translate(36 40)"><rect width="96" height="168" rx="8" fill="#d9dde8"/><rect x="6" y="6" width="84" height="156" rx="4" fill="url(#c7in)"/><g stroke="#cfc7a6" stroke-width="3"><line x1="6" y1="56" x2="90" y2="56"/><line x1="6" y1="104" x2="90" y2="104"/></g>
+<rect x="14" y="30" width="16" height="26" rx="3" fill="#7ec0ee"/><rect x="36" y="38" width="22" height="18" rx="3" fill="#f2a65a"/><circle cx="74" cy="48" r="8" fill="#e85d5d"/><rect x="16" y="80" width="30" height="24" rx="3" fill="#bde2a8"/><rect x="54" y="86" width="26" height="18" rx="3" fill="#fff" stroke="#ddd"/>
+<g transform="translate(18 132)"><ellipse cx="30" cy="30" rx="34" ry="5" fill="#fff"/><path d="M0 8 h60 v22 h-60z" fill="url(#c7cake)"/><path d="M38 8 l22 0 l0 22 l-10 0z" fill="#e8e2c4"/><ellipse cx="30" cy="8" rx="30" ry="6" fill="#fff"/><path d="M38 8 l22-2 l0 4z" fill="#e8e2c4"/><circle cx="16" cy="4" r="4" fill="#e23b55"/><circle cx="30" cy="2" r="4" fill="#e23b55"/></g></g>
+<path d="M132 46 l40 -10 v176 l-40 -4z" fill="#c3c8d6"/><rect x="160" y="96" width="4" height="40" rx="2" fill="#8a90a2"/>
+<g fill="#f6c6d2" opacity=".9"><ellipse cx="200" cy="232" rx="5" ry="3.5"/><ellipse cx="206" cy="226" rx="2" ry="1.6"/><ellipse cx="196" cy="225" rx="2" ry="1.6"/><ellipse cx="240" cy="220" rx="5" ry="3.5"/><ellipse cx="246" cy="214" rx="2" ry="1.6"/><ellipse cx="236" cy="213" rx="2" ry="1.6"/><ellipse cx="282" cy="232" rx="5" ry="3.5"/><ellipse cx="288" cy="226" rx="2" ry="1.6"/><ellipse cx="278" cy="225" rx="2" ry="1.6"/></g>
+<g transform="translate(330 196)"><path d="M-30 4 q-6-26 14-30 q-4-14 6-16 l6 10 l8-10 q8 6 2 18 q20 8 10 30z" fill="#14142a"/><circle cx="-4" cy="-26" r="2.6" fill="#ffd34d"/><circle cx="8" cy="-26" r="2.6" fill="#ffd34d"/><path d="M-2-18 q4 4 8 0" stroke="#f6c6d2" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M18 2 q24 0 16-24" stroke="#14142a" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+<g transform="translate(250 80) rotate(-25)"><circle cx="0" cy="0" r="26" fill="#bfe6ff" opacity=".35" stroke="#e9c46a" stroke-width="6"/><rect x="-5" y="28" width="10" height="44" rx="4" fill="#7a4a2a"/><path d="M-12-8 q8-10 20-6" stroke="#fff" stroke-width="3" fill="none" opacity=".7"/></g>
+<text x="300" y="56" font-size="40" font-weight="700" fill="#ffd34d" font-family="sans-serif" opacity=".9">?</text>
+</svg>`,
+
+/* 8. Письмо из Сеула — конверт на фоне Сеула и башни Намсан */
+s7: `<svg viewBox="0 0 400 260" role="img" aria-label="Конверт с маркой на фоне вечернего Сеула, горы и башня Намсан">
+<defs>
+<linearGradient id="c8sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a6fc8"/><stop offset=".55" stop-color="#d98ab8"/><stop offset="1" stop-color="#ffcf9e"/></linearGradient>
+<linearGradient id="c8env" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffaf2"/><stop offset="1" stop-color="#f1e6d6"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#c8sky)"/>
+<path d="M0 150 q50-50 110-40 q40-40 90-20 q50-30 100 10 q50-14 100 14 V260 H0z" fill="#8a6aa8" opacity=".55"/>
+<path d="M0 170 q60-36 120-20 q60-30 120 0 q70-20 160 4 V260 H0z" fill="#6a4f8c" opacity=".7"/>
+<g transform="translate(362 70)"><path d="M-2 90 l2-60 l2 60z" fill="#3a2a5a"/><rect x="-8" y="24" width="16" height="10" rx="3" fill="#3a2a5a"/><rect x="-5" y="18" width="10" height="6" fill="#3a2a5a"/><line x1="0" y1="18" x2="0" y2="0" stroke="#3a2a5a" stroke-width="2"/><circle cx="0" cy="29" r="2" fill="#ffd36b"/><circle cx="0" cy="0" r="2" fill="#ff6b6b"/></g>
+<g fill="#3d2f60"><rect x="0" y="180" width="30" height="80"/><rect x="34" y="160" width="22" height="100"/><rect x="60" y="190" width="40" height="70"/><rect x="104" y="170" width="18" height="90"/><rect x="250" y="176" width="26" height="84"/><rect x="280" y="190" width="30" height="70"/><rect x="314" y="164" width="22" height="96"/><rect x="340" y="184" width="60" height="76"/></g>
+<g fill="#ffd98a" opacity=".85"><rect x="6" y="190" width="4" height="4"/><rect x="18" y="204" width="4" height="4"/><rect x="40" y="172" width="4" height="4"/><rect x="46" y="190" width="4" height="4"/><rect x="70" y="200" width="4" height="4"/><rect x="86" y="214" width="4" height="4"/><rect x="108" y="184" width="4" height="4"/><rect x="258" y="190" width="4" height="4"/><rect x="292" y="204" width="4" height="4"/><rect x="320" y="176" width="4" height="4"/><rect x="352" y="198" width="4" height="4"/><rect x="372" y="214" width="4" height="4"/></g>
+<g transform="translate(118 74) rotate(-6)"><rect x="4" y="6" width="170" height="110" rx="6" fill="#2a1f40" opacity=".25"/><rect width="170" height="110" rx="6" fill="url(#c8env)"/><path d="M0 4 l85 58 l85-58" fill="none" stroke="#e2d2bc" stroke-width="3"/><path d="M0 110 l64-46 M170 110 l-64-46" stroke="#eadcc8" stroke-width="2"/>
+<g transform="translate(128 10)"><rect width="32" height="38" fill="#fff" stroke="#e5a0a0" stroke-dasharray="3 2" stroke-width="2"/><rect x="4" y="4" width="24" height="30" fill="#7ac0e8"/><path d="M4 26 l8-10 l6 6 l4-4 l6 8v8h-24z" fill="#5a9a5a"/><circle cx="21" cy="11" r="3" fill="#ffe08a"/></g>
+<text x="18" y="38" font-size="13" fill="#5a4a6a" font-family="sans-serif">To. 알료나</text><text x="18" y="94" font-size="12" fill="#8a7a8a" font-family="sans-serif">서울에서 ♥</text>
+<path d="M60 70 q-6-8 0-12 q6-2 6 4 q0-6 6-4 q6 4 0 12 l-6 6z" fill="#e85d7a"/></g>
+</svg>`,
+
+/* 9. Свидание на Хангане — ночная река, мост, огни */
+s8: `<svg viewBox="0 0 400 260" role="img" aria-label="Ночная река Хан: мост в огнях, отражения в воде, двое сидят на берегу">
+<defs>
+<linearGradient id="c9sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1033"/><stop offset=".6" stop-color="#2a2a6a"/><stop offset="1" stop-color="#6a4a8a"/></linearGradient>
+<linearGradient id="c9water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2a5a"/><stop offset="1" stop-color="#0d1028"/></linearGradient>
+<radialGradient id="c9moon" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffbe6"/><stop offset=".25" stop-color="#fff2c0" stop-opacity=".7"/><stop offset="1" stop-color="#fff2c0" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#c9sky)"/>
+<g fill="#fff"><circle cx="30" cy="20" r="1.2"/><circle cx="90" cy="40" r="1"/><circle cx="150" cy="14" r="1.4"/><circle cx="220" cy="30" r="1"/><circle cx="270" cy="12" r="1.2"/><circle cx="350" cy="36" r="1"/><circle cx="380" cy="10" r="1.3"/><circle cx="60" cy="64" r=".9"/></g>
+<circle cx="80" cy="46" r="44" fill="url(#c9moon)"/><circle cx="80" cy="46" r="13" fill="#fff8dc"/>
+<g fill="#1c1a40"><rect x="0" y="100" width="26" height="46"/><rect x="28" y="86" width="20" height="60"/><rect x="52" y="108" width="30" height="38"/><rect x="200" y="92" width="22" height="54"/><rect x="226" y="80" width="18" height="66"/><rect x="248" y="104" width="34" height="42"/><rect x="286" y="72" width="16" height="74"/><rect x="306" y="96" width="40" height="50"/><rect x="350" y="88" width="50" height="58"/></g>
+<g fill="#ffd27a" opacity=".8"><rect x="6" y="110" width="3" height="3"/><rect x="34" y="96" width="3" height="3"/><rect x="40" y="118" width="3" height="3"/><rect x="206" y="104" width="3" height="3"/><rect x="232" y="92" width="3" height="3"/><rect x="290" y="84" width="3" height="3"/><rect x="292" y="110" width="3" height="3"/><rect x="316" y="108" width="3" height="3"/><rect x="360" y="100" width="3" height="3"/><rect x="380" y="120" width="3" height="3"/></g>
+<rect y="146" width="400" height="114" fill="url(#c9water)"/>
+<g><rect x="0" y="134" width="400" height="7" fill="#3a3a7a"/><g fill="#3a3a7a"><rect x="40" y="141" width="8" height="20"/><rect x="140" y="141" width="8" height="20"/><rect x="240" y="141" width="8" height="20"/><rect x="340" y="141" width="8" height="20"/></g>
+<g><circle cx="10" cy="134" r="2.4" fill="#ff8fd0"/><circle cx="34" cy="134" r="2.4" fill="#8fd8ff"/><circle cx="58" cy="134" r="2.4" fill="#ffe08a"/><circle cx="82" cy="134" r="2.4" fill="#ff8fd0"/><circle cx="106" cy="134" r="2.4" fill="#8fd8ff"/><circle cx="130" cy="134" r="2.4" fill="#ffe08a"/><circle cx="154" cy="134" r="2.4" fill="#ff8fd0"/><circle cx="178" cy="134" r="2.4" fill="#8fd8ff"/><circle cx="202" cy="134" r="2.4" fill="#ffe08a"/><circle cx="226" cy="134" r="2.4" fill="#ff8fd0"/><circle cx="250" cy="134" r="2.4" fill="#8fd8ff"/><circle cx="274" cy="134" r="2.4" fill="#ffe08a"/><circle cx="298" cy="134" r="2.4" fill="#ff8fd0"/><circle cx="322" cy="134" r="2.4" fill="#8fd8ff"/><circle cx="346" cy="134" r="2.4" fill="#ffe08a"/><circle cx="370" cy="134" r="2.4" fill="#ff8fd0"/><circle cx="394" cy="134" r="2.4" fill="#8fd8ff"/></g>
+</g>
+<g opacity=".5"><rect x="8" y="160" width="4" height="22" fill="#ff8fd0"/><rect x="32" y="166" width="4" height="16" fill="#8fd8ff"/><rect x="104" y="162" width="4" height="26" fill="#8fd8ff"/><rect x="176" y="160" width="4" height="20" fill="#8fd8ff"/><rect x="200" y="166" width="4" height="28" fill="#ffe08a"/><rect x="272" y="160" width="4" height="22" fill="#ffe08a"/><rect x="320" y="168" width="4" height="18" fill="#8fd8ff"/><rect x="368" y="160" width="4" height="26" fill="#ff8fd0"/></g>
+<g stroke="#fff" stroke-width="1" opacity=".25"><line x1="120" y1="200" x2="170" y2="200"/><line x1="230" y1="214" x2="290" y2="214"/><line x1="40" y1="226" x2="80" y2="226"/></g>
+<path d="M0 232 q100-14 200-6 t200 -2 V260 H0z" fill="#1a3a2a"/>
+<g transform="translate(250 220)"><rect x="-44" y="0" width="88" height="6" rx="2" fill="#e9e2f2"/>
+<g transform="translate(-14 0)"><path d="M-10 0 q0-24 10-24 q10 0 10 24z" fill="#5a7ae0"/><circle cx="0" cy="-30" r="8" fill="#f3d2b8"/><path d="M-9-32 q9-12 18 0 q-2-8-9-9 q-7 1-9 9z" fill="#2a1f2a"/></g>
+<g transform="translate(12 0)"><path d="M-10 0 q0-22 10-22 q10 0 10 22z" fill="#f08ab0"/><circle cx="0" cy="-28" r="7.5" fill="#f3d2b8"/><path d="M-9-28 q0-14 9-13 q9-1 9 13 q2 10 -2 16 l-2-14 q-5-4-10 0 l-2 14 q-4-6-2-16z" fill="#4a2a2a"/></g>
+<path d="M0 -40 q-4-6 0-8 q4-2 4 2 q0-4 4-2 q4 2 0 8 l-4 4z" fill="#ff6b9a"/></g>
+</svg>`
+};
+const ART2 = {
+/* Заяц и черепаха на старте */
+race: `<svg viewBox="0 0 400 260" role="img" aria-label="Заяц и черепаха стоят на старте, вокруг собрались звери">
+<defs>
+<linearGradient id="a1sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd3ff"/><stop offset="1" stop-color="#e6f7ff"/></linearGradient>
+<linearGradient id="a1g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a6d86e"/><stop offset="1" stop-color="#5ea347"/></linearGradient>
+<linearGradient id="a1road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f5e2b6"/><stop offset="1" stop-color="#dcb97c"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a1sky)"/>
+<g fill="#fff" opacity=".9"><ellipse cx="70" cy="40" rx="30" ry="10"/><ellipse cx="90" cy="32" rx="18" ry="12"/><ellipse cx="320" cy="50" rx="34" ry="11"/></g>
+<path d="M0 130 q100-40 200-10 t200-6 V260 H0z" fill="#bfe3a2"/>
+<path d="M0 160 q100-30 200-6 t200-4 V260 H0z" fill="url(#a1g)"/>
+<path d="M120 260 l40-110 h80 l40 110z" fill="url(#a1road)"/>
+<rect x="150" y="176" width="100" height="6" fill="#fff"/><g fill="#1d1d1f"><rect x="150" y="176" width="10" height="3"/><rect x="170" y="176" width="10" height="3"/><rect x="190" y="176" width="10" height="3"/><rect x="210" y="176" width="10" height="3"/><rect x="230" y="176" width="10" height="3"/><rect x="160" y="179" width="10" height="3"/><rect x="180" y="179" width="10" height="3"/><rect x="200" y="179" width="10" height="3"/><rect x="220" y="179" width="10" height="3"/><rect x="240" y="179" width="10" height="3"/></g>
+<g transform="translate(150 150)"><line x1="0" y1="0" x2="0" y2="30" stroke="#6b4a2a" stroke-width="3"/><line x1="100" y1="0" x2="100" y2="30" stroke="#6b4a2a" stroke-width="3"/><path d="M0 2 q50 14 100 0 v10 q-50 14-100 0z" fill="#ff6b6b"/><text x="50" y="13" text-anchor="middle" font-size="9" fill="#fff" font-weight="700" font-family="sans-serif">출발!</text></g>
+<g transform="translate(172 230)"><ellipse cx="0" cy="22" rx="20" ry="4" fill="#3f7a30" opacity=".3"/><ellipse cx="0" cy="8" rx="14" ry="16" fill="#f6f3ee"/><circle cx="0" cy="-14" r="11" fill="#f6f3ee"/><path d="M-6-22 q-6-26 0-28 q5 2 2 28z M5-22 q4-26 10-26 q4 4-6 28z" fill="#f6f3ee" stroke="#f0caca" stroke-width="1.5"/><circle cx="-4" cy="-15" r="1.8" fill="#2a1f2a"/><circle cx="4" cy="-15" r="1.8" fill="#2a1f2a"/><path d="M-2-9 q2 2 4 0" stroke="#e58a9a" stroke-width="1.4" fill="none"/><path d="M14 4 l12-8" stroke="#f6f3ee" stroke-width="5" stroke-linecap="round"/></g>
+<g transform="translate(228 240)"><ellipse cx="0" cy="10" rx="22" ry="4" fill="#3f7a30" opacity=".3"/><path d="M-18 6 q0-22 18-22 q18 0 18 22z" fill="#5c8f3a"/><path d="M-10-6 l5-7 h8 l5 7 l-5 7 h-8z" stroke="#3f6a26" stroke-width="1.5" fill="none"/><circle cx="-22" cy="0" r="6.5" fill="#8fbf6a"/><circle cx="-24" cy="-2" r="1.5" fill="#1d2a18"/><path d="M-26 3 q2 2 4 0" stroke="#1d2a18" stroke-width="1" fill="none"/><path d="M-12 8 v6 M10 8 v6" stroke="#8fbf6a" stroke-width="5" stroke-linecap="round"/></g>
+<g transform="translate(60 196)"><circle cx="0" cy="0" r="12" fill="#c98a4a"/><circle cx="-9" cy="-10" r="5" fill="#c98a4a"/><circle cx="9" cy="-10" r="5" fill="#c98a4a"/><circle cx="-4" cy="-1" r="1.6" fill="#2a1f2a"/><circle cx="4" cy="-1" r="1.6" fill="#2a1f2a"/><ellipse cx="0" cy="4" rx="4" ry="3" fill="#e9c08a"/></g>
+<g transform="translate(330 196)"><ellipse cx="0" cy="4" rx="14" ry="10" fill="#e98a3a"/><circle cx="0" cy="-8" r="9" fill="#e98a3a"/><path d="M-8-14 l-2-10 l7 6z M8-14 l2-10 l-7 6z" fill="#e98a3a"/><path d="M-4-6 l4 4 l4-4" fill="#fff"/><circle cx="-3" cy="-9" r="1.4" fill="#2a1f2a"/><circle cx="3" cy="-9" r="1.4" fill="#2a1f2a"/></g>
+</svg>`,
+
+/* Черепаха на финише */
+finish: `<svg viewBox="0 0 400 260" role="img" aria-label="Черепаха пересекает финишную ленту, звери радуются, заяц бежит позади">
+<defs>
+<linearGradient id="a2sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb37a"/><stop offset="1" stop-color="#fff0c9"/></linearGradient>
+<linearGradient id="a2g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fcf62"/><stop offset="1" stop-color="#579a42"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a2sky)"/>
+<circle cx="80" cy="70" r="30" fill="#fff4d6" opacity=".9"/>
+<path d="M0 150 q100-30 200-6 t200-4 V260 H0z" fill="url(#a2g)"/>
+<g fill="#ff6b9a"><rect x="40" y="30" width="6" height="10" transform="rotate(20 43 35)"/><rect x="300" y="40" width="6" height="10" transform="rotate(-30 303 45)"/></g>
+<g fill="#ffd34d"><rect x="120" y="24" width="6" height="10" transform="rotate(-20 123 29)"/><rect x="250" y="20" width="6" height="10" transform="rotate(40 253 25)"/><circle cx="340" cy="80" r="3"/></g>
+<g fill="#7ad0ff"><rect x="190" y="34" width="6" height="10" transform="rotate(30 193 39)"/><rect x="360" y="30" width="6" height="10"/><circle cx="60" cy="110" r="3"/></g>
+<g transform="translate(150 120)"><rect x="-4" y="0" width="6" height="90" fill="#7a5032"/><rect x="104" y="0" width="6" height="90" fill="#7a5032"/><rect x="-6" y="-24" width="122" height="24" rx="4" fill="#fff"/><text x="55" y="-7" text-anchor="middle" font-size="15" font-weight="700" fill="#d63d55" font-family="sans-serif">도착</text>
+<path d="M2 62 q30 4 46 10 M60 70 q24-6 46-8" stroke="#ff4d6d" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+<g transform="translate(206 210)"><ellipse cx="0" cy="12" rx="30" ry="5" fill="#3f7a30" opacity=".3"/><path d="M-24 8 q0-30 24-30 q24 0 24 30z" fill="#5c8f3a"/><path d="M-12-8 l6-9 h12 l6 9 l-6 9 h-12z" stroke="#3f6a26" stroke-width="2" fill="none"/><circle cx="-30" cy="-2" r="9" fill="#8fbf6a"/><path d="M-34-4 q2-3 4 0" stroke="#1d2a18" stroke-width="1.5" fill="none"/><path d="M-36 2 q4 4 8 0" stroke="#1d2a18" stroke-width="1.4" fill="none"/><path d="M-16 10 v8 M14 10 v8" stroke="#8fbf6a" stroke-width="6" stroke-linecap="round"/><path d="M-36-12 l-4-10 M-30-12 l2-10" stroke="#ffd34d" stroke-width="2"/></g>
+<g transform="translate(60 200)"><circle cx="0" cy="0" r="12" fill="#c98a4a"/><circle cx="-9" cy="-10" r="5" fill="#c98a4a"/><circle cx="9" cy="-10" r="5" fill="#c98a4a"/><path d="M-5-2 q1-2 3 0 M2-2 q1-2 3 0" stroke="#2a1f2a" stroke-width="1.4" fill="none"/><path d="M-4 4 q4 4 8 0" stroke="#2a1f2a" stroke-width="1.4" fill="#e9c08a"/><path d="M-14 6 l-10-14 M14 6 l10-14" stroke="#c98a4a" stroke-width="5" stroke-linecap="round"/></g>
+<g transform="translate(110 206)"><ellipse cx="0" cy="4" rx="12" ry="9" fill="#e98a3a"/><circle cx="0" cy="-8" r="8" fill="#e98a3a"/><path d="M-7-13 l-2-9 l6 5z M7-13 l2-9 l-6 5z" fill="#e98a3a"/><path d="M-3-9 q1-2 2 0 M1-9 q1-2 2 0" stroke="#2a1f2a" stroke-width="1.2" fill="none"/></g>
+<g transform="translate(350 196) scale(.8)"><ellipse cx="0" cy="8" rx="14" ry="14" fill="#f6f3ee"/><circle cx="-4" cy="-12" r="10" fill="#f6f3ee"/><path d="M-8-20 q-14-18-6-24 q6 4 8 24z M0-20 q6-22 14-20 q0 6-12 22z" fill="#f6f3ee" stroke="#f0caca" stroke-width="1.5"/><circle cx="-8" cy="-13" r="1.8" fill="#2a1f2a"/><text x="-26" y="-30" font-size="16" font-weight="700" fill="#3a6a8a" font-family="sans-serif">!</text><path d="M14 20 l14 6 M-12 20 l-10 8" stroke="#f6f3ee" stroke-width="5" stroke-linecap="round"/><path d="M24 0 h18 M24 8 h14" stroke="#fff" stroke-width="2" opacity=".8"/></g>
+</svg>`,
+
+/* Дровосек у пруда роняет топор */
+pond: `<svg viewBox="0 0 400 260" role="img" aria-label="Дровосек в горном лесу у пруда, его топор падает в воду">
+<defs>
+<linearGradient id="a3sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe6e0"/><stop offset="1" stop-color="#f4f7e6"/></linearGradient>
+<linearGradient id="a3water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fc0c0"/><stop offset="1" stop-color="#2f7f8a"/></linearGradient>
+<linearGradient id="a3g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fc46a"/><stop offset="1" stop-color="#4f8a3e"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a3sky)"/>
+<path d="M0 120 l60-70 l50 50 l60-80 l70 90 l50-50 l110 90 V260 H0z" fill="#9ccab8"/>
+<path d="M0 150 l40-40 l40 30 l50-50 l60 70 l50-40 l60 50 l100-30 V260 H0z" fill="#7fb59a"/>
+<g fill="#3f7a50"><path d="M20 180 l18-60 l18 60z M56 180 l14-46 l14 46z M330 180 l18-64 l18 64z M360 180 l14-44 l14 44z"/></g>
+<rect y="170" width="400" height="90" fill="url(#a3g)"/>
+<ellipse cx="240" cy="210" rx="120" ry="30" fill="url(#a3water)"/>
+<ellipse cx="240" cy="204" rx="70" ry="8" fill="#e6fbff" opacity=".35"/>
+<g stroke="#e6fbff" stroke-width="1.5" fill="none" opacity=".7"><ellipse cx="262" cy="208" rx="14" ry="3"/><ellipse cx="262" cy="208" rx="26" ry="6" opacity=".6"/></g>
+<g transform="translate(262 196) rotate(150)"><rect x="-2" y="-4" width="5" height="34" rx="2" fill="#8a5a2a"/><path d="M-4-6 q-16-6-18 8 q10 3 18 2z" fill="#9aa3ac"/></g>
+<path d="M256 186 q4-6 0-12 M268 184 q-4-6 2-12" stroke="#e6fbff" stroke-width="2" fill="none" stroke-linecap="round"/>
+<g transform="translate(110 170)"><rect x="-10" y="26" width="38" height="12" rx="4" fill="#a5743f"/><circle cx="-6" cy="32" r="6" fill="#d9b27a"/><circle cx="22" cy="32" r="6" fill="#d9b27a"/></g>
+<g transform="translate(160 150)"><path d="M-14 60 l4-40 h20 l4 40z" fill="#4a6aa8"/><path d="M-16 22 q16-12 32 0 l-4 22 h-24z" fill="#c8553d"/><circle cx="0" cy="8" r="11" fill="#f2cfa8"/><path d="M-12 4 q12-16 24 0 q-2-8-12-9 q-10 1-12 9z" fill="#3a2a1a"/><path d="M-6 16 q6 6 12 0" stroke="#3a2a1a" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="-4" cy="8" r="1.4" fill="#2a1f2a"/><circle cx="4" cy="8" r="1.4" fill="#2a1f2a"/><ellipse cx="0" cy="14" rx="3" ry="2" fill="#2a1f2a"/><path d="M14 26 l22 10" stroke="#f2cfa8" stroke-width="6" stroke-linecap="round"/><path d="M-14 26 l-10 20" stroke="#f2cfa8" stroke-width="6" stroke-linecap="round"/><text x="22" y="-6" font-size="18" font-weight="700" fill="#c8553d" font-family="sans-serif">!</text></g>
+<g fill="#ffd34d"><circle cx="40" cy="226" r="3"/><circle cx="70" cy="240" r="3"/><circle cx="380" cy="236" r="3"/></g>
+</svg>`,
+
+/* Счастливый дровосек с топорами */
+happy: `<svg viewBox="0 0 400 260" role="img" aria-label="Счастливый дровосек держит золотой и серебряный топоры, дух машет рукой">
+<defs>
+<radialGradient id="a4bg" cx=".5" cy=".4" r=".8"><stop offset="0" stop-color="#fff4cf"/><stop offset="1" stop-color="#cfe8d6"/></radialGradient>
+<linearGradient id="a4gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset=".5" stop-color="#ffc83d"/><stop offset="1" stop-color="#c88a12"/></linearGradient>
+<linearGradient id="a4silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#cfd6dc"/><stop offset="1" stop-color="#8a96a0"/></linearGradient>
+<radialGradient id="a4sp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#bff0ff" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a4bg)"/>
+<g stroke="#ffe38a" stroke-width="3" opacity=".6"><line x1="200" y1="100" x2="200" y2="10"/><line x1="200" y1="100" x2="280" y2="30"/><line x1="200" y1="100" x2="120" y2="30"/><line x1="200" y1="100" x2="330" y2="90"/><line x1="200" y1="100" x2="70" y2="90"/></g>
+<path d="M0 190 q100-24 200-6 t200-2 V260 H0z" fill="#79b45c"/>
+<ellipse cx="320" cy="214" rx="70" ry="16" fill="#5fb0b8"/>
+<ellipse cx="320" cy="170" rx="34" ry="50" fill="url(#a4sp)"/>
+<g transform="translate(320 170)" opacity=".9"><path d="M-12 40 q-4-30 0-50 q6-10 12-10 q6 0 12 10 q4 20 0 50z" fill="#f2fbff"/><circle cx="0" cy="-24" r="10" fill="#fff"/><path d="M-4-24 q2 2 4 0" stroke="#7a9aa8" stroke-width="1.2" fill="none"/><path d="M12-6 l14-16" stroke="#f2fbff" stroke-width="5" stroke-linecap="round"/></g>
+<g transform="translate(170 120)"><path d="M-22 96 l6-50 h32 l6 50z" fill="#4a6aa8"/><path d="M-24 46 q24-18 48 0 l-6 30 h-36z" fill="#c8553d"/><circle cx="0" cy="26" r="16" fill="#f2cfa8"/><path d="M-16 20 q16-22 32 0 q-2-12-16-13 q-14 1-16 13z" fill="#3a2a1a"/><path d="M-9 36 q9 9 18 0" stroke="#3a2a1a" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M-8 24 q3-3 6 0 M2 24 q3-3 6 0" stroke="#2a1f2a" stroke-width="1.6" fill="none"/><path d="M-5 32 q5 4 10 0" stroke="#a83a3a" stroke-width="1.6" fill="none"/>
+<path d="M-22 52 l-24-30" stroke="#f2cfa8" stroke-width="8" stroke-linecap="round"/><path d="M22 52 l24-30" stroke="#f2cfa8" stroke-width="8" stroke-linecap="round"/>
+<g transform="translate(-48 18) rotate(-20)"><rect x="-2" y="-30" width="5" height="44" rx="2" fill="#8a5a2a"/><path d="M-4-30 q-20-8-22 10 q12 4 22 2z" fill="url(#a4gold)"/></g>
+<g transform="translate(48 18) rotate(20)"><rect x="-2" y="-30" width="5" height="44" rx="2" fill="#8a5a2a"/><path d="M4-30 q20-8 22 10 q-12 4-22 2z" fill="url(#a4silver)"/></g></g>
+<g fill="#ffd34d"><path d="M80 60 l3 8 l8 3 l-8 3 l-3 8 l-3-8 l-8-3 l8-3z"/><path d="M300 50 l2 6 l6 2 l-6 2 l-2 6 l-2-6 l-6-2 l6-2z"/><path d="M110 150 l2 5 l5 2 l-5 2 l-2 5 l-2-5 l-5-2 l5-2z"/></g>
+</svg>`,
+
+/* Зима: кузнечик мёрзнет */
+winter: `<svg viewBox="0 0 400 260" role="img" aria-label="Зима: снег, голый куст, замёрзший кузнечик со скрипкой, вдали тёплый домик муравья">
+<defs>
+<linearGradient id="a5sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7f93c4"/><stop offset="1" stop-color="#dbe6f5"/></linearGradient>
+<radialGradient id="a5win" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a5sky)"/>
+<path d="M0 170 q100-30 200-10 t200-10 V260 H0z" fill="#eef4fb"/>
+<path d="M0 200 q120-20 240 0 t160 -6 V260 H0z" fill="#ffffff"/>
+<g transform="translate(320 150)"><circle cx="0" cy="10" r="40" fill="url(#a5win)"/><path d="M-30 30 v-30 l30-22 l30 22 v30z" fill="#a5743f"/><path d="M-36 2 l36-28 l36 28" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round"/><rect x="-10" y="6" width="20" height="16" rx="2" fill="#ffd27a"/><line x1="0" y1="6" x2="0" y2="22" stroke="#a5743f" stroke-width="2"/><rect x="10" y="-26" width="8" height="16" fill="#8a5a3a"/><path d="M14-30 q-6-8 2-14 q6-6 0-12" stroke="#fff" stroke-width="3" fill="none" opacity=".6"/></g>
+<g stroke="#6b5a5a" stroke-width="3" fill="none" stroke-linecap="round"><path d="M110 200 q-4-40 6-70"/><path d="M114 160 q-20-10-26-30"/><path d="M116 150 q18-12 20-34"/><path d="M112 180 q16-4 26-18"/></g>
+<g transform="translate(150 196)"><ellipse cx="0" cy="10" rx="26" ry="4" fill="#b8c6dc" opacity=".6"/><ellipse cx="0" cy="0" rx="18" ry="6" fill="#7fa86a"/><circle cx="-18" cy="-2" r="6" fill="#7fa86a"/><circle cx="-20" cy="-4" r="1.6" fill="#1d2a18"/><path d="M-22 2 q2-2 4 0" stroke="#1d2a18" stroke-width="1" fill="none"/><path d="M-20-8 q-8-14 0-20 M-16-8 q2-16 10-18" stroke="#5a7a4a" stroke-width="1.4" fill="none"/><path d="M4 4 l10 10 l8-2 M-6 4 l-4 10" stroke="#5a7a4a" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M-30-4 l-4 0 M-30 0 l-4 2" stroke="#9fb6d8" stroke-width="1.4"/><g transform="translate(20 -4) rotate(70)"><path d="M0 0 q-5 3 0 7 q-4 3 0 7 q7 1 7-7 q0-8-7-7z" fill="#a05a2c"/></g></g>
+<g fill="#fff"><circle cx="30" cy="30" r="3"/><circle cx="80" cy="70" r="2.5"/><circle cx="140" cy="40" r="3.5"/><circle cx="200" cy="90" r="2.5"/><circle cx="250" cy="30" r="3"/><circle cx="300" cy="80" r="2"/><circle cx="360" cy="40" r="3"/><circle cx="60" cy="130" r="2.5"/><circle cx="180" cy="140" r="3"/><circle cx="230" cy="120" r="2"/><circle cx="380" cy="110" r="2.5"/><circle cx="20" cy="100" r="2"/></g>
+</svg>`,
+
+/* Тёплый дом муравья */
+warmhome: `<svg viewBox="0 0 400 260" role="img" aria-label="Тёплый дом муравья: муравей и кузнечик едят вместе у огня">
+<defs>
+<linearGradient id="a6wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4a3a"/><stop offset="1" stop-color="#a8664a"/></linearGradient>
+<radialGradient id="a6fire" cx=".22" cy=".62" r=".6"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".8"/><stop offset="1" stop-color="#ffcf7a" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a6wall)"/>
+<rect y="200" width="400" height="60" fill="#5a3326"/>
+<g transform="translate(40 110)"><rect width="100" height="96" rx="6" fill="#8a8a8a"/><rect x="18" y="30" width="64" height="66" rx="30" fill="#2a1a14"/><path d="M34 96 q4-30 16-40 q-2 16 8 20 q4-14 0-26 q16 14 12 46z" fill="#ff8a3d"/><path d="M42 96 q4-18 10-24 q0 10 6 12 q2-8 0-14 q8 10 6 26z" fill="#ffd34d"/><rect x="-6" y="-8" width="112" height="12" rx="3" fill="#6a6a6a"/></g>
+<rect width="400" height="260" fill="url(#a6fire)"/>
+<g transform="translate(280 40)"><rect width="80" height="60" rx="6" fill="#26304f"/><g fill="#fff"><circle cx="16" cy="16" r="2"/><circle cx="40" cy="30" r="2.5"/><circle cx="62" cy="14" r="2"/><circle cx="24" cy="44" r="2"/><circle cx="66" cy="46" r="2.5"/></g><rect width="80" height="60" rx="6" fill="none" stroke="#e9d2b0" stroke-width="5"/><line x1="40" y1="0" x2="40" y2="60" stroke="#e9d2b0" stroke-width="3"/></g>
+<rect x="160" y="170" width="200" height="12" rx="4" fill="#c98a5a"/><rect x="176" y="182" width="8" height="24" fill="#9a6a44"/><rect x="336" y="182" width="8" height="24" fill="#9a6a44"/>
+<g transform="translate(260 160)"><ellipse cx="0" cy="8" rx="34" ry="7" fill="#fff"/><g fill="#ffd34d"><circle cx="-14" cy="0" r="6"/><circle cx="-2" cy="-4" r="6"/><circle cx="10" cy="0" r="6"/></g><path d="M-30 6 q30 10 60 0" stroke="#e0d8cc" stroke-width="2" fill="none"/><path d="M-6-14 q-4-8 2-14 M6-14 q-4-8 2-14" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/></g>
+<g transform="translate(220 168)"><ellipse cx="0" cy="0" rx="7" ry="5" fill="#3a2a2a"/><circle cx="-10" cy="-6" r="6" fill="#3a2a2a"/><circle cx="10" cy="2" r="6" fill="#3a2a2a"/><path d="M-12-12 q-4-8 2-12 M-8-12 q2-8 8-10" stroke="#3a2a2a" stroke-width="1.4" fill="none"/><circle cx="-12" cy="-7" r="1.4" fill="#fff"/><path d="M-12-3 q2 2 4 0" stroke="#fff" stroke-width="1" fill="none"/><path d="M-4-2 l12-10" stroke="#3a2a2a" stroke-width="2"/></g>
+<g transform="translate(316 160)"><ellipse cx="0" cy="0" rx="18" ry="6" fill="#58b34a"/><circle cx="-16" cy="-4" r="6.5" fill="#58b34a"/><path d="M-19-6 q2-2 4 0" stroke="#1d2a18" stroke-width="1.2" fill="none"/><path d="M-20-2 q3 3 6 0" stroke="#1d2a18" stroke-width="1" fill="none"/><path d="M-22-2 v6" stroke="#7ad0ff" stroke-width="2" stroke-linecap="round"/><path d="M-18-10 q-6-14 0-18 M-14-10 q2-14 10-16" stroke="#3e7a32" stroke-width="1.4" fill="none"/><path d="M-6 4 l-10 6" stroke="#3e7a32" stroke-width="2.4" stroke-linecap="round"/></g>
+<g transform="translate(286 120)"><path d="M0 0 q-6-8 0-12 q6-2 6 4 q0-6 6-4 q6 4 0 12 l-6 6z" fill="#ff6b8a"/></g>
+<g fill="#ffcf7a" opacity=".7"><circle cx="90" cy="70" r="2"/><circle cx="110" cy="56" r="1.6"/><circle cx="76" cy="50" r="1.4"/></g>
+</svg>`,
+
+/* Наби не умеет лазить по деревьям */
+cattree: `<svg viewBox="0 0 400 260" role="img" aria-label="Кошка Наби растерянно сидит под деревом, на ветке птичка, рядом мышка">
+<defs>
+<linearGradient id="a7sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a6dcff"/><stop offset="1" stop-color="#f1fbff"/></linearGradient>
+<radialGradient id="a7fur" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffd7a0"/><stop offset="1" stop-color="#e59a52"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a7sky)"/>
+<path d="M0 190 q100-20 200-4 t200-6 V260 H0z" fill="#8fcf6a"/>
+<g transform="translate(110 40)"><path d="M-12 160 q4-60 0-110 h24 q-4 50 0 110z" fill="#8a5a3a"/><path d="M8 70 q40-10 70-36" stroke="#8a5a3a" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="0" cy="20" r="56" fill="#5aa84e"/><circle cx="-40" cy="44" r="34" fill="#4f9a45"/><circle cx="44" cy="40" r="36" fill="#62b456"/><circle cx="80" cy="30" r="24" fill="#5aa84e"/><g fill="#e85d5d"><circle cx="-20" cy="30" r="5"/><circle cx="22" cy="10" r="5"/><circle cx="50" cy="50" r="5"/></g>
+<g transform="translate(78 26)"><ellipse cx="0" cy="0" rx="9" ry="7" fill="#ffcf4d"/><circle cx="7" cy="-5" r="5" fill="#ffcf4d"/><path d="M11-5 l5 1 l-5 2z" fill="#f08a3a"/><circle cx="8" cy="-6" r="1" fill="#2a1f2a"/><path d="M-8-2 l-6-4 l2 6z" fill="#e8b23a"/></g></g>
+<g transform="translate(150 200)"><path d="M40 20 q36 10 22-26" stroke="#e59a52" stroke-width="11" fill="none" stroke-linecap="round"/><ellipse cx="0" cy="6" rx="34" ry="26" fill="url(#a7fur)"/><circle cx="-4" cy="-26" r="24" fill="url(#a7fur)"/><path d="M-24-38 l-4-22 l16 12z M12-40 l6-20 l-18 10z" fill="#e59a52"/><path d="M-22-42 l-2-12 l8 6z M10-44 l3-10 l-9 5z" fill="#ffb4b4"/><circle cx="-12" cy="-30" r="3" fill="#2a1f2a"/><circle cx="4" cy="-30" r="3" fill="#2a1f2a"/><circle cx="-11" cy="-31" r="1" fill="#fff"/><circle cx="5" cy="-31" r="1" fill="#fff"/><path d="M-6-20 l-2 2 h4z" fill="#e76d7a"/><path d="M-10-14 q4-3 8 0" stroke="#3a2a2a" stroke-width="1.6" fill="none"/><text x="20" y="-56" font-size="20" font-weight="700" fill="#3a6a8a" font-family="sans-serif">?</text><path d="M-30-20 h-16 M30-20 h16" stroke="#fff" stroke-width="1.4"/></g>
+<g transform="translate(300 222)"><ellipse cx="0" cy="0" rx="12" ry="8" fill="#9a9aa8"/><circle cx="-12" cy="-4" r="7" fill="#9a9aa8"/><circle cx="-14" cy="-11" r="4" fill="#c8c8d4"/><circle cx="-15" cy="-5" r="1.3" fill="#2a1f2a"/><path d="M12 2 q16 0 18-10" stroke="#9a9aa8" stroke-width="2" fill="none"/><path d="M-2-12 q6-10 14-4" stroke="#3a3a3a" stroke-width="0" fill="none"/></g>
+<g transform="translate(340 196)"><ellipse cx="0" cy="18" rx="30" ry="7" fill="#5fb0e0"/><path d="M-10 16 q4-6 8 0 q4-6 8 0" stroke="#fff" stroke-width="1.4" fill="none"/></g>
+</svg>`,
+
+/* Наби спит на ноутбуке */
+catlaptop: `<svg viewBox="0 0 400 260" role="img" aria-label="Кошка Наби сладко спит на ноутбуке, рядом тетрадь с домашним заданием">
+<defs>
+<linearGradient id="a8wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3e9ff"/><stop offset="1" stop-color="#e2d4f2"/></linearGradient>
+<radialGradient id="a8fur" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffd7a0"/><stop offset="1" stop-color="#e59a52"/></radialGradient>
+<radialGradient id="a8lamp" cx=".15" cy=".2" r=".6"><stop offset="0" stop-color="#fff2c4" stop-opacity=".8"/><stop offset="1" stop-color="#fff2c4" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a8wall)"/>
+<rect width="400" height="260" fill="url(#a8lamp)"/>
+<rect y="170" width="400" height="90" fill="#c99a6a"/><rect y="166" width="400" height="8" fill="#dcb084"/>
+<g transform="translate(40 30)"><rect x="18" y="0" width="5" height="60" fill="#4a3a5a"/><path d="M0 0 h40 l-8-22 h-24z" fill="#b598ff"/></g>
+<g transform="translate(300 40)"><rect width="70" height="54" rx="4" fill="#fff" stroke="#d2c4e6" stroke-width="2"/><text x="35" y="22" text-anchor="middle" font-size="10" fill="#6d3fc0" font-family="sans-serif">숙제</text><text x="35" y="40" text-anchor="middle" font-size="12" fill="#e85d5d" font-family="sans-serif">D-0 !</text></g>
+<g transform="translate(130 150)"><path d="M-20 20 h200 l-14 14 h-172z" fill="#9aa0ac"/><rect x="0" y="-80" width="160" height="100" rx="6" fill="#3a3f4a"/><rect x="6" y="-74" width="148" height="88" rx="3" fill="#cfe7ff"/><g fill="#7aaee0" opacity=".6"><rect x="16" y="-62" width="80" height="6" rx="2"/><rect x="16" y="-50" width="110" height="6" rx="2"/><rect x="16" y="-38" width="60" height="6" rx="2"/></g></g>
+<g transform="translate(212 160)"><path d="M56 6 q30 6 24-18" stroke="#e59a52" stroke-width="10" fill="none" stroke-linecap="round"/><ellipse cx="0" cy="0" rx="62" ry="24" fill="url(#a8fur)"/><circle cx="-54" cy="-6" r="22" fill="url(#a8fur)"/><path d="M-72-18 l-6-18 l16 8z M-46-24 l4-18 l-14 10z" fill="#e59a52"/><path d="M-62-6 q4 3 8 0 M-50-6 q4 3 8 0" stroke="#3a2a2a" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M-56 2 l-2 2 h4z" fill="#e76d7a"/><path d="M-20-8 q10-6 20 0 M10-10 q10-6 20 0" stroke="#d98a44" stroke-width="2" fill="none" opacity=".5"/><ellipse cx="-30" cy="18" rx="10" ry="5" fill="#ffd7a0"/></g>
+<g font-family="sans-serif" fill="#6d3fc0" opacity=".75"><text x="150" y="80" font-size="18">Z</text><text x="168" y="62" font-size="14">z</text><text x="182" y="48" font-size="11">z</text></g>
+<g transform="translate(40 190) rotate(-8)"><rect width="70" height="50" rx="3" fill="#fff"/><g stroke="#d2c4e6" stroke-width="1.5"><line x1="8" y1="14" x2="62" y2="14"/><line x1="8" y1="24" x2="62" y2="24"/><line x1="8" y1="34" x2="40" y2="34"/></g><rect x="62" y="0" width="8" height="50" fill="#ff8fb8"/></g>
+</svg>`,
+
+/* Семья: никто не ел торт */
+family: `<svg viewBox="0 0 400 260" role="img" aria-label="Папа с кофе, младший брат и я стоим у пустой тарелки из-под торта">
+<defs>
+<linearGradient id="a9wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4e2"/><stop offset="1" stop-color="#ffe1c2"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a9wall)"/>
+<rect y="196" width="400" height="64" fill="#e2b98e"/>
+<g transform="translate(30 30)"><rect width="90" height="70" rx="6" fill="#bfe6ff"/><circle cx="66" cy="22" r="10" fill="#ffe08a"/><rect width="90" height="70" rx="6" fill="none" stroke="#fff" stroke-width="6"/></g>
+<rect x="150" y="176" width="100" height="10" rx="3" fill="#a5743f"/><rect x="160" y="186" width="6" height="30" fill="#8a5a32"/><rect x="234" y="186" width="6" height="30" fill="#8a5a32"/>
+<g transform="translate(200 170)"><ellipse cx="0" cy="0" rx="30" ry="6" fill="#fff" stroke="#e0d8cc"/><g fill="#fbe0e6"><circle cx="-10" cy="-2" r="2"/><circle cx="6" cy="-1" r="1.6"/><circle cx="14" cy="-3" r="1.4"/></g><text x="0" y="-40" text-anchor="middle" font-size="28" font-weight="700" fill="#e85d5d" font-family="sans-serif">?</text></g>
+<g transform="translate(90 120)"><path d="M-20 80 l4-40 h32 l4 40z" fill="#3a4a6a"/><path d="M-24 40 q24-16 48 0 l-6 28 h-36z" fill="#6a9ae0"/><circle cx="0" cy="20" r="15" fill="#f2cfa8"/><path d="M-15 16 q15-18 30 0 q-2-10-15-11 q-13 1-15 11z" fill="#2a2a2a"/><rect x="-11" y="16" width="9" height="6" rx="2" fill="none" stroke="#2a2a2a" stroke-width="1.6"/><rect x="2" y="16" width="9" height="6" rx="2" fill="none" stroke="#2a2a2a" stroke-width="1.6"/><path d="M-5 30 q5-3 10 0" stroke="#2a2a2a" stroke-width="1.6" fill="none"/>
+<path d="M22 46 l16 -8" stroke="#f2cfa8" stroke-width="7" stroke-linecap="round"/><g transform="translate(38 30)"><path d="M0 0 h14 l-2 14 h-10z" fill="#fff"/><path d="M14 4 q6 0 4 6 q-2 3-5 3" stroke="#fff" stroke-width="2" fill="none"/><path d="M4-4 q-3-5 1-9 M9-4 q-3-5 1-9" stroke="#a88a6a" stroke-width="1.4" fill="none"/></g></g>
+<g transform="translate(300 146)"><path d="M-14 54 l3-28 h22 l3 28z" fill="#3a6a4a"/><path d="M-16 26 q16-12 32 0 l-4 20 h-24z" fill="#ffb84d"/><circle cx="0" cy="10" r="12" fill="#f2cfa8"/><path d="M-12 6 q12-14 24 0 q-2-8-12-9 q-10 1-12 9z" fill="#5a3a2a"/><circle cx="-4" cy="10" r="1.6" fill="#2a1f2a"/><circle cx="4" cy="10" r="1.6" fill="#2a1f2a"/><ellipse cx="0" cy="17" rx="3" ry="2.5" fill="#a83a3a"/><path d="M-16 32 l-10-14 M16 32 l10-14" stroke="#f2cfa8" stroke-width="6" stroke-linecap="round"/></g>
+<g transform="translate(356 128)"><path d="M-18 72 l4-36 h28 l4 36z" fill="#4a3a6a"/><path d="M-20 36 q20-14 40 0 l-5 24 h-30z" fill="#ff8fb8"/><circle cx="0" cy="18" r="14" fill="#f2cfa8"/><path d="M-14 18 q0-18 14-17 q14-1 14 17 q2 14-2 22 l-3-18 q-9-6-18 0 l-3 18 q-4-8-2-22z" fill="#5a2a2a"/><path d="M-6 18 q2-2 4 0 M2 18 q2-2 4 0" stroke="#2a1f2a" stroke-width="1.4" fill="none"/><path d="M-3 26 q3-2 6 0" stroke="#a83a3a" stroke-width="1.4" fill="none"/><path d="M-20 44 l-8 16 M20 44 l6 16" stroke="#f2cfa8" stroke-width="6" stroke-linecap="round"/></g>
+<g font-family="sans-serif" font-size="11" fill="#5a4a3a"><g transform="translate(112 112)"><rect x="-6" y="-12" width="64" height="18" rx="9" fill="#fff"/><text x="26" y="1" text-anchor="middle">안 먹었어요</text></g><g transform="translate(262 108)"><rect x="-6" y="-12" width="48" height="18" rx="9" fill="#fff"/><text x="18" y="1" text-anchor="middle">저도!</text></g></g>
+</svg>`,
+
+/* Наби с кремом на мордочке */
+creamcat: `<svg viewBox="0 0 400 260" role="img" aria-label="Кошка Наби с кремом на мордочке и вишенкой, виновато облизывается">
+<defs>
+<radialGradient id="a10bg" cx=".5" cy=".45" r=".7"><stop offset="0" stop-color="#fff0f4"/><stop offset="1" stop-color="#f7c6d4"/></radialGradient>
+<radialGradient id="a10fur" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffd7a0"/><stop offset="1" stop-color="#e59a52"/></radialGradient>
+</defs>
+<rect width="400" height="260" fill="url(#a10bg)"/>
+<g stroke="#fff" stroke-width="10" opacity=".5"><line x1="200" y1="130" x2="200" y2="0"/><line x1="200" y1="130" x2="380" y2="20"/><line x1="200" y1="130" x2="20" y2="20"/><line x1="200" y1="130" x2="400" y2="160"/><line x1="200" y1="130" x2="0" y2="160"/></g>
+<rect y="210" width="400" height="50" fill="#e6a7b8"/>
+<g transform="translate(200 160)"><path d="M56 40 q46 4 30-40" stroke="#e59a52" stroke-width="13" fill="none" stroke-linecap="round"/><ellipse cx="0" cy="30" rx="58" ry="36" fill="url(#a10fur)"/><circle cx="0" cy="-34" r="44" fill="url(#a10fur)"/><path d="M-38-56 l-8-34 l30 18z M38-56 l8-34 l-30 18z" fill="#e59a52"/><path d="M-34-62 l-4-20 l16 10z M34-62 l4-20 l-16 10z" fill="#ffb4b4"/>
+<ellipse cx="-16" cy="-40" rx="7" ry="9" fill="#2a1f2a"/><ellipse cx="16" cy="-40" rx="7" ry="9" fill="#2a1f2a"/><circle cx="-14" cy="-43" r="2.6" fill="#fff"/><circle cx="18" cy="-43" r="2.6" fill="#fff"/>
+<path d="M-22-14 q-14 6-10 18 q10 6 22 0 q12 8 22 0 q6-12-8-20 q-14-6-26 2z" fill="#fff"/><circle cx="-26" cy="-12" r="6" fill="#fff"/><circle cx="20" cy="-6" r="5" fill="#fff"/><circle cx="-8" cy="-22" r="4" fill="#fff"/>
+<path d="M0-24 l-4 4 h8z" fill="#e76d7a"/><path d="M-6-12 q6 6 12 0" stroke="#3a2a2a" stroke-width="2" fill="none"/><path d="M4-10 q4 8 0 12 q-4-2-2-10" fill="#ff8fa0"/>
+<path d="M-44-20 h-22 M-44-14 l-20 6 M44-20 h22 M44-14 l20 6" stroke="#fff" stroke-width="1.6"/>
+<circle cx="30" cy="-74" r="7" fill="#e23b55"/><path d="M30-80 q4-10 12-10" stroke="#3c8a4a" stroke-width="2" fill="none"/><ellipse cx="28" cy="-66" rx="12" ry="5" fill="#fff"/></g>
+<g transform="translate(70 210)"><ellipse cx="0" cy="0" rx="40" ry="8" fill="#fff"/><path d="M-26-2 q26 4 52 0" stroke="#fbe0e6" stroke-width="4"/></g>
+<g font-family="sans-serif" fill="#d63d55" font-weight="700"><text x="300" y="70" font-size="28">범인!</text></g>
+<g fill="#fff"><path d="M60 50 l3 8 l8 3 l-8 3 l-3 8 l-3-8 l-8-3 l8-3z"/><path d="M340 120 l2 6 l6 2 l-6 2 l-2 6 l-2-6 l-6-2 l6-2z"/></g>
+</svg>`
+};
+const FRIDGE_PAGE = `<svg viewBox="0 0 400 260" role="img" aria-label="Ночная кухня: открытый холодильник светится, от торта откушен кусок, рядом лупа">
+<defs>
+<linearGradient id="f7bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1c33"/><stop offset="1" stop-color="#2c2a48"/></linearGradient>
+<linearGradient id="f7beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff4c8" stop-opacity=".75"/><stop offset="1" stop-color="#fff4c8" stop-opacity="0"/></linearGradient>
+<radialGradient id="f7in" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#fffbe8"/><stop offset="1" stop-color="#e8e2c4"/></radialGradient>
+<linearGradient id="f7cake" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2f5"/><stop offset="1" stop-color="#f6c6d2"/></linearGradient>
+</defs>
+<rect width="400" height="260" fill="url(#f7bg)"/>
+<rect y="200" width="400" height="60" fill="#232239"/>
+<path d="M120 52 L400 20 V260 H120z" fill="url(#f7beam)" opacity=".5"/>
+<g transform="translate(36 40)"><rect width="96" height="168" rx="8" fill="#d9dde8"/><rect x="6" y="6" width="84" height="156" rx="4" fill="url(#f7in)"/><g stroke="#cff7a6" stroke-width="3"><line x1="6" y1="56" x2="90" y2="56"/><line x1="6" y1="104" x2="90" y2="104"/></g>
+<rect x="14" y="30" width="16" height="26" rx="3" fill="#7ec0ee"/><rect x="36" y="38" width="22" height="18" rx="3" fill="#f2a65a"/><circle cx="74" cy="48" r="8" fill="#e85d5d"/><rect x="16" y="80" width="30" height="24" rx="3" fill="#bde2a8"/><rect x="54" y="86" width="26" height="18" rx="3" fill="#fff" stroke="#ddd"/>
+<g transform="translate(18 132)"><ellipse cx="30" cy="30" rx="34" ry="5" fill="#fff"/><path d="M0 8 h60 v22 h-60z" fill="url(#f7cake)"/><path d="M38 8 l22 0 l0 22 l-10 0z" fill="#e8e2c4"/><ellipse cx="30" cy="8" rx="30" ry="6" fill="#fff"/><path d="M38 8 l22-2 l0 4z" fill="#e8e2c4"/><circle cx="16" cy="4" r="4" fill="#e23b55"/><circle cx="30" cy="2" r="4" fill="#e23b55"/></g></g>
+<path d="M132 46 l40 -10 v176 l-40 -4z" fill="#c3c8d6"/><rect x="160" y="96" width="4" height="40" rx="2" fill="#8a90a2"/>
+<g transform="translate(250 80) rotate(-25)"><circle cx="0" cy="0" r="26" fill="#bfe6ff" opacity=".35" stroke="#e9c46a" stroke-width="6"/><rect x="-5" y="28" width="10" height="44" rx="4" fill="#7a4a2a"/><path d="M-12-8 q8-10 20-6" stroke="#fff" stroke-width="3" fill="none" opacity=".7"/></g>
+<text x="300" y="56" font-size="40" font-weight="700" fill="#ffd34d" font-family="sans-serif" opacity=".9">?</text>
+</svg>`;
 const ART = {
 room: `<svg viewBox="0 0 320 190" role="img" aria-label="Комната: стол с компьютером, кровать с кошкой, окно">
 <rect width="320" height="190" fill="#f3e6cf"/><rect y="150" width="320" height="40" fill="#d9b98c"/>
@@ -2430,6 +2842,7 @@ warmhome: `<svg viewBox="0 0 320 190" role="img" aria-label="Тёплый дом
 <text x="96" y="70" font-size="13" fill="#c2416b" font-family="sans-serif">같이 먹어요!</text><text x="186" y="70" font-size="13" fill="#4f7f43" font-family="sans-serif">고마워요!</text>
 </svg>`
 };
+Object.assign(ART, {room:COVER.s1, cafe:COVER.s2, summer:COVER.s2b, sleep:COVER.s3, spirit:COVER.s4, fishbowl:COVER.s5, fridge:FRIDGE_PAGE, seoul:COVER.s7, hangang:COVER.s8}, ART2);
 
 /* Each sentence: [korean, russian]. Glossary keys are words as written in the text (without punctuation). */
 const STORIES = [
@@ -2659,7 +3072,7 @@ function renderReadList(){
     <p class="note" style="margin:0">Нажмите на слово — появится перевод и озвучка. Текст помечен уроком, после которого вся грамматика в нём уже знакома.</p>
     <div class="shelf">${STORIES.map(s=>`
       <button class="book" data-story="${s.id}">
-        <span class="cover-art">${ART[s.pages[0].art]}</span>
+        <span class="cover-art">${COVER[s.id] || ART[s.pages[0].art]}</span>
         <span class="book-info">
           <span class="book-ko">${esc(s.title)}</span>
           <span class="book-ru">${esc(s.ru)}</span>

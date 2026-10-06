@@ -1,6 +1,6 @@
 // Offline support: the page itself is fetched network-first (so new lessons arrive),
 // everything else (icons, fonts, the Supabase library) is served from cache first.
-const CACHE = "ko-study-v8";
+const CACHE = "ko-study-v9";
 const SHELL = [
   "./", "./index.html", "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png",
