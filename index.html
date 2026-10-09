@@ -452,6 +452,19 @@ select,input[type=text],input[type=email],input[type=password]{border-radius:10p
   .panel{padding:16px;border-radius:20px}
 }
 
+/* right-click translation */
+.rc-pop{position:fixed;z-index:60;width:min(310px,calc(100vw - 24px));background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.18);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.rc-h{display:flex;align-items:center;gap:10px}
+.rc-w{font-size:26px;font-weight:700;letter-spacing:-.02em;flex:1;min-width:0;overflow-wrap:anywhere}
+.rc-tr{font-size:16px;font-weight:600;line-height:1.4}
+.rc-miss{font-size:14px;color:var(--muted)}
+.rc-parts{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
+.rc-p{background:var(--fill);color:var(--fg);border-radius:8px;padding:3px 8px;font-size:14px}
+.rc-p small{color:var(--muted);font-size:12px;margin-left:4px}
+::highlight(rcword){background-color:var(--accent);color:#fff}
+.panel{-webkit-touch-callout:none}
+@media (prefers-reduced-motion:no-preference){.rc-pop:not([hidden]){animation:fadeIn .14s ease-out}}
+
 /* ---------- animations ---------- */
 @media (prefers-reduced-motion:no-preference){
   @keyframes rise{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
@@ -3183,6 +3196,124 @@ function drawNums(){
   $("#nmNext")?.addEventListener("click",()=>{ g.q=null; g.state="ask"; g.typed=""; drawNums(); $("#nmIn").focus(); });
 }
 
+/* ---------- right-click / long-press word translation ---------- */
+const HANGUL_RE = /[가-힣]/;
+const RC = { dict:null };
+function hDecomp(ch){ const c = ch.charCodeAt(0) - 0xAC00; return c < 0 || c > 11171 ? null : {i:Math.floor(c/588), v:Math.floor((c%588)/28), f:c%28}; }
+function hComp(i,v,f){ return String.fromCharCode(0xAC00 + i*588 + v*28 + (f||0)); }
+/* -아요/-어요 и -았어요/-었어요 для правильных глаголов */
+function conjAeo(d){
+  if (!d.endsWith("다") || d.length < 2) return null;
+  const st = d.slice(0,-1);
+  if (st.endsWith("하")) return {pres: st.slice(0,-1)+"해요", past: st.slice(0,-1)+"했어요"};
+  const last = st.slice(-1), head = st.slice(0,-1), h = hDecomp(last); if (!h) return null;
+  const bright = h.v === 0 || h.v === 8; // ㅏ ㅗ
+  if (h.f){ const e = bright ? "아" : "어"; return {pres: st+e+"요", past: st+(bright?"았":"었")+"어요"}; }
+  const V = {0:0, 4:4, 8:9, 13:14, 18:4, 20:6, 5:5, 1:1, 11:11, 7:7};
+  let nv = null;
+  if (h.v === 0 || h.v === 4 || h.v === 5 || h.v === 1 || h.v === 7) nv = h.v;      // 가→가, 서→서, 내→내
+  else if (h.v === 8) nv = 9;   // ㅗ → ㅘ
+  else if (h.v === 13) nv = 14; // ㅜ → ㅝ
+  else if (h.v === 20) nv = 6;  // ㅣ → ㅕ
+  else if (h.v === 18) nv = 4;  // ㅡ → ㅓ
+  else if (h.v === 11) nv = 10; // ㅚ → ㅙ
+  if (nv == null) return {pres: st+"어요", past: st+"었어요"};
+  const pres = head + hComp(h.i, nv, 0) + "요", past = head + hComp(h.i, nv, 20) + "어요";
+  return {pres, past};
+}
+function buildRcDict(){
+  const D = {};
+  const add = (k, v) => { k = (k||"").trim(); if (!k || !HANGUL_RE.test(k) || D[k]) return; D[k] = v; };
+  for (const l of LESSONS) for (const [ko, ru] of l.words){
+    const clean = ru.replace(/\s*[→←].*$/,"");
+    ko.split(/\s*\/\s*/).forEach(part => {
+      const m = part.match(/^(.+?)\s*\((.+)\)$/);
+      if (m){ add(m[1], clean); add(m[2], clean); } else add(part.replace(/^-/,""), clean);
+    });
+    const arrow = ru.match(/→\s*([가-힣 ]+)/); if (arrow) add(arrow[1].trim(), `${clean} (${ko})`);
+    const back = ru.match(/←\s*([가-힣]+)/); if (back) add(ko, `${clean} (${back[1]})`);
+  }
+  for (const s of STORIES) for (const k in (s.gloss||{})) add(stripP(k), s.gloss[k]);
+  /* формы правильных глаголов */
+  for (const k of Object.keys(D)) if (/[가-힣]다$/.test(k) && !k.includes(" ")){
+    const c = conjAeo(k), base = D[k].split(/[;,]/)[0];
+    if (c){ add(c.pres, `${base} — настоящее время (${k})`); add(c.past, `${base} — прошедшее время (${k})`); }
+    const st = k.slice(0,-1);
+    add(st+"고", `${base} — «и», форма на -고 (${k})`);
+    add(st+"고 싶어요", `хочу: ${base} (${k})`);
+    try { add(futureOf(k).split(" ")[0], `${base} — форма будущего, дальше идёт 거예요 (${k})`); } catch(e){}
+    try { add(seyo(k).replace(/[.?!]$/,""), `${base} — вежливая просьба (${k})`); } catch(e){}
+  }
+  return D;
+}
+const RC_PARTICLES = [["에서는","в … (тема)"],["에서","где происходит действие; из"],["까지","до"],["부터","с (о времени)"],["한테","кому"],["에게","кому"],["하고","и, с"],["이랑","и, с"],["처럼","как"],["으로","на чём; в сторону"],["로","на чём; в сторону"],["에는","в … (тема)"],["에","в, на; в (время)"],["의","чей"],["은","тема"],["는","тема: «что касается…»"],["이","подлежащее"],["가","подлежащее"],["을","прямое дополнение"],["를","прямое дополнение"],["도","тоже"],["만","только"],["랑","и, с"],["와","и"],["과","и"]];
+const RC_COPULA = [["이에요","это …"],["예요","это …"],["입니다","это … (официально)"],["이었어요","был(а) …"],["였어요","был(а) …"],["이세요","это … (вежливо)"],["이고","это …, и"]];
+function rcLookup(word){
+  const D = RC.dict || (RC.dict = buildRcDict());
+  if (D[word]) return {tr: D[word], parts:[[word]]};
+  for (const [c, cn] of RC_COPULA) if (word.endsWith(c) && word.length > c.length){
+    const st = word.slice(0, -c.length); if (D[st]) return {tr: `${D[st]} — ${cn}`, parts:[[st, D[st]], [c, cn]]};
+  }
+  for (const [p, pn] of RC_PARTICLES) if (word.endsWith(p) && word.length > p.length){
+    const st = word.slice(0, -p.length);
+    if (D[st]) return {tr: D[st], parts:[[st], [p, pn]]};
+    for (const [p2, pn2] of RC_PARTICLES) if (st.endsWith(p2) && st.length > p2.length && D[st.slice(0,-p2.length)]){
+      const s2 = st.slice(0,-p2.length); return {tr: D[s2], parts:[[s2],[p2,pn2],[p, pn]]};
+    }
+  }
+  return {tr:null, parts:[[word]]};
+}
+function rcWordAt(x, y){
+  let node, off;
+  if (document.caretPositionFromPoint){ const p = document.caretPositionFromPoint(x, y); if (!p) return null; node = p.offsetNode; off = p.offset; }
+  else if (document.caretRangeFromPoint){ const r = document.caretRangeFromPoint(x, y); if (!r) return null; node = r.startContainer; off = r.startOffset; }
+  if (!node || node.nodeType !== 3) return null;
+  const t = node.nodeValue; let a = off, b = off;
+  if (!HANGUL_RE.test(t[a] || "") && HANGUL_RE.test(t[a-1] || "")) a = b = off - 1;
+  if (!HANGUL_RE.test(t[a] || "")) return null;
+  while (a > 0 && HANGUL_RE.test(t[a-1])) a--;
+  while (b < t.length && HANGUL_RE.test(t[b])) b++;
+  const range = document.createRange(); range.setStart(node, a); range.setEnd(node, b);
+  const rect = range.getBoundingClientRect();
+  if (x < rect.left - 4 || x > rect.right + 4 || y < rect.top - 4 || y > rect.bottom + 4) return null;
+  return {word: t.slice(a, b), range};
+}
+function rcClose(){ const p = $("#rcPop"); if (p) p.hidden = true; try { CSS.highlights && CSS.highlights.delete("rcword"); } catch(e){} }
+function rcOpen(hit, x, y){
+  const a = rcLookup(hit.word), pop = $("#rcPop");
+  try { if (CSS.highlights && window.Highlight) CSS.highlights.set("rcword", new Highlight(hit.range)); } catch(e){}
+  const parts = a.parts.length > 1 ? `<div class="rc-parts">${a.parts.map(([k,n])=>`<span class="rc-p"><span class="ko">${esc(k)}</span>${n?`<small>${esc(n)}</small>`:""}</span>`).join("<span>+</span>")}</div>` : "";
+  pop.innerHTML = `<div class="rc-h"><span class="rc-w ko">${esc(hit.word)}</span>${sayBtn(hit.word)}</div>
+    ${a.tr ? `<div class="rc-tr">${esc(a.tr)}</div>` : `<div class="rc-miss">Этого слова пока нет в словаре программы. Посмотрите перевод предложения или спросите в чате с Claude.</div>`}${parts}`;
+  pop.hidden = false; bindSay(pop);
+  const r = pop.getBoundingClientRect();
+  pop.style.left = Math.min(Math.max(12, x - r.width/2), innerWidth - r.width - 12) + "px";
+  let top = y + 18; if (top + r.height > innerHeight - 12) top = Math.max(12, y - r.height - 18);
+  pop.style.top = top + "px";
+  speak(hit.word);
+}
+function initRightClick(){
+  const pop = document.createElement("div"); pop.id = "rcPop"; pop.className = "rc-pop"; pop.hidden = true; pop.setAttribute("role","dialog"); pop.setAttribute("aria-label","Перевод слова");
+  document.body.appendChild(pop);
+  document.addEventListener("contextmenu", e => {
+    if (e.target.closest("input,textarea,select,#rcPop")) return;
+    const hit = rcWordAt(e.clientX, e.clientY); if (!hit) return;
+    e.preventDefault(); rcOpen(hit, e.clientX, e.clientY);
+  });
+  let lp = null, lpPos = null;
+  document.addEventListener("touchstart", e => {
+    if (e.touches.length !== 1 || e.target.closest("input,textarea,select,#rcPop")) return;
+    const t = e.touches[0]; lpPos = [t.clientX, t.clientY];
+    lp = setTimeout(()=>{ const hit = rcWordAt(lpPos[0], lpPos[1]); if (hit){ try { getSelection().removeAllRanges(); } catch(_){} rcOpen(hit, lpPos[0], lpPos[1]); lp = "done"; } else lp = null; }, 480);
+  }, {passive:true});
+  document.addEventListener("touchmove", e => { if (lp && lp !== "done"){ const t = e.touches[0]; if (Math.hypot(t.clientX-lpPos[0], t.clientY-lpPos[1]) > 8){ clearTimeout(lp); lp = null; } } }, {passive:true});
+  document.addEventListener("touchend", e => { if (lp === "done"){ e.preventDefault(); setTimeout(()=>{ try { getSelection().removeAllRanges(); } catch(_){} }, 0); } else if (lp) clearTimeout(lp); lp = null; });
+  document.addEventListener("mousedown", e => { if (!pop.hidden && !pop.contains(e.target)) rcClose(); });
+  document.addEventListener("touchstart", e => { if (!pop.hidden && !pop.contains(e.target) && lp === null) rcClose(); }, {passive:true});
+  document.addEventListener("keydown", e => { if (e.key === "Escape") rcClose(); });
+  addEventListener("scroll", rcClose, {passive:true});
+}
+
 /* ---------- routing ---------- */
 function render(){
   updateStats();
@@ -3213,6 +3344,7 @@ $("#resetYes").addEventListener("click", ()=>{ delete store.lessons[lesson.id]; 
 { const last = (store.prefs && store.prefs.last) || {}; const l = LESSONS.find(x => x.id === last.lesson); if (l){ lesson = l; mode = last.mode || "notes"; } }
 initNav();
 initPrefs();
+initRightClick();
 setSync("local");
 render();
 connect();

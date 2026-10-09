@@ -32,6 +32,7 @@ rep('$("#reset").addEventListener', '$("#acctBtn").addEventListener("click", ()=
 rep('connect();\n</script>', 'connect();\nif ("serviceWorker" in navigator) window.addEventListener("load", ()=>{ navigator.serviceWorker.register("./sw.js").catch(()=>{}); });\n</script>')
 rep('footer{font-size:12px;', '.auth{display:flex;flex-direction:column;gap:6px;max-width:420px}\n.auth label{font-size:13px;color:var(--muted)}\n.auth input{font:inherit;font-size:16px;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}\n.auth .row{margin-top:8px}\nfooter{font-size:12px;')
 s = s.replace('select,input[type=text]{', 'select,input[type=text],input[type=email],input[type=password]{')
+s = s.replace('Посмотрите перевод предложения или спросите меня.', 'Посмотрите перевод предложения или спросите в чате с Claude.')
 assert not re.search(r'window\.claude|claude\.use|claude\.ai', s), "claude.ai references left"
 
 t0 = s.index("<title>"); st_end = s.index("</style>") + len("</style>")
